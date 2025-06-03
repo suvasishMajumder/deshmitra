@@ -71,3 +71,48 @@ export interface IFocused{
 // export interface CatalogState {
 //   catalogs: Catalog[];
 // }
+
+
+
+export type TSupplyChainItems = {
+
+    title:string;
+    description:string;
+    image:string;
+    color:string;
+    shadow:string;
+    emoji:string;
+
+}
+
+
+export type THeroCarouselItem = {
+
+  keyword:string;
+  description: string;
+  image:string;
+  color:string;
+
+}
+
+
+export interface IFormDataProductContactForm {
+
+    fname:string;
+    email:string;
+    phone:string;
+    companyName:string;
+    productName:string;
+    message:string;
+
+}
+
+export interface IFocusedProductContactForm {
+fname:boolean;
+email:boolean;
+phone:boolean;
+companyName:boolean;
+productName:boolean;
+message:boolean;
+
+}
