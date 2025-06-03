@@ -1,14 +1,19 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, Pagination, EffectFade } from "swiper/modules";
-import "swiper/css";
+// import "swiper/css";
 import 'bootstrap';
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/effect-fade";;
+// import "swiper/css/navigation";
+// import "swiper/css/pagination";
+// import "swiper/css/effect-fade";
+import type {THeroCarouselItem} from "../types/types";
+
+
 import { motion } from "framer-motion";
 
 
-const carouselItems = [
+
+
+const carouselItems: THeroCarouselItem[] = [
   {
     keyword: "Premium Products",
     description: "Explore our selection of high-quality everyday essentials",

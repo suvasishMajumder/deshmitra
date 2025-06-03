@@ -4,9 +4,20 @@ import { FaUser, FaEnvelope, FaPhone, FaBuilding, FaBox, FaComment, FaPaperPlane
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
+import type {IFormDataProductContactForm , IFocusedProductContactForm} from '../types/types';
 
-const ProductContactForm = ({ productName = "" }) => {
-    const [formData, setFormData] = useState({
+
+
+type ProductContactFormProps = {
+
+    productName?:string;
+}
+
+
+const ProductContactForm:React.FC<ProductContactFormProps> = ({ productName = "" }) => {
+
+    
+    const [formData, setFormData] = useState<IFormDataProductContactForm>({
         fname: "",
         email: "",
         phone: "",
@@ -15,7 +26,7 @@ const ProductContactForm = ({ productName = "" }) => {
         message: ""
     });
 
-    const [focused, setFocused] = useState({
+    const [focused, setFocused] = useState<IFocusedProductContactForm>({
         fname: false,
         email: false,
         phone: false,
@@ -24,22 +35,22 @@ const ProductContactForm = ({ productName = "" }) => {
         message: false
     });
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+    const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null); // 'success', 'error', or null
 
-    const handleChange = (e) => {
+    const handleChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleFocus = (field) => {
+    const handleFocus = (field: keyof IFocusedProductContactForm ) => {
         setFocused({ ...focused, [field]: true });
     };
 
-    const handleBlur = (field) => {
+    const handleBlur = (field:keyof IFocusedProductContactForm) => {
         setFocused({ ...focused, [field]: false });
     };
 
-    const isFieldValid = (field) => {
+    const isFieldValid = (field:string) => {
         if (field === "fname") return formData.fname.length >= 2;
         if (field === "email") return /^\S+@\S+\.\S+$/.test(formData.email);
         if (field === "phone") return /^\+?[0-9]{10,15}$/.test(formData.phone.replace(/\s/g, ''));
@@ -59,7 +70,7 @@ const ProductContactForm = ({ productName = "" }) => {
         );
     };
 
-    const contactFormSubmit = async (e) => {
+    const contactFormSubmit = async (e:React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (!isFormValid()) {
@@ -145,7 +156,8 @@ const ProductContactForm = ({ productName = "" }) => {
             setSubmitStatus('error');
 
             let errorMessage = "Failed to send inquiry. Please try again later.";
-
+           
+if(axios.isAxiosError(error)){
             if (error.response) {
                 if (error.response.status === 429) {
                     errorMessage = "Too many attempts. Please try again later.";
@@ -155,7 +167,7 @@ const ProductContactForm = ({ productName = "" }) => {
             } else if (error.request) {
                 errorMessage = "No response from server. Please check your internet connection.";
             }
-
+        }
             toast.error(errorMessage, {
                 position: "top-right",
                 autoClose: 5000,
@@ -397,7 +409,7 @@ const ProductContactForm = ({ productName = "" }) => {
                                         onBlur={() => handleBlur('message')}
                                         className={`form-control form-control-lg border-start-0 ps-0 ${!isFieldValid('message') && (focused.message || formData.message) ? 'is-invalid' : ''}`}
                                         placeholder="Your Message"
-                                        rows="4"
+                                        rows={4}
                                         required
                                     ></textarea>
                                 </div>

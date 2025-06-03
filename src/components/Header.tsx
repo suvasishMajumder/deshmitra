@@ -3,18 +3,19 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaSearch, FaBars, FaTimes, FaChevronDown , FaShoppingBasket } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import type { RootState } from "../redux/store";
 
 
 const Header = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [activeDropdown, setActiveDropdown] = useState(null);
-  const [searchFocused, setSearchFocused] = useState(false);
-  const [hoveredProduct, setHoveredProduct] = useState(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [searchFocused, setSearchFocused] = useState<boolean>(false);
+  const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const catalogs = useSelector((state) => state.catalog.catalogs);
+  const catalogs = useSelector((state:RootState) => state.catalog.catalogs);
   // Update the navigation links to use /category instead of /category
 //   const navigation = [
 //     { name: "Home", path: "/" },
@@ -25,7 +26,7 @@ const Header = () => {
 //   ];
 
   // Rotating announcement text
-  const announcements = [
+  const announcements:string[] = [
     "Serving India's Basic Needs",
     "Spices | Rice | Sugar | Salt | Dry Fruits",
     "Premium quality products | Nationwide shipping available",
@@ -34,8 +35,8 @@ const Header = () => {
     "Bulk orders available | Customer satisfaction guaranteed",
     "Explore our wide range of products | Get a quote today!"
   ];
-  const [currentAnnouncement, setCurrentAnnouncement] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [currentAnnouncement, setCurrentAnnouncement] = useState<number>(0);
+  const [isAnimating , setIsAnimating] = useState<boolean>(false);
 
   // Handle announcement rotation
   useEffect(() => {
@@ -75,7 +76,9 @@ const Header = () => {
     setActiveDropdown(null);
   }, [location.pathname]);
 
-  const handleSearch = (e) => {
+
+  //React.FormEvent<HTMLFormElement>
+  const handleSearch = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/search-results?q=${encodeURIComponent(searchQuery.trim())}`);
@@ -91,11 +94,11 @@ const Header = () => {
     }
   };
 
-  const toggleDropdown = (index) => {
+  const toggleDropdown = (index:string) => {
     setActiveDropdown(activeDropdown === index ? null : index);
   };
 
-  const handleProductHover = (index) => {
+  const handleProductHover = (index:number) => {
     setHoveredProduct(index);
   };
 
@@ -154,7 +157,15 @@ const Header = () => {
                 style={{ height: "70px", width: "70px" }}
                 className="brand-logo"
                 onError={(e) => {
-                  e.target.src = "/logo.webp";
+
+                  const target = e.target as HTMLImageElement | null;
+
+                  if(target){
+target.src = "/logo.webp";
+
+                  }
+
+                  
                 }}
               />
               <div className="brand-text">
@@ -170,7 +181,7 @@ const Header = () => {
                 <input
                   type="text"
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e:React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
                   placeholder="Search products..."
                   className="search-input"
                   onFocus={() => setSearchFocused(true)}

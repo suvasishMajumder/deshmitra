@@ -4,9 +4,13 @@ import { motion } from "framer-motion";
 import { FaArrowRight } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
+import type { RootState } from "../redux/store";
+
 export default function FeaturedCategories() {
-  const catalogRed= useSelector((state) => state.catalog.catalogs);
-  const [hoveredCategory, setHoveredCategory] = useState(null);
+
+     {/* Is state ka type ekbar check kar lo  */}
+  const catalogRed= useSelector((state:RootState) => state.catalog.catalogs);
+  const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
 
   return (
     <section className="py-5 my-4 position-relative overflow-hidden">
@@ -50,7 +54,9 @@ export default function FeaturedCategories() {
         </div>
 
         <div className="row g-4 justify-content-center">
-          {catalogRed.map((category, index) => (
+
+       
+          {catalogRed?.map((category, index) => (
             <div key={index} className="col-lg-4 col-md-6 col-sm-10" style={{ maxWidth: "380px" }}>
               <motion.div
                 initial={{ opacity: 0, y: 30 }}

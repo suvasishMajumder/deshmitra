@@ -1,6 +1,8 @@
 // redux/slices/catalogSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
+
+
 interface SubItem {
   name: string;
   image: string;

@@ -1,40 +1,51 @@
 import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import axios from "axios";
+import axios  from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaUser, FaEnvelope, FaPhone, FaComment, FaPaperPlane, FaCheck, FaTimes, FaMapMarkerAlt } from "react-icons/fa";
+import type { IFormData , IFocused } from "../types/types";
+
+
+
+
 
 const ContactForm = () => {
-  const [formData, setFormData] = useState({
-    name: "",
+
+
+
+
+
+const [formData, setFormData] = useState<IFormData>({
+     name: "",
     email: "",
     phone: "",
     message: "",
-  });
-  const [focused, setFocused] = useState({
+})
+
+  const [focused, setFocused] = useState<IFocused>({
     name: false,
     email: false,
     phone: false,
     message: false,
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // 'success', 'error', or null
-  const formRef = useRef(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [submitStatus, setSubmitStatus] = useState<string | null>(null); // 'success', 'error', or null
+  const formRef = useRef<HTMLFormElement | null>(null);
 
-  const handleChange = (e) => {
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFocus = (field) => {
+  const handleFocus = (field:keyof IFocused) => {
     setFocused({ ...focused, [field]: true });
   };
 
-  const handleBlur = (field) => {
+  const handleBlur = (field:keyof IFocused) => {
     setFocused({ ...focused, [field]: false });
   };
 
-  const isFieldValid = (field) => {
+  const isFieldValid = (field:keyof IFormData) => {
     if (field === "name") return formData.name.length >= 2;
     if (field === "email") return /^\S+@\S+\.\S+$/.test(formData.email);
     if (field === "phone") return /^\+?[0-9]{10,15}$/.test(formData.phone.replace(/\s/g, ''));
@@ -51,7 +62,7 @@ const ContactForm = () => {
     );
   };
 
-  const sendEmail = async (e) => {
+  const sendEmail = async (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!isFormValid()) {
@@ -76,6 +87,9 @@ const ContactForm = () => {
 
     setIsSubmitting(true);
 
+
+    {/* needs clarity : from where this process has come. Isme security vulnerablity aa sakta hai. Unexpected bug aane ka 
+        chance bhi hai */}
     try {
       const post = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/v1/send`, formData, {
         headers: {
@@ -86,7 +100,7 @@ const ContactForm = () => {
 
       if (post.status === 200) {
         setSubmitStatus("success");
-        formRef.current.reset();
+        formRef.current?.reset();
         setFormData({ name: "", email: "", phone: "", message: "" });
         setFocused({
           name: false,
@@ -103,31 +117,41 @@ const ContactForm = () => {
           draggable: true
         });
       }
-    } catch (error) {
-      console.error("Error sending email:", error);
-      setSubmitStatus("error");
+    } catch (error: unknown) {
+  console.error("Error sending email:", error);
+  setSubmitStatus("error");
 
-      let errorMessage = "Failed to send message. Please try again later.";
-
-      if (error.response) {
-        if (error.response.status === 429) {
-          errorMessage = "Too many attempts. Please try again later.";
-        } else if (error.response.data && error.response.data.message) {
-          errorMessage = error.response.data.message;
-        }
-      } else if (error.request) {
-        errorMessage = "No response from server. Please check your internet connection.";
+  let errorMessage = "Failed to send message. Please try again later.";
+  
+  // More robust type checking
+  if (axios.isAxiosError(error)) { // This is the preferred way to check
+    if (error.response) {
+      if (error.response.status === 429) {
+        errorMessage = "Too many attempts. Please try again later.";
+      } else if (
+        typeof error.response.data === 'object' && 
+        error.response.data !== null &&
+        'message' in error.response.data
+      ) {
+        errorMessage = (error.response.data as { message: string }).message;
       }
+    } else if (error.request) {
+      errorMessage = "No response from server. Please check your internet connection.";
+    }
+  } else if (error instanceof Error) {
+    // Handle non-Axios errors
+    errorMessage = error.message;
+  }
 
-      toast.error(errorMessage, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true
-      });
-    } finally {
+  toast.error(errorMessage, {
+    position: "top-right",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true
+  });
+} finally {
       setIsSubmitting(false);
     }
   };
@@ -326,6 +350,8 @@ const ContactForm = () => {
               Get in Touch
             </motion.h2>
 
+
+{/*need clarity: whether method='post' should be added in the form or not */}
             <form ref={formRef} onSubmit={sendEmail} className="position-relative">
               <AnimatePresence>
                 {submitStatus === 'success' && (
@@ -476,7 +502,7 @@ const ContactForm = () => {
                       onBlur={() => handleBlur('message')}
                       className={`form-control form-control-lg border-start-0 ps-0 ${!isFieldValid('message') && (focused.message || formData.message) ? 'is-invalid' : ''}`}
                       placeholder="Your Message"
-                      rows="4"
+                      rows={4}
                       required
                     ></textarea>
                   </div>

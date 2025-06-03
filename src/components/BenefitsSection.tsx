@@ -1,4 +1,4 @@
-import React from "react";
+
 import {
   FaUsers,
   FaLeaf,
@@ -6,8 +6,10 @@ import {
   FaGlobe,
 } from "react-icons/fa6";
 import { motion } from "framer-motion";
+import type { TBenefits } from "../types/types";
+
 export default function BenefitsSection() {
-  const benefits = [
+  const benefits:TBenefits[] = [
     {
       icon: FaLeaf,
       title: "Quality Products",
