@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 
 export default function ScrollToTopButton() {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const toggleVisibility = () => {
     if (window.pageYOffset > 300) {

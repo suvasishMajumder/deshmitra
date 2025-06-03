@@ -392,16 +392,11 @@ function Footer() {
                         e.target.style.color = "#317bfc";
                       }
                     }}
-
-
-                    onMouseOut={(e:React.MouseEvent)=>{
-
-                        if(e.target instanceof HTMLElement){
-                            e.target.style.color = "#9ca3af";
-                        }
-
+                    onMouseOut={(e: React.MouseEvent) => {
+                      if (e.target instanceof HTMLElement) {
+                        e.target.style.color = "#9ca3af";
+                      }
                     }}
-
                   >
                     {link.name}
                   </Link>

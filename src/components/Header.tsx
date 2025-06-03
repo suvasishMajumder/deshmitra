@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaSearch, FaBars, FaTimes, FaChevronDown , FaShoppingBasket } from "react-icons/fa";
+import {
+  FaSearch,
+  FaBars,
+  FaTimes,
+  FaChevronDown,
+  FaShoppingBasket,
+} from "react-icons/fa";
 import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 
-
-const Header = () => {
+const Header:React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
@@ -15,28 +20,28 @@ const Header = () => {
   const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const catalogs = useSelector((state:RootState) => state.catalog.catalogs);
+  const catalogs = useSelector((state: RootState) => state.catalog.catalogs);
   // Update the navigation links to use /category instead of /category
-//   const navigation = [
-//     { name: "Home", path: "/" },
-//     { name: "Categories", path: "/category" }, // Changed from /category to /category
-//     { name: "About", path: "/about" },
-//     { name: "Contact", path: "/contact" },
-//     { name: "Testimonials", path: "/testimonials" },
-//   ];
+  //   const navigation = [
+  //     { name: "Home", path: "/" },
+  //     { name: "Categories", path: "/category" }, // Changed from /category to /category
+  //     { name: "About", path: "/about" },
+  //     { name: "Contact", path: "/contact" },
+  //     { name: "Testimonials", path: "/testimonials" },
+  //   ];
 
   // Rotating announcement text
-  const announcements:string[] = [
+  const announcements: string[] = [
     "Serving India's Basic Needs",
     "Spices | Rice | Sugar | Salt | Dry Fruits",
     "Premium quality products | Nationwide shipping available",
     "Quality-assured products | Custumoized solutions for businesses",
     "Explore our range of organic products | Available now",
     "Bulk orders available | Customer satisfaction guaranteed",
-    "Explore our wide range of products | Get a quote today!"
+    "Explore our wide range of products | Get a quote today!",
   ];
   const [currentAnnouncement, setCurrentAnnouncement] = useState<number>(0);
-  const [isAnimating , setIsAnimating] = useState<boolean>(false);
+  const [isAnimating, setIsAnimating] = useState<boolean>(false);
 
   // Handle announcement rotation
   useEffect(() => {
@@ -76,9 +81,8 @@ const Header = () => {
     setActiveDropdown(null);
   }, [location.pathname]);
 
-
   //React.FormEvent<HTMLFormElement>
-  const handleSearch = (e:React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/search-results?q=${encodeURIComponent(searchQuery.trim())}`);
@@ -94,16 +98,16 @@ const Header = () => {
     }
   };
 
-  const toggleDropdown = (index:string) => {
+  const toggleDropdown = (index: string) => {
     setActiveDropdown(activeDropdown === index ? null : index);
   };
 
-  const handleProductHover = (index:number) => {
+  const handleProductHover = (index: number) => {
     setHoveredProduct(index);
   };
 
   return (
-    <header className={`fixed-top ${isScrolled ? 'scrolled' : ''}`}>
+    <header className={`fixed-top ${isScrolled ? "scrolled" : ""}`}>
       {/* Top announcement bar */}
       <div className="announcement-bar py-2 text-center text-white">
         <div className="container">
@@ -123,7 +127,9 @@ const Header = () => {
                   {announcements.map((_, index) => (
                     <span
                       key={index}
-                      className={`indicator ${currentAnnouncement === index ? 'active' : ''}`}
+                      className={`indicator ${
+                        currentAnnouncement === index ? "active" : ""
+                      }`}
                       onClick={() => {
                         setIsAnimating(true);
                         setTimeout(() => {
@@ -142,241 +148,297 @@ const Header = () => {
 
       <div className="header-container">
         {/* Main navbar */}
-        <nav className={`navbar navbar-expand-lg ${isScrolled ? 'navbar-scrolled' : ''}`}>          <div className="container-fluid px-2 px-sm-3 px-md-4">
-          {/* Logo */}
-          <Link className="navbar-brand me-0 me-lg-4" to="/">
-            <motion.div
-              className="logo-container"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <img
-                src="/logo.webp"
-                alt="Akdenar Logo"
-                style={{ height: "70px", width: "70px" }}
-                className="brand-logo"
-                onError={(e) => {
-
-                  const target = e.target as HTMLImageElement | null;
-
-                  if(target){
-target.src = "/logo.webp";
-
-                  }
-
-                  
-                }}
-              />
-              <div className="brand-text">
-                <span className="brand-name">Akdenar</span>
-                <span className="brand-tagline">Premium Quality Products</span>
-              </div>
-            </motion.div>
-          </Link>
-
-          {/* Desktop Search Bar - Modified to have consistent width */}            <div className="search-container d-none d-lg-block flex-shrink-0 mx-2">
-            <form onSubmit={handleSearch}>
-              <div className={`search-input-wrapper ${searchFocused ? 'focused' : ''}`}>
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e:React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-                  placeholder="Search products..."
-                  className="search-input"
-                  onFocus={() => setSearchFocused(true)}
-                  onBlur={() => setSearchFocused(false)}
-                />
-                <motion.button
-                  type="submit"
-                  className="search-button"
-                >
-                  <FaSearch />
-                </motion.button>
-              </div>
-            </form>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="navbar-toggler"
-            type="button"
-            onClick={toggleMobileMenu}
-            aria-expanded={isMobileMenuOpen}
-            aria-label="Toggle navigation"
-          >
-            <AnimatePresence mode="wait">
+        <nav
+          className={`navbar navbar-expand-lg ${
+            isScrolled ? "navbar-scrolled" : ""
+          }`}
+        >
+          {" "}
+          <div className="container-fluid px-2 px-sm-3 px-md-4">
+            {/* Logo */}
+            <Link className="navbar-brand me-0 me-lg-4" to="/">
               <motion.div
-                key={isMobileMenuOpen ? 'close' : 'menu'}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
+                className="logo-container"
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
               >
-                {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
-              </motion.div>
-            </AnimatePresence>
-          </button>
+                <img
+                  src="/logo.webp"
+                  alt="Akdenar Logo"
+                  style={{ height: "70px", width: "70px" }}
+                  className="brand-logo"
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement | null;
 
-          {/* Desktop Menu */}            <div className="desktop-menu d-none d-lg-flex flex-grow-1 justify-content-end">
-            <ul className="navbar-nav ms-auto align-items-center flex-nowrap">
-              <li className="nav-item">
-                <Link
-                  className={`nav-link ${location.pathname === '/' ? 'active' : ''}`}
-                  to="/"
+                    if (target) {
+                      target.src = "/logo.webp";
+                    }
+                  }}
+                />
+                <div className="brand-text">
+                  <span className="brand-name">Akdenar</span>
+                  <span className="brand-tagline">
+                    Premium Quality Products
+                  </span>
+                </div>
+              </motion.div>
+            </Link>
+            {/* Desktop Search Bar - Modified to have consistent width */}{" "}
+            <div className="search-container d-none d-lg-block flex-shrink-0 mx-2">
+              <form onSubmit={handleSearch}>
+                <div
+                  className={`search-input-wrapper ${
+                    searchFocused ? "focused" : ""
+                  }`}
                 >
-                  Home
-                  {location.pathname === '/' && (
-                    <motion.div
-                      className="nav-indicator"
-                      layoutId="navIndicator"
-                    />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      setSearchQuery(e.target.value)
+                    }
+                    placeholder="Search products..."
+                    className="search-input"
+                    onFocus={() => setSearchFocused(true)}
+                    onBlur={() => setSearchFocused(false)}
+                  />
+                  <motion.button type="submit" className="search-button">
+                    <FaSearch />
+                  </motion.button>
+                </div>
+              </form>
+            </div>
+            {/* Mobile Menu Button */}
+            <button
+              className="navbar-toggler"
+              type="button"
+              onClick={toggleMobileMenu}
+              aria-expanded={isMobileMenuOpen}
+              aria-label="Toggle navigation"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={isMobileMenuOpen ? "close" : "menu"}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {isMobileMenuOpen ? (
+                    <FaTimes size={24} />
+                  ) : (
+                    <FaBars size={24} />
                   )}
-                </Link>
-              </li>
-              <li className="nav-item dropdown">
-                <Link style={{ textDecoration: "none" }} to={"/category"}>
-                  <div
-                    className={`nav-link dropdown-toggle ${catalogs.some(c => location.pathname.includes(`/category/${c.name.toLowerCase().replace(/\s/g, '-')}`)) ? 'active' : ''}`}
-                    onMouseEnter={() => setActiveDropdown('products')}
-                    onMouseLeave={() => {
-                      // Use setTimeout to prevent immediate closing when moving to dropdown content
-                      setTimeout(() => {
-                        if (!document.querySelector('.products-dropdown:hover')) {
-                          setActiveDropdown(null);
-                        }
-                      }, 100);
-                    }}
+                </motion.div>
+              </AnimatePresence>
+            </button>
+            {/* Desktop Menu */}{" "}
+            <div className="desktop-menu d-none d-lg-flex flex-grow-1 justify-content-end">
+              <ul className="navbar-nav ms-auto align-items-center flex-nowrap">
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${
+                      location.pathname === "/" ? "active" : ""
+                    }`}
+                    to="/"
                   >
-                    Products
-                    {catalogs.some(c => location.pathname.includes(`/category/${c.name.toLowerCase().replace(/\s/g, '-')}`)) && (
+                    Home
+                    {location.pathname === "/" && (
                       <motion.div
                         className="nav-indicator"
                         layoutId="navIndicator"
                       />
                     )}
-                  </div>
-                </Link>
-                <AnimatePresence>
-                  {activeDropdown === 'products' && (
-                    <motion.div
-                      className="dropdown-menu products-dropdown show"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 20 }}
-                      transition={{ duration: 0.2 }}
-                      onMouseEnter={() => setActiveDropdown('products')}
-                      onMouseLeave={() => setActiveDropdown(null)}
+                  </Link>
+                </li>
+                <li className="nav-item dropdown">
+                  <Link style={{ textDecoration: "none" }} to={"/category"}>
+                    <div
+                      className={`nav-link dropdown-toggle ${
+                        catalogs.some((c) =>
+                          location.pathname.includes(
+                            `/category/${c.name
+                              .toLowerCase()
+                              .replace(/\s/g, "-")}`
+                          )
+                        )
+                          ? "active"
+                          : ""
+                      }`}
+                      onMouseEnter={() => setActiveDropdown("products")}
+                      onMouseLeave={() => {
+                        // Use setTimeout to prevent immediate closing when moving to dropdown content
+                        setTimeout(() => {
+                          if (
+                            !document.querySelector(".products-dropdown:hover")
+                          ) {
+                            setActiveDropdown(null);
+                          }
+                        }, 100);
+                      }}
                     >
-                      <div className="row">
-                        <div className="col-5 product-list">
-                          {catalogs.map((category, index) => (
-                            <Link
-                              key={index}
-                              className={`dropdown-item ${hoveredProduct === index ? 'active' : ''}`}
-                              to={`/category/${category.name.toLowerCase().replace(/\s/g, '-')}`}
-                              onMouseEnter={() => handleProductHover(index)}
-                            >
-                              <div className="d-flex align-items-center">
-                                <span
-                                  className="dropdown-color-indicator me-2"
-                                  style={{ backgroundColor: category.colors[0] }}
-                                ></span>
-                                {category.name}
-                              </div>
-                            </Link>
-                          ))}
+                      Products
+                      {catalogs.some((c) =>
+                        location.pathname.includes(
+                          `/category/${c.name
+                            .toLowerCase()
+                            .replace(/\s/g, "-")}`
+                        )
+                      ) && (
+                        <motion.div
+                          className="nav-indicator"
+                          layoutId="navIndicator"
+                        />
+                      )}
+                    </div>
+                  </Link>
+                  <AnimatePresence>
+                    {activeDropdown === "products" && (
+                      <motion.div
+                        className="dropdown-menu products-dropdown show"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        transition={{ duration: 0.2 }}
+                        onMouseEnter={() => setActiveDropdown("products")}
+                        onMouseLeave={() => setActiveDropdown(null)}
+                      >
+                        <div className="row">
+                          <div className="col-5 product-list">
+                            {catalogs.map((category, index) => (
+                              <Link
+                                key={index}
+                                className={`dropdown-item ${
+                                  hoveredProduct === index ? "active" : ""
+                                }`}
+                                to={`/category/${category.name
+                                  .toLowerCase()
+                                  .replace(/\s/g, "-")}`}
+                                onMouseEnter={() => handleProductHover(index)}
+                              >
+                                <div className="d-flex align-items-center">
+                                  <span
+                                    className="dropdown-color-indicator me-2"
+                                    style={{
+                                      backgroundColor: category.colors[0],
+                                    }}
+                                  ></span>
+                                  {category.name}
+                                </div>
+                              </Link>
+                            ))}
+                          </div>
+                          <div className="col-7 product-preview">
+                            {hoveredProduct !== null && (
+                              <motion.div
+                                className="preview-content"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                              >
+                                <div className="preview-image-container mb-3">
+                                  <img
+                                    src={catalogs[hoveredProduct].image}
+                                    alt={catalogs[hoveredProduct].name}
+                                    className="preview-image"
+                                  />
+                                </div>
+                                <h6 className="preview-title">
+                                  {catalogs[hoveredProduct].name}
+                                </h6>
+                                <p className="preview-subtitle mb-2 small text-muted">
+                                  {catalogs[hoveredProduct].categories.length}{" "}
+                                  varieties available
+                                </p>
+                                <div className="categories-preview">
+                                  {catalogs[hoveredProduct].categories
+                                    .slice(0, 3)
+                                    .map((category, idx) => (
+                                      <span
+                                        key={idx}
+                                        className="category-badge me-1"
+                                      >
+                                        {category.name}
+                                      </span>
+                                    ))}
+                                  {catalogs[hoveredProduct].categories.length >
+                                    3 && (
+                                    <span className="category-badge more">
+                                      +
+                                      {catalogs[hoveredProduct].categories
+                                        .length - 3}
+                                    </span>
+                                  )}
+                                </div>
+                              </motion.div>
+                            )}
+                          </div>
                         </div>
-                        <div className="col-7 product-preview">
-                          {hoveredProduct !== null && (
-                            <motion.div
-                              className="preview-content"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.2 }}
-                            >
-                              <div className="preview-image-container mb-3">
-                                <img
-                                  src={catalogs[hoveredProduct].image}
-                                  alt={catalogs[hoveredProduct].name}
-                                  className="preview-image"
-                                />
-                              </div>
-                              <h6 className="preview-title">{catalogs[hoveredProduct].name}</h6>
-                              <p className="preview-subtitle mb-2 small text-muted">
-                                {catalogs[hoveredProduct].categories.length} varieties available
-                              </p>
-                              <div className="categories-preview">
-                                {catalogs[hoveredProduct].categories.slice(0, 3).map((category, idx) => (
-                                  <span key={idx} className="category-badge me-1">
-                                    {category.name}
-                                  </span>
-                                ))}
-                                {catalogs[hoveredProduct].categories.length > 3 && (
-                                  <span className="category-badge more">+{catalogs[hoveredProduct].categories.length - 3}</span>
-                                )}
-                              </div>
-                            </motion.div>
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className={`nav-link ${location.pathname === '/about' ? 'active' : ''}`}
-                  to="/about"
-                >
-                  About
-                  {location.pathname === '/about' && (
-                    <motion.div
-                      className="nav-indicator"
-                      layoutId="navIndicator"
-                    />
-                  )}
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className={`nav-link ${location.pathname === '/testimonials' ? 'active' : ''}`}
-                  to="/testimonials"
-                >
-                  Testimonials
-                  {location.pathname === '/testimonials' && (
-                    <motion.div
-                      className="nav-indicator"
-                      layoutId="navIndicator"
-                    />
-                  )}
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link
-                  className={`nav-link ${location.pathname === '/contact' ? 'active' : ''}`}
-                  to="/contact"
-                >
-                  Contact
-                  {location.pathname === '/contact' && (
-                    <motion.div
-                      className="nav-indicator"
-                      layoutId="navIndicator"
-                    />
-                  )}
-                </Link>
-              </li>                <li className="nav-item ms-2 nav-cta-item">
-                <Link to="/contact" className="btn btn-primary nav-cta-btn">
-                  <span className="d-flex align-items-center">
-                    <FaShoppingBasket className="me-md-2 me-lg-1 me-xl-2" />
-                    <span className="cta-text">Get Quote</span>
-                  </span>
-                </Link>
-              </li>
-            </ul>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${
+                      location.pathname === "/about" ? "active" : ""
+                    }`}
+                    to="/about"
+                  >
+                    About
+                    {location.pathname === "/about" && (
+                      <motion.div
+                        className="nav-indicator"
+                        layoutId="navIndicator"
+                      />
+                    )}
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${
+                      location.pathname === "/testimonials" ? "active" : ""
+                    }`}
+                    to="/testimonials"
+                  >
+                    Testimonials
+                    {location.pathname === "/testimonials" && (
+                      <motion.div
+                        className="nav-indicator"
+                        layoutId="navIndicator"
+                      />
+                    )}
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link
+                    className={`nav-link ${
+                      location.pathname === "/contact" ? "active" : ""
+                    }`}
+                    to="/contact"
+                  >
+                    Contact
+                    {location.pathname === "/contact" && (
+                      <motion.div
+                        className="nav-indicator"
+                        layoutId="navIndicator"
+                      />
+                    )}
+                  </Link>
+                </li>{" "}
+                <li className="nav-item ms-2 nav-cta-item">
+                  <Link to="/contact" className="btn btn-primary nav-cta-btn">
+                    <span className="d-flex align-items-center">
+                      <FaShoppingBasket className="me-md-2 me-lg-1 me-xl-2" />
+                      <span className="cta-text">Get Quote</span>
+                    </span>
+                  </Link>
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
         </nav>
 
         {/* Mobile Menu */}
@@ -385,7 +447,7 @@ target.src = "/logo.webp";
             <motion.div
               className="mobile-menu-container"
               initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
+              animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
@@ -413,17 +475,29 @@ target.src = "/logo.webp";
 
                 {/* Mobile Nav Links */}
                 <ul className="mobile-nav-links">
-                  <li className={location.pathname === '/' ? 'active' : ''}>
+                  <li className={location.pathname === "/" ? "active" : ""}>
                     <Link to="/" className="mobile-nav-link">
                       <span className="mobile-nav-icon">🏠</span>
                       Home
                     </Link>
                   </li>
 
-                  <li className={catalogs.some(c => location.pathname.includes(`/category/${c.name.toLowerCase().replace(/\s/g, '-')}`)) ? 'active' : ''}>
+                  <li
+                    className={
+                      catalogs.some((c) =>
+                        location.pathname.includes(
+                          `/category/${c.name
+                            .toLowerCase()
+                            .replace(/\s/g, "-")}`
+                        )
+                      )
+                        ? "active"
+                        : ""
+                    }
+                  >
                     <div
                       className="mobile-nav-link with-dropdown"
-                      onClick={() => toggleDropdown('products')}
+                      onClick={() => toggleDropdown("products")}
                     >
                       <Link style={{ textDecoration: "none" }} to={"/category"}>
                         <div className="d-flex align-items-center">
@@ -432,7 +506,9 @@ target.src = "/logo.webp";
                         </div>
                       </Link>
                       <motion.div
-                        animate={{ rotate: activeDropdown === 'products' ? 180 : 0 }}
+                        animate={{
+                          rotate: activeDropdown === "products" ? 180 : 0,
+                        }}
                         transition={{ duration: 0.2 }}
                       >
                         <FaChevronDown size={14} />
@@ -440,11 +516,11 @@ target.src = "/logo.webp";
                     </div>
 
                     <AnimatePresence>
-                      {activeDropdown === 'products' && (
+                      {activeDropdown === "products" && (
                         <motion.ul
                           className="mobile-dropdown-menu"
                           initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: 'auto' }}
+                          animate={{ opacity: 1, height: "auto" }}
                           exit={{ opacity: 0, height: 0 }}
                           transition={{ duration: 0.3 }}
                         >
@@ -456,7 +532,9 @@ target.src = "/logo.webp";
                               transition={{ delay: index * 0.05 }}
                             >
                               <Link
-                                to={`/category/${category.name.toLowerCase().replace(/\s/g, '-')}`}
+                                to={`/category/${category.name
+                                  .toLowerCase()
+                                  .replace(/\s/g, "-")}`}
                                 className="mobile-dropdown-item"
                               >
                                 <div className="d-flex align-items-center">
@@ -477,21 +555,29 @@ target.src = "/logo.webp";
                     </AnimatePresence>
                   </li>
 
-                  <li className={location.pathname === '/about' ? 'active' : ''}>
+                  <li
+                    className={location.pathname === "/about" ? "active" : ""}
+                  >
                     <Link to="/about" className="mobile-nav-link">
                       <span className="mobile-nav-icon">ℹ️</span>
                       About
                     </Link>
                   </li>
 
-                  <li className={location.pathname === '/testimonials' ? 'active' : ''}>
+                  <li
+                    className={
+                      location.pathname === "/testimonials" ? "active" : ""
+                    }
+                  >
                     <Link to="/testimonials" className="mobile-nav-link">
                       <span className="mobile-nav-icon">⭐</span>
                       Testimonials
                     </Link>
                   </li>
 
-                  <li className={location.pathname === '/contact' ? 'active' : ''}>
+                  <li
+                    className={location.pathname === "/contact" ? "active" : ""}
+                  >
                     <Link to="/contact" className="mobile-nav-link">
                       <span className="mobile-nav-icon">📞</span>
                       Contact
@@ -500,7 +586,10 @@ target.src = "/logo.webp";
                 </ul>
 
                 <div className="text-center mt-4">
-                  <Link to="/contact" className="btn btn-primary mobile-cta-btn">
+                  <Link
+                    to="/contact"
+                    className="btn btn-primary mobile-cta-btn"
+                  >
                     <FaShoppingBasket className="me-2" />
                     Get Quote
                   </Link>

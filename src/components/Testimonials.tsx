@@ -1,20 +1,24 @@
-import React from "react";
+
 import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import 'bootstrap';
-import "swiper/css/pagination";
-import "swiper/css/effect-fade";
+// import "swiper/css";
+// import "swiper/css/navigation";
+// import 'bootstrap';
+// import "swiper/css/pagination";
+// import "swiper/css/effect-fade";
 import {
   FaArrowRight,
   FaStar,
 } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import type { TTestimonials } from "../types/types";
 
 
-const testimonials = [
+
+
+
+const testimonials: TTestimonials[] = [
   { quote: "Their products are my family's favorite - everything is premium quality!", image: "https://picsum.photos/120/120?random=1", name: "Dipanjana Nandi", location: "Bengaluru", rating: 5 },
   { quote: "Akdenar makes shopping so convenient with fast delivery and excellent service!", image: "https://picsum.photos/120/120?random=2", name: "Shalini Bardhan", location: "Kolkata", rating: 5 },
   { quote: "Absolutely love their selection! Everything arrives in perfect condition.", image: "https://picsum.photos/120/120?random=3", name: "Rukma Dakshy", location: "Kolkata", rating: 4 },
@@ -153,7 +157,19 @@ export default function Testimonials() {
                           src={testimonial.image}
                           alt={testimonial.name}
                           className="w-100 h-100 object-fit-cover"
-                          onError={(e) => (e.target.src = "https://via.placeholder.com/50?text=User")}
+                          onError={(e) => 
+                            
+                            {
+
+                              const target = e.target as HTMLImageElement | null;
+                              if(target){
+
+                                target.src = "https://via.placeholder.com/50?text=User"
+
+                              }
+
+                            }}
+
                         />
                       </div>
                       <div>

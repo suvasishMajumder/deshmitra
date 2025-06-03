@@ -29,7 +29,7 @@ function SupplyChainDiagram() {
     },
   ];
 
-  const cities = [
+  const cities:string[] = [
     "Chennai",
     "Banglore",
     "Pune",

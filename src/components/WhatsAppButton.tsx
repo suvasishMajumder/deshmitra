@@ -42,10 +42,10 @@ const WhatsAppLink = styled.a`
   }
 `;
 
-const WhatsAppButton = () => {
-    const message = "Hello! I'm interested in your products."; // You can customize this message
-    const phoneNumber = "+919220852922"; // Replace with your actual WhatsApp number
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+const WhatsAppButton:React.FC = () => {
+    const message:string = "Hello! I'm interested in your products."; // You can customize this message
+    const phoneNumber:string = "+919220852922"; // Replace with your actual WhatsApp number
+    const whatsappUrl:string = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
     const ChatText = styled.div`
       background-color: #25D366;
