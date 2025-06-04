@@ -5,7 +5,7 @@ import { FaArrowRight, FaStar } from 'react-icons/fa6';
 import { debounce } from 'lodash';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../redux/store';
-import type { Catalog , Category } from '../types/types';
+import type { Catalog  } from '../types/types';
 
 const CategoriesPage = () => {
   const [activeCategory, setActiveCategory] = useState<string>('all');
@@ -13,7 +13,7 @@ const CategoriesPage = () => {
   const [filteredCategories, setFilteredCategories] = useState<Catalog[]>([]);
   const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 //   const [isSearchFocused, setIsSearchFocused] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
  const catalogs = useSelector((state:RootState) => state.catalog.catalogs);
   // Get unique category types - memoized to prevent recalculation
 //   const categoryTypes = useMemo(() => {
@@ -58,16 +58,16 @@ const CategoriesPage = () => {
     debouncedFilter(category, term);
   }, [activeCategory, debouncedFilter, searchTerm]);
 
-  const handleSearch = useCallback((e) => {
-    const term = e.target.value;
-    setSearchTerm(term);
-    filterCategories(activeCategory, term);
-  }, [activeCategory, filterCategories]);
+  // const handleSearch = useCallback((e) => {
+  //   const term = e.target.value;
+  //   setSearchTerm(term);
+  //   filterCategories(activeCategory, term);
+  // }, [activeCategory, filterCategories]);
 
-  const clearSearch = () => {
-    setSearchTerm('');
-    filterCategories(activeCategory, '');
-  };
+  // const clearSearch = () => {
+  //   setSearchTerm('');
+  //   filterCategories(activeCategory, '');
+  // };
 
   useEffect(() => {
     // Force scroll to top when component mounts

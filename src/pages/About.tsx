@@ -1,6 +1,10 @@
 import { useEffect } from 'react';
 import { motion } from "framer-motion";
 import { FaLeaf, FaCheck, FaUsers, FaGlobe, FaHeart } from "react-icons/fa6";
+import type {TValues} from '../types/types'
+
+
+
 
 const About = () => {
   useEffect(() => {
@@ -15,7 +19,7 @@ const About = () => {
     };
   }, []);
 
-  const values = [
+  const values:TValues[] = [
     {
       icon: FaLeaf,
       title: "Quality First",
@@ -42,32 +46,32 @@ const About = () => {
     }
   ];
 
-//   const teamMembers = [
-//     {
-//       name: "Rajesh Kumar",
-//       position: "Founder & CEO",
-//       bio: "With over 20 years of experience in the agricultural sector, Rajesh founded Akdenar with a vision to bridge the gap between farmers and consumers.",
-//       image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-//     },
-//     {
-//       name: "Priya Sharma",
-//       position: "Chief Operations Officer",
-//       bio: "Priya oversees the day-to-day operations, ensuring that our supply chain runs efficiently and that quality is maintained at every step.",
-//       image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-//     },
-//     {
-//       name: "Amit Patel",
-//       position: "Head of Procurement",
-//       bio: "Amit works directly with farmers and suppliers to source the highest quality products while ensuring fair trade practices.",
-//       image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-//     },
-//     {
-//       name: "Sanjana Reddy",
-//       position: "Quality Assurance Manager",
-//       bio: "Sanjana leads our quality control team, implementing rigorous testing procedures to ensure only the best products reach our customers.",
-//       image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-//     }
-//   ];
+  // const teamMembers:TTeamMembers[] = [
+  //   {
+  //     name: "Rajesh Kumar",
+  //     position: "Founder & CEO",
+  //     bio: "With over 20 years of experience in the agricultural sector, Rajesh founded Akdenar with a vision to bridge the gap between farmers and consumers.",
+  //     image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+  //   },
+  //   {
+  //     name: "Priya Sharma",
+  //     position: "Chief Operations Officer",
+  //     bio: "Priya oversees the day-to-day operations, ensuring that our supply chain runs efficiently and that quality is maintained at every step.",
+  //     image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+  //   },
+  //   {
+  //     name: "Amit Patel",
+  //     position: "Head of Procurement",
+  //     bio: "Amit works directly with farmers and suppliers to source the highest quality products while ensuring fair trade practices.",
+  //     image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+  //   },
+  //   {
+  //     name: "Sanjana Reddy",
+  //     position: "Quality Assurance Manager",
+  //     bio: "Sanjana leads our quality control team, implementing rigorous testing procedures to ensure only the best products reach our customers.",
+  //     image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+  //   }
+  // ];
 
   return (
     <div className="about-page-container">

@@ -163,7 +163,7 @@ const Contact = () => {
                       {info.title}
                     </motion.h4>{" "}
                     {info.details.map((detail, idx) => {
-                      let linkElement = detail;
+                      let linkElement:React.ReactNode = detail;
 
                       // Handle each case appropriately
                       if (info.title === "Email Address") {

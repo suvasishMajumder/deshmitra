@@ -91,10 +91,10 @@ const [formData, setFormData] = useState<IFormData>({
     {/* needs clarity : from where this process has come. Isme security vulnerablity aa sakta hai. Unexpected bug aane ka 
         chance bhi hai */}
     try {
-      const post = await axios.post(`${process.env.VITE_SERVER_URL}/api/v1/send`, formData, {
+      const post = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/send`, formData, {
         headers: {
           "Content-Type": "application/json",
-          "api-key": process.env.VITE_API_KEY
+          "api-key": import.meta.env.VITE_API_KEY
         },
       });
 
