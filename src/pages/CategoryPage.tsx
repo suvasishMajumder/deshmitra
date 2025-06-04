@@ -13,7 +13,7 @@ type RouteParams = {
 };
 
 export default function CategoryPage() {
-  const catalogRed = useSelector((state: RootState) => state.catalog.catalogs);
+  const catalogs = useSelector((state: RootState) => state.catalog.catalogs);
   const { productName } = useParams<RouteParams>();
 
   //Added newly
@@ -34,7 +34,7 @@ export default function CategoryPage() {
 
 
   //Isme humlog aise ek array ko map karrahe jiska har ek element Catalog type ka hai
-  const product: Catalog | undefined = catalogRed.find(
+  const product: Catalog | undefined = catalogs.find(
     (item) => item.name.toLowerCase() === decodedName.toLowerCase()
   );
 

@@ -9,7 +9,7 @@ import type { RootState } from "../redux/store";
 export default function FeaturedCategories() {
 
      {/* Is state ka type ekbar check kar lo  */}
-  const catalogRed= useSelector((state:RootState) => state.catalog.catalogs);
+  const catalogs= useSelector((state:RootState) => state.catalog.catalogs);
   const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
 
   return (
@@ -56,7 +56,7 @@ export default function FeaturedCategories() {
         <div className="row g-4 justify-content-center">
 
        
-          {catalogRed?.map((category, index) => (
+          {catalogs?.map((category, index) => (
             <div key={index} className="col-lg-4 col-md-6 col-sm-10" style={{ maxWidth: "380px" }}>
               <motion.div
                 initial={{ opacity: 0, y: 30 }}

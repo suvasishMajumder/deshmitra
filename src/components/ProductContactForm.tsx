@@ -14,7 +14,9 @@ type ProductContactFormProps = {
 }
 
 
+
 const ProductContactForm:React.FC<ProductContactFormProps> = ({ productName = "" }) => {
+
 
     
     const [formData, setFormData] = useState<IFormDataProductContactForm>({
@@ -100,7 +102,7 @@ const ProductContactForm:React.FC<ProductContactFormProps> = ({ productName = ""
         try {
             console.log("Sending email with data:", formData);
 
-            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/v1/send`,
+            const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/send`,
                 {
                     name: formData.fname,
                     phone: formData.phone,
@@ -112,7 +114,7 @@ const ProductContactForm:React.FC<ProductContactFormProps> = ({ productName = ""
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        "api-key": process.env.REACT_APP_API_KEY
+                        "api-key": import.meta.env.VITE_API_KEY
                     },
                 }
             );

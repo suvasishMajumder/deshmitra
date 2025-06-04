@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import type { RootState } from "../redux/store";
 
 export default function SearchResults() {
-  const catalogRed = useSelector((state: RootState) => state.catalog.catalogs);
+  const catalogs = useSelector((state: RootState) => state.catalog.catalogs);
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q") || "";
   const navigate = useNavigate();
@@ -25,8 +25,8 @@ export default function SearchResults() {
       .split(" ")
       .filter((term) => term.length > 2);
 
-    // Search through all catalogRed with weighted scoring
-    for (const product of catalogRed) {
+    // Search through all catalogs with weighted scoring
+    for (const product of catalogs) {
       // Check if product name matches
       const productName = product.name.toLowerCase();
       const productNameMatches = searchTerms.filter((term) =>
