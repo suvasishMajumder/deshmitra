@@ -22,7 +22,9 @@ export default function Home() {
 
   useEffect(() => {
     if (animate) {
-      let progressInterval = setInterval(() => {
+
+      //let has been converted to const
+      const progressInterval:number = setInterval(() => {
         setProgress(prev => {
           const newProgress = prev + (100 - prev) * 0.1; // Increased speed slightly
           return newProgress > 99 ? 99 : newProgress;
@@ -94,7 +96,14 @@ export default function Home() {
                     className="img-fluid mb-4"
                     style={{ maxHeight: "100px", width: "auto" }}
                     onError={(e) => {
-                      e.target.src = "https://via.placeholder.com/200x80?text=Akdenar";
+
+                      const target = e.target as HTMLImageElement | null;
+                      if(target){
+
+                      target.src = "https://via.placeholder.com/200x80?text=Akdenar";
+
+                      }
+
                     }}
                   />
                 </motion.div>
@@ -132,8 +141,8 @@ export default function Home() {
                         background: "linear-gradient(to right, #3a7bfc, #6f42c1, #e83e8c)"
                       }}
                       aria-valuenow={progress}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
+                      aria-valuemin={0}
+                      aria-valuemax={100}
                     ></div>
                   </div>
                   <p className="text-center mt-2 small text-muted">

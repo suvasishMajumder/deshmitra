@@ -1,18 +1,20 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import  { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { FaArrowRight, FaStar } from 'react-icons/fa6';
 import { debounce } from 'lodash';
 import { useSelector } from 'react-redux';
+import type { RootState } from '../redux/store';
+import type { Catalog , Category } from '../types/types';
 
 const CategoriesPage = () => {
-  const [activeCategory, setActiveCategory] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredCategories, setFilteredCategories] = useState([]);
-  const [hoveredItem, setHoveredItem] = useState(null);
+  const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [filteredCategories, setFilteredCategories] = useState<Catalog[]>([]);
+  const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 //   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
- const catalogs= useSelector((state:RootState) => state.catalog.catalogs);
+ const catalogs = useSelector((state:RootState) => state.catalog.catalogs);
   // Get unique category types - memoized to prevent recalculation
 //   const categoryTypes = useMemo(() => {
 //     return ['all', ...new Set(catalogs.map(cat => cat.name.toLowerCase()))];
@@ -20,11 +22,11 @@ const CategoriesPage = () => {
 
   // Debounced filtering to prevent lag
   const debouncedFilter = useCallback(
-    debounce((category, term) => {
+    debounce((category:string, term:string) => {
       setIsLoading(true);
 
       setTimeout(() => {
-        let filtered = [...catalogs];
+        let filtered:Catalog[] = [...catalogs];
 
         // Filter by search term
         if (term) {
@@ -49,7 +51,7 @@ const CategoriesPage = () => {
     []
   );
 
-  const filterCategories = useCallback((category, term = searchTerm) => {
+  const filterCategories = useCallback((category:string, term:string = searchTerm) => {
     if (category !== activeCategory) {
       setActiveCategory(category);
     }
@@ -224,7 +226,19 @@ const CategoriesPage = () => {
                   src="/no-results.svg"
                   alt="No results found"
                   className="no-results-image"
-                  onError={(e) => e.target.src = "https://via.placeholder.com/200x200?text=No+Results"}
+                  onError={(e) => 
+                  {
+
+                    const target = e.target as HTMLImageElement | null;
+
+                    if(target){
+
+                      target.src = "https://via.placeholder.com/200x200?text=No+Results"
+                    }
+
+                  }
+                }
+                    // e.target.src = "https://via.placeholder.com/200x200?text=No+Results"}
                 />
                 <h3 className="no-results-title">No categories found</h3>
                 <p className="no-results-message">We couldn't find any categories matching your search criteria.</p>

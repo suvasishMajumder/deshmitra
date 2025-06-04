@@ -116,3 +116,74 @@ productName:boolean;
 message:boolean;
 
 }
+
+
+
+export type TTestimonials = {
+
+  quote:string;
+  image:string;
+  name:string;
+  location:string;
+  rating:number;
+
+}
+
+
+
+//Redux related
+
+export interface SubItem {
+  name: string;
+  image: string;
+  description: string;
+  priceRange: string;
+}
+
+export interface Category {
+  name: string;
+  description: string;
+  image: string;
+  subItems: SubItem[];
+}
+
+export interface Catalog {
+  name: string;
+  image: string;
+  colors: string[];
+  categories: Category[];
+}
+
+
+export type TContactInfo = {
+  icon: IconType;
+  title: string;
+  details: string[];
+  color: string;
+};
+
+
+/*
+ {
+      icon: FaFacebookF,
+      link: "https://www.facebook.com/share/1AmuCTSfNp",
+      color: "#1877F2",
+    }
+*/
+
+export type TSocialMedia = {
+icon:IconType;
+link:string;
+color:string;
+}
+
+
+
+export interface ITestimonials {
+  quote: string;
+  image: string;
+  name: string;
+  location: string;
+  rating: number;
+  role: string;
+}

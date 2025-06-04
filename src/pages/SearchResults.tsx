@@ -4,12 +4,12 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import NotFound from "./NotFound";
 import { FaArrowLeft } from "react-icons/fa6";
 import { motion } from "framer-motion";
-
+import type { RootState } from "../redux/store";
 
 export default function SearchResults() {
-  const catalogRed= useSelector((state) => state.catalog.catalogs);
+  const catalogRed = useSelector((state: RootState) => state.catalog.catalogs);
   const [searchParams] = useSearchParams();
-  const query = searchParams.get('q') || '';
+  const query = searchParams.get("q") || "";
   const navigate = useNavigate();
 
   // If no search query, display not found
@@ -20,19 +20,26 @@ export default function SearchResults() {
   // Enhanced search function with weighted results and category-specific boosting
   const getSearchResults = () => {
     let results = [];
-    const searchTerms = query.toLowerCase().split(' ').filter(term => term.length > 2);
+    const searchTerms = query
+      .toLowerCase()
+      .split(" ")
+      .filter((term) => term.length > 2);
 
     // Search through all catalogRed with weighted scoring
     for (const product of catalogRed) {
       // Check if product name matches
       const productName = product.name.toLowerCase();
-      const productNameMatches = searchTerms.filter(term => productName.includes(term));
+      const productNameMatches = searchTerms.filter((term) =>
+        productName.includes(term)
+      );
       const productExactMatch = productName === query.toLowerCase();
 
       // Search through categories
       for (const category of product.categories) {
         const categoryName = category.name.toLowerCase();
-        const categoryMatches = searchTerms.filter(term => categoryName.includes(term));
+        const categoryMatches = searchTerms.filter((term) =>
+          categoryName.includes(term)
+        );
         const categoryExactMatch = categoryName === query.toLowerCase();
 
         // Search through subcategories (subItems)
@@ -41,16 +48,24 @@ export default function SearchResults() {
           const subItemName = subItem.name.toLowerCase();
           const subItemDescription = subItem.description.toLowerCase();
 
-          const subItemNameMatches = searchTerms.filter(term => subItemName.includes(term));
-          const subItemDescMatches = searchTerms.filter(term => subItemDescription.includes(term));
+          const subItemNameMatches = searchTerms.filter((term) =>
+            subItemName.includes(term)
+          );
+          const subItemDescMatches = searchTerms.filter((term) =>
+            subItemDescription.includes(term)
+          );
           const subItemExactMatch = subItemName === query.toLowerCase();
 
           // Skip if there's absolutely no match anywhere
-          if (productNameMatches.length === 0 &&
+          if (
+            productNameMatches.length === 0 &&
             categoryMatches.length === 0 &&
             subItemNameMatches.length === 0 &&
             subItemDescMatches.length === 0 &&
-            !productExactMatch && !categoryExactMatch && !subItemExactMatch) {
+            !productExactMatch &&
+            !categoryExactMatch &&
+            !subItemExactMatch
+          ) {
             continue;
           }
 
@@ -69,11 +84,17 @@ export default function SearchResults() {
           score += subItemDescMatches.length * 10;
 
           // Boost specific categories when they're relevant to the search
-          if (query.toLowerCase().includes("oil") && product.name.toLowerCase().includes("oil")) {
+          if (
+            query.toLowerCase().includes("oil") &&
+            product.name.toLowerCase().includes("oil")
+          ) {
             score += 100; // Heavily boost oil products when searching for oil
           }
 
-          if (query.toLowerCase().includes("salt") && product.name.toLowerCase().includes("salt")) {
+          if (
+            query.toLowerCase().includes("salt") &&
+            product.name.toLowerCase().includes("salt")
+          ) {
             score += 100; // Heavily boost salt products when searching for salt
           }
 
@@ -88,8 +109,8 @@ export default function SearchResults() {
               category,
               subItem,
               index: i,
-              type: 'product',
-              score
+              type: "product",
+              score,
             });
           }
         }
@@ -134,14 +155,16 @@ export default function SearchResults() {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="text-muted mb-4"
         >
-          Found {results.length} result{results.length !== 1 ? 's' : ''}
+          Found {results.length} result{results.length !== 1 ? "s" : ""}
         </motion.p>
 
         <div className="row g-4">
           {results.map((result, idx) => {
             const { product, category, subItem, index, type, score } = result;
-            const productSlug = product.name.toLowerCase().replace(/\s/g, '-');
-            const categorySlug = category.name.toLowerCase().replace(/\s/g, '-');
+            const productSlug = product.name.toLowerCase().replace(/\s/g, "-");
+            const categorySlug = category.name
+              .toLowerCase()
+              .replace(/\s/g, "-");
 
             return (
               <motion.div
@@ -152,9 +175,10 @@ export default function SearchResults() {
                 className="col-lg-4 col-md-6"
               >
                 <Link
-                  to={type === 'product'
-                    ? `/category/${productSlug}/${categorySlug}/${index}`
-                    : `/category/${productSlug}`
+                  to={
+                    type === "product"
+                      ? `/category/${productSlug}/${categorySlug}/${index}`
+                      : `/category/${productSlug}`
                   }
                   className="text-decoration-none"
                 >
@@ -165,11 +189,21 @@ export default function SearchResults() {
                         alt={subItem.name}
                         className="card-img-top"
                         style={{ height: "200px", objectFit: "cover" }}
-                        onError={(e) => (e.target.src = "https://via.placeholder.com/200x200?text=Product")}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement | null;
+                          if (target) {
+                            target.src =
+                              "https://via.placeholder.com/200x200?text=Product";
+                          }
+                        }}
                       />
                       <div className="position-absolute top-0 end-0 m-2">
-                        <span className={`badge ${type === 'product' ? 'bg-primary' : 'bg-secondary'}`}>
-                          {type === 'product' ? 'Product' : 'Category'}
+                        <span
+                          className={`badge ${
+                            type === "product" ? "bg-primary" : "bg-secondary"
+                          }`}
+                        >
+                          {type === "product" ? "Product" : "Category"}
                         </span>
                       </div>
                       {score > 75 && (
@@ -187,8 +221,12 @@ export default function SearchResults() {
                         {subItem.description.substring(0, 80)}...
                       </p>
                       <div className="d-flex justify-content-between align-items-center mt-3">
-                        <span className="text-primary fw-bold">{subItem.priceRange}</span>
-                        <span className="btn btn-sm btn-outline-primary rounded-pill">View Details</span>
+                        <span className="text-primary fw-bold">
+                          {subItem.priceRange}
+                        </span>
+                        <span className="btn btn-sm btn-outline-primary rounded-pill">
+                          View Details
+                        </span>
                       </div>
                     </div>
                   </div>
