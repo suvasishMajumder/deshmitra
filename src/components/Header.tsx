@@ -42,7 +42,7 @@ const Header:React.FC = () => {
   ];
   const [currentAnnouncement, setCurrentAnnouncement] = useState<number>(0);
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
-  console.log(isAnimating)
+ 
 
   // Handle announcement rotation
   useEffect(() => {

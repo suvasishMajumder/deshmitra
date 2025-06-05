@@ -42,7 +42,7 @@ const carouselItems: THeroCarouselItem[] = [
 
 export default function HeroCarousel() {
   return (
-    <div className="relative mt-[150px] overflow-hidden rounded-lg shadow-[0_15px_40px_rgba(0,0,0,0.15)]">
+    <div className="relative mx-20 mt-[200px] overflow-hidden rounded-3xl shadow-[0_15px_40px_rgba(0,0,0,0.15)]">
       <Swiper
         modules={[EffectFade, Autoplay, Navigation, Pagination]}
         effect="fade"

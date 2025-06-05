@@ -10,7 +10,7 @@ export default function FeaturedCategories() {
   const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
 
   return (
-    <section className="py-5 my-4 relative overflow-hidden">
+    <section className="mt-20 py-5 my-4 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 z-[-1]"></div>
 
       <div className="container mx-auto px-4">
@@ -46,7 +46,7 @@ export default function FeaturedCategories() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 justify-items-center lg:px-30 mt-[50px]">
           {catalogs?.map((category, index) => (
             <div key={index} className="w-full max-w-[380px]">
               <motion.div
@@ -91,7 +91,7 @@ export default function FeaturedCategories() {
                           }}
                           transition={{ duration: 0.3 }}
                         >
-                          <h3 className="text-white font-bold mb-2 text-2xl md:text-3xl">{category.name}</h3>
+                          <h3 className="font-poppins text-white font-bold mb-2 text-3xl md:text-4xl">{category.name}</h3>
                           <p className="text-white/70 mb-0">{category.categories.length} varieties</p>
                         </motion.div>
                       </div>

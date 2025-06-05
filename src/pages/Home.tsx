@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import HeroCarousel from "../components/HeroCarousel";
 import FeaturedCategories from "../components/FeaturedCategories";
@@ -126,7 +126,7 @@ export default function Home() {
       </AnimatePresence>
 
       <main>
-        <div className="container pt-2 mx-auto px-4">
+        <div className="container pt-2 mx-auto">
           <HeroCarousel />
         </div>
 
@@ -135,7 +135,7 @@ export default function Home() {
         <SupplyChainDiagram />
         <Testimonials />
 
-        <section className="py-5 my-5 relative overflow-hidden">
+        <section className="py-10 px-[6rem] space-around my-5 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-[#3a7bfc]/90 to-[#0046c0]/95 z-0"></div>
 
           <div className="container relative z-[1] mx-auto px-4">

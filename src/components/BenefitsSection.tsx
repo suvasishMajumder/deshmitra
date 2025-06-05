@@ -35,7 +35,7 @@ export default function BenefitsSection() {
   ];
 
   return (
-    <section className="py-5 relative overflow-hidden bg-gray-50">
+    <section className="py-10 relative overflow-hidden bg-gray-50">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_10%_20%,rgba(216,241,230,0.46)_0%,rgba(233,226,226,0.28)_110.2%)] z-0"></div>
       <div className="container relative mx-auto px-4">
         <div className="text-center mb-5">

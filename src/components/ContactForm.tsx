@@ -136,10 +136,10 @@ const ContactForm = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="my-5 rounded-3xl overflow-hidden relative bg-gradient-to-br from-white to-gray-50 shadow-[0_15px_35px_rgba(0,0,0,0.07),0_5px_15px_rgba(0,0,0,0.05)]"
+      className="my-5  rounded-3xl overflow-hidden relative bg-gradient-to-br from-white to-gray-50 shadow-[0_15px_35px_rgba(0,0,0,0.07),0_5px_15px_rgba(0,0,0,0.05)]"
     >
       <motion.div
-        className="absolute w-[300px] h-[300px] rounded-full bg-gradient-to-br from-[rgba(58,123,252,0.07)] to-[rgba(58,123,252,0.01)] -top-[150px] -right-[100px] z-0"
+        className=" absolute w-[300px] h-[300px] rounded-full bg-gradient-to-br from-[rgba(58,123,252,0.07)] to-[rgba(58,123,252,0.01)] -top-[150px] -right-[100px] z-0"
         initial={{ scale: 0 }}
         whileInView={{ scale: 1 }}
         viewport={{ once: true }}
@@ -154,7 +154,7 @@ const ContactForm = () => {
         transition={{ duration: 1.2, delay: 0.5 }}
       />
 
-      <div className="flex flex-col md:flex-row">
+      <div className="flex flex-col md:flex-row py-20">
         <div className="hidden md:block md:w-5/12 bg-gradient-to-br from-[#3a7bfc] to-[#0046c0] relative overflow-hidden">
           <motion.div
             className="h-full flex flex-col justify-center items-center p-4 z-10"
