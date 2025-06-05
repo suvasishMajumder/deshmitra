@@ -1,4 +1,4 @@
-import React from "react";
+
 import { useSelector } from "react-redux";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import NotFound from "./NotFound";
@@ -19,7 +19,7 @@ export default function SearchResults() {
 
   // Enhanced search function with weighted results and category-specific boosting
   const getSearchResults = () => {
-    let results = [];
+  let results = [];
     const searchTerms = query
       .toLowerCase()
       .split(" ")

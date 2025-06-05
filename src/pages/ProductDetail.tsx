@@ -1,37 +1,52 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import {
-  FaStar,
-  FaArrowRight,
-} from "react-icons/fa6";
+import { FaStar, FaArrowRight } from "react-icons/fa6";
 import { FaArrowLeft } from "react-icons/fa";
 
 import { useSelector } from "react-redux";
 import ProductContactForm from "../components/ProductContactForm";
 import NotFound from "./NotFound";
-
-
+import type { RootState } from "../redux/store";
 
 export default function ProductDetail() {
-  const catalogs= useSelector((state) => state.catalog.catalogs);
-  const { productName, categoryName, productId } = useParams();
+  const catalogs = useSelector((state: RootState) => state.catalog.catalogs);
+
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("description");
+  //const { token } = useParams<{token?: string}>();
+  const params = useParams<{
+    productName?: string;
+    categoryName?: string;
+    productId?: string;
+  }>();
+  const { productName, categoryName, productId } = params;
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [productName, categoryName, productId]);
 
-  const decodedProductName = decodeURIComponent(productName).replace(/-/g, ' ').toLowerCase();
-  const decodedCategoryName = decodeURIComponent(categoryName).replace(/-/g, ' ').toLowerCase();
-  const product = catalogs.find(c => c.name.toLowerCase() === decodedProductName);
+  if (!productName || !categoryName || !productId) {
+    return <NotFound searchTerm="Invalid product route" />;
+  }
+
+  const decodedProductName = decodeURIComponent(productName)
+    .replace(/-/g, " ")
+    .toLowerCase();
+  const decodedCategoryName = decodeURIComponent(categoryName)
+    .replace(/-/g, " ")
+    .toLowerCase();
+  const product = catalogs.find(
+    (c) => c.name.toLowerCase() === decodedProductName
+  );
 
   if (!product) {
     return <NotFound searchTerm={decodedProductName} />;
   }
 
-  const category = product.categories.find(c => c.name.toLowerCase() === decodedCategoryName);
+  const category = product.categories.find(
+    (c) => c.name.toLowerCase() === decodedCategoryName
+  );
 
   if (!category) {
     return <NotFound searchTerm={decodedCategoryName} />;
@@ -59,41 +74,58 @@ export default function ProductDetail() {
 
   // Get specifications based on product type
   const getSpecifications = () => {
-    if (product.name.toLowerCase() === 'rice') {
+    if (product.name.toLowerCase() === "rice") {
       return [
         { label: "Purity", value: "95%" },
         { label: "Natural Admixture", value: "5%" },
-        { label: "Average Grain Length", value: item.name.toLowerCase().includes("8.35") ? "8.35 MM" : "As specified" },
+        {
+          label: "Average Grain Length",
+          value: item.name.toLowerCase().includes("8.35")
+            ? "8.35 MM"
+            : "As specified",
+        },
         { label: "Moisture", value: "12.5% Max" },
         { label: "Broken Grain", value: "1% Max." },
         { label: "Damage/Discolour Grain", value: "1% Max" },
         { label: "Immature Grain", value: "1% Max" },
         { label: "Foreign Matter", value: "Nil" },
-        { label: "Packaging Type", value: "Jute bag, PP bag, Non-woven bag or as per requirement" }
+        {
+          label: "Packaging Type",
+          value: "Jute bag, PP bag, Non-woven bag or as per requirement",
+        },
       ];
-    } else if (product.name.toLowerCase() === 'salt') {
+    } else if (product.name.toLowerCase() === "salt") {
       return [
         { label: "Purity", value: "99.5%" },
         { label: "Moisture Content", value: "< 0.5%" },
         { label: "Sodium Chloride", value: "> 98%" },
         { label: "Anti-caking Agent", value: "Present" },
-        { label: "Packaging Type", value: "Available in various packaging options" }
+        {
+          label: "Packaging Type",
+          value: "Available in various packaging options",
+        },
       ];
-    } else if (product.name.toLowerCase() === 'spices') {
+    } else if (product.name.toLowerCase() === "spices") {
       return [
         { label: "Origin", value: "India" },
         { label: "Freshness", value: "100% Fresh" },
-        { label: "Processing", value: item.name.toLowerCase().includes("whole") ? "Whole" : "Ground" },
+        {
+          label: "Processing",
+          value: item.name.toLowerCase().includes("whole") ? "Whole" : "Ground",
+        },
         { label: "Packaging", value: "Moisture-resistant packaging" },
-        { label: "Shelf Life", value: "24 months from packaging" }
+        { label: "Shelf Life", value: "24 months from packaging" },
       ];
     }
     return [
       { label: "Quality", value: "Premium" },
       { label: "Origin", value: "India" },
       { label: "Packaging", value: "Available in various sizes" },
-      { label: "Storage Instructions", value: "Store in a cool, dry place away from direct sunlight" },
-      { label: "Shelf Life", value: "12 months from date of packaging" }
+      {
+        label: "Storage Instructions",
+        value: "Store in a cool, dry place away from direct sunlight",
+      },
+      { label: "Shelf Life", value: "12 months from date of packaging" },
     ];
   };
 
@@ -104,10 +136,31 @@ export default function ProductDetail() {
       <div className="pt-5">
         <nav aria-label="breadcrumb" className="mt-3">
           <ol className="breadcrumb">
-            <li className="breadcrumb-item"><Link to="/" className="text-decoration-none">Home</Link></li>
-            <li className="breadcrumb-item"><Link to={`/category/${productName}`} className="text-decoration-none">{product.name}</Link></li>
-            <li className="breadcrumb-item"><Link to="#" className="text-decoration-none" onClick={handleBackNavigation}>{category.name}</Link></li>
-            <li className="breadcrumb-item active" aria-current="page">{item.name}</li>
+            <li className="breadcrumb-item">
+              <Link to="/" className="text-decoration-none">
+                Home
+              </Link>
+            </li>
+            <li className="breadcrumb-item">
+              <Link
+                to={`/category/${productName}`}
+                className="text-decoration-none"
+              >
+                {product.name}
+              </Link>
+            </li>
+            <li className="breadcrumb-item">
+              <Link
+                to="#"
+                className="text-decoration-none"
+                onClick={handleBackNavigation}
+              >
+                {category.name}
+              </Link>
+            </li>
+            <li className="breadcrumb-item active" aria-current="page">
+              {item.name}
+            </li>
           </ol>
         </nav>
 
@@ -130,7 +183,10 @@ export default function ProductDetail() {
               transition={{ duration: 0.6, ease: "easeOut" }}
               className="position-relative"
             >
-              <div className="product-image-wrapper rounded-4 overflow-hidden bg-light shadow-sm" style={{ height: "500px" }}>
+              <div
+                className="product-image-wrapper rounded-4 overflow-hidden bg-light shadow-sm"
+                style={{ height: "500px" }}
+              >
                 <img
                   src={item.image}
                   alt={item.name}
@@ -140,7 +196,9 @@ export default function ProductDetail() {
               </div>
 
               <div className="position-absolute top-0 start-0 m-3">
-                <span className="badge bg-primary px-3 py-2 rounded-pill">Premium</span>
+                <span className="badge bg-primary px-3 py-2 rounded-pill">
+                  Premium
+                </span>
               </div>
 
               <div className="position-absolute bottom-0 end-0 m-3">
@@ -158,13 +216,22 @@ export default function ProductDetail() {
               transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             >
               <h1 className="fw-bold mb-1">{item.name}</h1>
-              <p className="text-muted mb-3">{product.name} › {category.name}</p>
+              <p className="text-muted mb-3">
+                {product.name} › {category.name}
+              </p>
 
               <div className="d-flex align-items-center mb-3">
                 {[...Array(5)].map((_, i) => (
-                  <FaStar key={i} size={16} className="me-1" style={{ color: i < 4 ? "#ffc107" : "#e0e0e0" }} />
+                  <FaStar
+                    key={i}
+                    size={16}
+                    className="me-1"
+                    style={{ color: i < 4 ? "#ffc107" : "#e0e0e0" }}
+                  />
                 ))}
-                <span className="ms-2 text-muted small">(4.0 | 24 reviews)</span>
+                <span className="ms-2 text-muted small">
+                  (4.0 | 24 reviews)
+                </span>
               </div>
 
               <div className="mb-4">
@@ -183,7 +250,9 @@ export default function ProductDetail() {
                     <tbody>
                       {specifications.map((spec, index) => (
                         <tr key={index}>
-                          <th scope="row" style={{ width: "40%" }}>{spec.label}</th>
+                          <th scope="row" style={{ width: "40%" }}>
+                            {spec.label}
+                          </th>
                           <td>{spec.value}</td>
                         </tr>
                       ))}
@@ -198,8 +267,13 @@ export default function ProductDetail() {
                     <div className="d-flex align-items-center">
                       <div className="me-2">🚚</div>
                       <div>
-                        <h6 className="mb-0 small fw-semibold"> Nationwide Delivery</h6>
-                        <p className="mb-0 small text-muted">Fast & reliable across India</p>
+                        <h6 className="mb-0 small fw-semibold">
+                          {" "}
+                          Nationwide Delivery
+                        </h6>
+                        <p className="mb-0 small text-muted">
+                          Fast & reliable across India
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -207,8 +281,13 @@ export default function ProductDetail() {
                     <div className="d-flex align-items-center">
                       <div className="me-2">🔄</div>
                       <div>
-                        <h6 className="mb-0 small fw-semibold"> Customer Support</h6>
-                        <p className="mb-0 small text-muted">9am–6pm, Mon–Sat</p>
+                        <h6 className="mb-0 small fw-semibold">
+                          {" "}
+                          Customer Support
+                        </h6>
+                        <p className="mb-0 small text-muted">
+                          9am–6pm, Mon–Sat
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -216,8 +295,12 @@ export default function ProductDetail() {
                     <div className="d-flex align-items-center">
                       <div className="me-2">✅</div>
                       <div>
-                        <h6 className="mb-0 small fw-semibold">Quality Assured</h6>
-                        <p className="mb-0 small text-muted">100% Authentic Products</p>
+                        <h6 className="mb-0 small fw-semibold">
+                          Quality Assured
+                        </h6>
+                        <p className="mb-0 small text-muted">
+                          100% Authentic Products
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -232,8 +315,10 @@ export default function ProductDetail() {
           <ul className="nav nav-tabs mb-4" id="productTabs" role="tablist">
             <li className="nav-item" role="presentation">
               <button
-                className={`nav-link ${activeTab === 'description' ? 'active' : ''}`}
-                onClick={() => setActiveTab('description')}
+                className={`nav-link ${
+                  activeTab === "description" ? "active" : ""
+                }`}
+                onClick={() => setActiveTab("description")}
                 type="button"
               >
                 Description
@@ -241,8 +326,10 @@ export default function ProductDetail() {
             </li>
             <li className="nav-item" role="presentation">
               <button
-                className={`nav-link ${activeTab === 'specifications' ? 'active' : ''}`}
-                onClick={() => setActiveTab('specifications')}
+                className={`nav-link ${
+                  activeTab === "specifications" ? "active" : ""
+                }`}
+                onClick={() => setActiveTab("specifications")}
                 type="button"
               >
                 Specifications
@@ -250,8 +337,10 @@ export default function ProductDetail() {
             </li>
             <li className="nav-item" role="presentation">
               <button
-                className={`nav-link ${activeTab === 'reviews' ? 'active' : ''}`}
-                onClick={() => setActiveTab('reviews')}
+                className={`nav-link ${
+                  activeTab === "reviews" ? "active" : ""
+                }`}
+                onClick={() => setActiveTab("reviews")}
                 type="button"
               >
                 Reviews
@@ -259,41 +348,61 @@ export default function ProductDetail() {
             </li>
           </ul>
 
-          <div className="tab-content p-4 bg-light rounded-3" id="productTabContent">
-            {activeTab === 'description' && (
+          <div
+            className="tab-content p-4 bg-light rounded-3"
+            id="productTabContent"
+          >
+            {activeTab === "description" && (
               <div>
                 <h4 className="fw-bold mb-3">Product Description</h4>
                 <p>{item.description}</p>
                 <p>
-                  This premium {product.name.toLowerCase()} is sourced from the finest producers and undergoes
-                  rigorous quality checks to ensure you receive only the best product. Our {item.name.toLowerCase()}
-                  is known for its exceptional quality and authentic flavor profile.
+                  This premium {product.name.toLowerCase()} is sourced from the
+                  finest producers and undergoes rigorous quality checks to
+                  ensure you receive only the best product. Our{" "}
+                  {item.name.toLowerCase()}
+                  is known for its exceptional quality and authentic flavor
+                  profile.
                 </p>
                 <p>
-                  Whether you're cooking for your family or hosting a special occasion, our
-                  {item.name.toLowerCase()} will elevate your culinary creations to new heights.
+                  Whether you're cooking for your family or hosting a special
+                  occasion, our
+                  {item.name.toLowerCase()} will elevate your culinary creations
+                  to new heights.
                 </p>
                 <div className="my-4">
                   <h5 className="fw-bold mb-3">Key Features:</h5>
                   <ul className="list-group list-group-flush">
-                    <li className="list-group-item bg-transparent">Premium quality {product.name.toLowerCase()}</li>
-                    <li className="list-group-item bg-transparent">Sourced from trusted farmers</li>
-                    <li className="list-group-item bg-transparent">Naturally processed</li>
-                    <li className="list-group-item bg-transparent">No artificial additives</li>
-                    <li className="list-group-item bg-transparent">Rich in natural flavor</li>
+                    <li className="list-group-item bg-transparent">
+                      Premium quality {product.name.toLowerCase()}
+                    </li>
+                    <li className="list-group-item bg-transparent">
+                      Sourced from trusted farmers
+                    </li>
+                    <li className="list-group-item bg-transparent">
+                      Naturally processed
+                    </li>
+                    <li className="list-group-item bg-transparent">
+                      No artificial additives
+                    </li>
+                    <li className="list-group-item bg-transparent">
+                      Rich in natural flavor
+                    </li>
                   </ul>
                 </div>
               </div>
             )}
 
-            {activeTab === 'specifications' && (
+            {activeTab === "specifications" && (
               <div>
                 <h4 className="fw-bold mb-3">Product Specifications</h4>
                 <div className="table-responsive">
                   <table className="table table-striped">
                     <tbody>
                       <tr>
-                        <th scope="row" style={{ width: "30%" }}>Product Name</th>
+                        <th scope="row" style={{ width: "30%" }}>
+                          Product Name
+                        </th>
                         <td>{item.name}</td>
                       </tr>
                       <tr>
@@ -310,11 +419,13 @@ export default function ProductDetail() {
                           <td>{spec.value}</td>
                         </tr>
                       ))}
-                      {product.name.toLowerCase() === 'rice' && (
+                      {product.name.toLowerCase() === "rice" && (
                         <>
                           <tr>
                             <th scope="row">Usage</th>
-                            <td>Suitable for all rice dishes, biryani, pulao, etc.</td>
+                            <td>
+                              Suitable for all rice dishes, biryani, pulao, etc.
+                            </td>
                           </tr>
                           <tr>
                             <th scope="row">Cooking Time</th>
@@ -322,7 +433,10 @@ export default function ProductDetail() {
                           </tr>
                           <tr>
                             <th scope="row">Aroma</th>
-                            <td>Natural fragrance characteristic of premium basmati</td>
+                            <td>
+                              Natural fragrance characteristic of premium
+                              basmati
+                            </td>
                           </tr>
                         </>
                       )}
@@ -330,23 +444,41 @@ export default function ProductDetail() {
                   </table>
                 </div>
 
-                {product.name.toLowerCase() === 'rice' && item.name.toLowerCase().includes("1121") && (
-                  <div className="mt-4">
-                    <h5 className="fw-bold mb-3">1121 Sella Basmati Rice Processing</h5>
-                    <p>Our 1121 Sella Basmati Rice undergoes a specialized parboiling process that enhances its nutritional value while maintaining the authentic aroma. The process involves:</p>
-                    <ol className="list-group list-group-numbered">
-                      <li className="list-group-item border-0 bg-transparent">Soaking the paddy in water</li>
-                      <li className="list-group-item border-0 bg-transparent">Steaming to gelatinize the starch</li>
-                      <li className="list-group-item border-0 bg-transparent">Drying to reduce moisture content</li>
-                      <li className="list-group-item border-0 bg-transparent">Milling to remove husks</li>
-                      <li className="list-group-item border-0 bg-transparent">Sorting and grading for quality</li>
-                    </ol>
-                  </div>
-                )}
+                {product.name.toLowerCase() === "rice" &&
+                  item.name.toLowerCase().includes("1121") && (
+                    <div className="mt-4">
+                      <h5 className="fw-bold mb-3">
+                        1121 Sella Basmati Rice Processing
+                      </h5>
+                      <p>
+                        Our 1121 Sella Basmati Rice undergoes a specialized
+                        parboiling process that enhances its nutritional value
+                        while maintaining the authentic aroma. The process
+                        involves:
+                      </p>
+                      <ol className="list-group list-group-numbered">
+                        <li className="list-group-item border-0 bg-transparent">
+                          Soaking the paddy in water
+                        </li>
+                        <li className="list-group-item border-0 bg-transparent">
+                          Steaming to gelatinize the starch
+                        </li>
+                        <li className="list-group-item border-0 bg-transparent">
+                          Drying to reduce moisture content
+                        </li>
+                        <li className="list-group-item border-0 bg-transparent">
+                          Milling to remove husks
+                        </li>
+                        <li className="list-group-item border-0 bg-transparent">
+                          Sorting and grading for quality
+                        </li>
+                      </ol>
+                    </div>
+                  )}
               </div>
             )}
 
-            {activeTab === 'reviews' && (
+            {activeTab === "reviews" && (
               <div>
                 <h4 className="fw-bold mb-3">Customer Reviews</h4>
                 <div className="row align-items-center mb-4">
@@ -354,29 +486,64 @@ export default function ProductDetail() {
                     <h2 className="display-4 fw-bold mb-0">4.0</h2>
                     <div className="d-flex justify-content-center my-2">
                       {[...Array(5)].map((_, i) => (
-                        <FaStar key={i} size={20} className="mx-1" style={{ color: i < 4 ? "#ffc107" : "#e0e0e0" }} />
+                        <FaStar
+                          key={i}
+                          size={20}
+                          className="mx-1"
+                          style={{ color: i < 4 ? "#ffc107" : "#e0e0e0" }}
+                        />
                       ))}
                     </div>
                     <p className="text-muted">Based on 24 reviews</p>
                   </div>
                   <div className="col-md-8">
                     {[5, 4, 3, 2, 1].map((rating) => (
-                      <div key={rating} className="d-flex align-items-center mb-2">
-                        <div style={{ width: "60px" }} className="me-3">{rating} stars</div>
-                        <div className="progress flex-grow-1" style={{ height: "10px" }}>
+                      <div
+                        key={rating}
+                        className="d-flex align-items-center mb-2"
+                      >
+                        <div style={{ width: "60px" }} className="me-3">
+                          {rating} stars
+                        </div>
+                        <div
+                          className="progress flex-grow-1"
+                          style={{ height: "10px" }}
+                        >
                           <div
                             className="progress-bar bg-warning"
                             role="progressbar"
                             style={{
-                              width: `${rating === 4 ? 65 : rating === 5 ? 25 : rating === 3 ? 10 : 0}%`
+                              width: `${
+                                rating === 4
+                                  ? 65
+                                  : rating === 5
+                                  ? 25
+                                  : rating === 3
+                                  ? 10
+                                  : 0
+                              }%`,
                             }}
-                            aria-valuenow={rating === 4 ? 65 : rating === 5 ? 25 : rating === 3 ? 10 : 0}
-                            aria-valuemin="0"
-                            aria-valuemax="100"
+                            aria-valuenow={
+                              rating === 4
+                                ? 65
+                                : rating === 5
+                                ? 25
+                                : rating === 3
+                                ? 10
+                                : 0
+                            }
+                            aria-valuemin={0}
+                            aria-valuemax={0}
                           ></div>
                         </div>
                         <div style={{ width: "50px" }} className="ms-3">
-                          {rating === 4 ? 15 : rating === 5 ? 6 : rating === 3 ? 3 : 0}
+                          {rating === 4
+                            ? 15
+                            : rating === 5
+                            ? 6
+                            : rating === 3
+                            ? 3
+                            : 0}
                         </div>
                       </div>
                     ))}
@@ -391,17 +558,34 @@ export default function ProductDetail() {
                         alt="User"
                         className="rounded-circle me-3"
                         style={{ width: "50px", height: "50px" }}
-                        onError={(e) => (e.target.src = "https://via.placeholder.com/50?text=User")}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement | null;
+                          if (target) {
+                            target.src =
+                              "https://via.placeholder.com/50?text=User";
+                          }
+                        }}
                       />
                       <div>
                         <h6 className="mb-1 fw-bold">Rahul Sharma</h6>
                         <div className="d-flex align-items-center mb-2">
                           {[...Array(5)].map((_, i) => (
-                            <FaStar key={i} size={12} className="me-1" style={{ color: i < 5 ? "#ffc107" : "#e0e0e0" }} />
+                            <FaStar
+                              key={i}
+                              size={12}
+                              className="me-1"
+                              style={{ color: i < 5 ? "#ffc107" : "#e0e0e0" }}
+                            />
                           ))}
-                          <span className="ms-2 text-muted small">2 months ago</span>
+                          <span className="ms-2 text-muted small">
+                            2 months ago
+                          </span>
                         </div>
-                        <p className="mb-0">Exceptional quality! I've been using this product for months and it's consistently excellent. The flavor is unmatched compared to other brands.</p>
+                        <p className="mb-0">
+                          Exceptional quality! I've been using this product for
+                          months and it's consistently excellent. The flavor is
+                          unmatched compared to other brands.
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -413,17 +597,34 @@ export default function ProductDetail() {
                         alt="User"
                         className="rounded-circle me-3"
                         style={{ width: "50px", height: "50px" }}
-                        onError={(e) => (e.target.src = "https://via.placeholder.com/50?text=User")}
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement | null;
+                          if (target) {
+                            target.src =
+                              "https://via.placeholder.com/50?text=User";
+                          }
+                        }}
                       />
                       <div>
                         <h6 className="mb-1 fw-bold">Priya Patel</h6>
                         <div className="d-flex align-items-center mb-2">
                           {[...Array(5)].map((_, i) => (
-                            <FaStar key={i} size={12} className="me-1" style={{ color: i < 4 ? "#ffc107" : "#e0e0e0" }} />
+                            <FaStar
+                              key={i}
+                              size={12}
+                              className="me-1"
+                              style={{ color: i < 4 ? "#ffc107" : "#e0e0e0" }}
+                            />
                           ))}
-                          <span className="ms-2 text-muted small">1 month ago</span>
+                          <span className="ms-2 text-muted small">
+                            1 month ago
+                          </span>
                         </div>
-                        <p className="mb-0">Great product for the price. Delivery was prompt and packaging was secure. I would definitely recommend it to others.</p>
+                        <p className="mb-0">
+                          Great product for the price. Delivery was prompt and
+                          packaging was secure. I would definitely recommend it
+                          to others.
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -444,7 +645,9 @@ export default function ProductDetail() {
 
         <div className="mt-5 mb-5">
           <h3 className="fw-bold mb-4">Interested in this product?</h3>
-          <ProductContactForm productName={`${product.name} - ${category.name} - ${item.name}`} />
+          <ProductContactForm
+            productName={`${product.name} - ${category.name} - ${item.name}`}
+          />
         </div>
 
         {/* Related Products Section */}
@@ -452,7 +655,10 @@ export default function ProductDetail() {
           <div className="related-products mb-5">
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h3 className="fw-bold">Related Products</h3>
-              <Link to={`/category/${productName}`} className="btn btn-outline-primary rounded-pill">
+              <Link
+                to={`/category/${productName}`}
+                className="btn btn-outline-primary rounded-pill"
+              >
                 View All <FaArrowRight className="ms-2" size={12} />
               </Link>
             </div>
@@ -467,17 +673,17 @@ export default function ProductDetail() {
                     whileHover={{
                       y: -10,
                       boxShadow: "0 15px 30px rgba(0,0,0,0.1)",
-                      transition: { duration: 0.3 }
+                      transition: { duration: 0.3 },
                     }}
                     className="card h-100 border-0 shadow-sm"
                     style={{
                       borderRadius: "16px",
-                      overflow: "hidden"
+                      overflow: "hidden",
                     }}
                   >
                     <Link
                       to={`/category/${productName}/${categoryName}/${category.subItems.findIndex(
-                        subItem => subItem.name === relatedItem.name
+                        (subItem) => subItem.name === relatedItem.name
                       )}`}
                       className="text-decoration-none"
                     >
@@ -490,19 +696,35 @@ export default function ProductDetail() {
                             height: "100%",
                             width: "100%",
                             objectFit: "cover",
-                            transition: "transform 0.5s ease"
+                            transition: "transform 0.5s ease",
                           }}
-                          onError={(e) => (e.target.src = "https://via.placeholder.com/180x180?text=Product")}
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement | null;
+
+                            if (target) {
+                              target.src =
+                                "https://via.placeholder.com/180x180?text=Product";
+                            }
+                          }}
                         />
                       </div>
                       <div className="card-body p-3">
-                        <h5 className="card-title fw-semibold text-dark mb-2">{relatedItem.name}</h5>
-                        <p className="card-text text-muted small mb-3" style={{ height: "40px", overflow: "hidden" }}>
+                        <h5 className="card-title fw-semibold text-dark mb-2">
+                          {relatedItem.name}
+                        </h5>
+                        <p
+                          className="card-text text-muted small mb-3"
+                          style={{ height: "40px", overflow: "hidden" }}
+                        >
                           {relatedItem.description.substring(0, 70)}...
                         </p>
                         <div className="d-flex justify-content-between align-items-center">
-                          <span className="badge bg-light text-primary">{relatedItem.priceRange}</span>
-                          <span className="text-primary fw-medium small">View Details</span>
+                          <span className="badge bg-light text-primary">
+                            {relatedItem.priceRange}
+                          </span>
+                          <span className="text-primary fw-medium small">
+                            View Details
+                          </span>
                         </div>
                       </div>
                     </Link>
@@ -515,4 +737,4 @@ export default function ProductDetail() {
       </div>
     </main>
   );
-};
+}

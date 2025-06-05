@@ -187,3 +187,24 @@ export interface ITestimonials {
   rating: number;
   role: string;
 }
+
+
+
+export type TValues = {
+
+  icon:IconType;
+  title:string;
+  description:string;
+  color:string;
+
+}
+
+export type TTeamMembers = {
+
+  name:string;
+  position:string;
+  bio:string;
+  image:string;
+
+
+} 
