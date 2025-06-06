@@ -16,6 +16,7 @@ dist-ssr
 
 # Local files
 *.local
+.env
 
 # Editor directories and files
 .vscode/*
@@ -27,7 +28,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# Don't ignore .env
-# (Remove this line if it exists in your current .gitignore)
-# .env
