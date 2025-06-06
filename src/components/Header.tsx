@@ -33,7 +33,6 @@ const Header: React.FC = () => {
   ];
   const [currentAnnouncement, setCurrentAnnouncement] = useState<number>(0);
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
- 
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -169,7 +168,7 @@ const Header: React.FC = () => {
                   }}
                 />
                 <div className="flex flex-col">
-                  <span className="font-poppins font-bold text-2xl bg-gradient-to-r from-[#3a7bfc] via-[#6f42c1] to-[#e83e8c] bg-[300%_auto] bg-clip-text text-transparent animate-[gradient_5s_ease_infinite_alternate]">
+                  <span className="font-poppins font-bold text-3xl animate-gradient-text">
                     Akdenar
                   </span>
                   <span className="text-[0.8rem] text-[#3c3d3f] tracking-tight">
@@ -180,11 +179,11 @@ const Header: React.FC = () => {
             </Link>
 
             {/* Desktop Search Bar and Navigation */}
-            <div className="hidden lg:flex items-center flex-grow gap-4">
+            <div className="hidden lg:flex items-center flex-grow gap-4 ">
               {/* Search Bar */}
               <form onSubmit={handleSearch} className="flex-grow">
                 <div
-                  className={`relative rounded-full overflow-hidden border border-gray-200 bg-gray-100 flex items-center transition-all duration-300 ${
+                  className={`relative mx-10 w-100 rounded-full overflow-hidden border border-gray-200 bg-gray-100 flex items-center transition-all duration-300 ${
                     searchFocused
                       ? "shadow-[0_0_0_4px_rgba(58,123,252,0.15)] border-[#3a7bfc] bg-white"
                       : ""
@@ -215,7 +214,9 @@ const Header: React.FC = () => {
                 <li className="relative">
                   <Link
                     className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 ${
-                      location.pathname === "/" ? "text-[#3a7bfc] font-semibold" : ""
+                      location.pathname === "/"
+                        ? "text-[#3a7bfc] font-semibold"
+                        : ""
                     }`}
                     to="/"
                   >
@@ -234,7 +235,9 @@ const Header: React.FC = () => {
                       className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 cursor-pointer flex items-center ${
                         catalogs.some((c) =>
                           location.pathname.includes(
-                            `/category/${c.name.toLowerCase().replace(/\s/g, "-")}`
+                            `/category/${c.name
+                              .toLowerCase()
+                              .replace(/\s/g, "-")}`
                           )
                         )
                           ? "text-[#3a7bfc] font-semibold"
@@ -243,7 +246,9 @@ const Header: React.FC = () => {
                       onMouseEnter={() => setActiveDropdown("products")}
                       onMouseLeave={() => {
                         setTimeout(() => {
-                          if (!document.querySelector(".products-dropdown:hover")) {
+                          if (
+                            !document.querySelector(".products-dropdown:hover")
+                          ) {
                             setActiveDropdown(null);
                           }
                         }, 100);
@@ -253,7 +258,9 @@ const Header: React.FC = () => {
                       <FaChevronDown size={14} className="ml-1" />
                       {catalogs.some((c) =>
                         location.pathname.includes(
-                          `/category/${c.name.toLowerCase().replace(/\s/g, "-")}`
+                          `/category/${c.name
+                            .toLowerCase()
+                            .replace(/\s/g, "-")}`
                         )
                       ) && (
                         <motion.div
@@ -280,14 +287,20 @@ const Header: React.FC = () => {
                               <Link
                                 key={index}
                                 className={`flex items-center px-4 py-2.5 text-[0.9rem] text-gray-600 rounded-lg transition-all duration-200 hover:bg-[#3a7bfc]/10 hover:text-[#3a7bfc] hover:translate-x-0.5 mb-0.5 ${
-                                  hoveredProduct === index ? "bg-[#3a7bfc]/10 text-[#3a7bfc]" : ""
+                                  hoveredProduct === index
+                                    ? "bg-[#3a7bfc]/10 text-[#3a7bfc]"
+                                    : ""
                                 }`}
-                                to={`/category/${category.name.toLowerCase().replace(/\s/g, "-")}`}
+                                to={`/category/${category.name
+                                  .toLowerCase()
+                                  .replace(/\s/g, "-")}`}
                                 onMouseEnter={() => handleProductHover(index)}
                               >
                                 <span
                                   className="w-2.5 h-2.5 rounded-full me-2"
-                                  style={{ backgroundColor: category.colors[0] }}
+                                  style={{
+                                    backgroundColor: category.colors[0],
+                                  }}
                                 ></span>
                                 {category.name}
                               </Link>
@@ -313,7 +326,8 @@ const Header: React.FC = () => {
                                   {catalogs[hoveredProduct].name}
                                 </h6>
                                 <p className="text-sm text-gray-500 mb-2">
-                                  {catalogs[hoveredProduct].categories.length} varieties available
+                                  {catalogs[hoveredProduct].categories.length}{" "}
+                                  varieties available
                                 </p>
                                 <div className="flex flex-wrap justify-center gap-1.5">
                                   {catalogs[hoveredProduct].categories
@@ -326,9 +340,12 @@ const Header: React.FC = () => {
                                         {category.name}
                                       </span>
                                     ))}
-                                  {catalogs[hoveredProduct].categories.length > 3 && (
+                                  {catalogs[hoveredProduct].categories.length >
+                                    3 && (
                                     <span className="text-xs px-2 py-1 rounded-full bg-[#3a7bfc]/10 text-[#3a7bfc]">
-                                      +{catalogs[hoveredProduct].categories.length - 3}
+                                      +
+                                      {catalogs[hoveredProduct].categories
+                                        .length - 3}
                                     </span>
                                   )}
                                 </div>
@@ -343,7 +360,9 @@ const Header: React.FC = () => {
                 <li className="relative">
                   <Link
                     className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 ${
-                      location.pathname === "/about" ? "text-[#3a7bfc] font-semibold" : ""
+                      location.pathname === "/about"
+                        ? "text-[#3a7bfc] font-semibold"
+                        : ""
                     }`}
                     to="/about"
                   >
@@ -359,7 +378,9 @@ const Header: React.FC = () => {
                 <li className="relative">
                   <Link
                     className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 ${
-                      location.pathname === "/testimonials" ? "text-[#3a7bfc] font-semibold" : ""
+                      location.pathname === "/testimonials"
+                        ? "text-[#3a7bfc] font-semibold"
+                        : ""
                     }`}
                     to="/testimonials"
                   >
@@ -375,7 +396,9 @@ const Header: React.FC = () => {
                 <li className="relative">
                   <Link
                     className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 ${
-                      location.pathname === "/contact" ? "text-[#3a7bfc] font-semibold" : ""
+                      location.pathname === "/contact"
+                        ? "text-[#3a7bfc] font-semibold"
+                        : ""
                     }`}
                     to="/contact"
                   >
@@ -391,7 +414,11 @@ const Header: React.FC = () => {
                 <li>
                   <Link
                     to="/contact"
-                    className="inline-flex items-center justify-center px-5 py-2 font-medium text-[0.95rem] bg-[#3a7bfc] text-white rounded-lg shadow-[0_4px_12px_rgba(58,123,252,0.2)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(58,123,252,0.4)] whitespace-nowrap"
+                    className="inline-flex items-center justify-center px-5 py-2 font-medium text-[0.95rem] 
+             bg-gradient-to-r from-[#3a7bfc] to-[#165ed3] text-white 
+             rounded-lg shadow-[0_4px_12px_rgba(58,123,252,0.2)] 
+             transition-all duration-300 hover:-translate-y-1 
+             hover:shadow-[0_8px_20px_rgba(58,123,252,0.4)] whitespace-nowrap"
                   >
                     <FaShoppingBasket className="me-1 md:me-2 xl:me-2" />
                     <span className="cta-text">Get Quote</span>
@@ -416,7 +443,11 @@ const Header: React.FC = () => {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+                  {isMobileMenuOpen ? (
+                    <FaTimes size={24} />
+                  ) : (
+                    <FaBars size={24} />
+                  )}
                 </motion.div>
               </AnimatePresence>
             </button>
@@ -457,13 +488,17 @@ const Header: React.FC = () => {
                 <ul className="list-none p-0 m-0 mb-4">
                   <li
                     className={`rounded-xl overflow-hidden ${
-                      location.pathname === "/" ? "bg-gradient-to-r from-[#3a7bfc]/10 to-transparent" : ""
+                      location.pathname === "/"
+                        ? "bg-gradient-to-r from-[#3a7bfc]/10 to-transparent"
+                        : ""
                     }`}
                   >
                     <Link
                       to="/"
                       className={`flex items-center justify-between px-4 py-3.5 text-gray-700 font-medium rounded-xl transition-all duration-200 hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] min-h-[52px] ${
-                        location.pathname === "/" ? "text-[#3a7bfc] font-semibold" : ""
+                        location.pathname === "/"
+                          ? "text-[#3a7bfc] font-semibold"
+                          : ""
                       }`}
                     >
                       <span className="mr-3 text-[1.2rem]">🏠</span>
@@ -475,7 +510,9 @@ const Header: React.FC = () => {
                     className={`rounded-xl overflow-hidden ${
                       catalogs.some((c) =>
                         location.pathname.includes(
-                          `/category/${c.name.toLowerCase().replace(/\s/g, "-")}`
+                          `/category/${c.name
+                            .toLowerCase()
+                            .replace(/\s/g, "-")}`
                         )
                       )
                         ? "bg-gradient-to-r from-[#3a7bfc]/10 to-transparent"
@@ -486,7 +523,10 @@ const Header: React.FC = () => {
                       className="flex items-center justify-between px-4 py-3.5 text-gray-700 font-medium rounded-xl transition-all duration-200 hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] min-h-[52px] cursor-pointer"
                       onClick={() => toggleDropdown("products")}
                     >
-                      <Link to="/category" className="no-underline flex items-center">
+                      <Link
+                        to="/category"
+                        className="no-underline flex items-center"
+                      >
                         <span className="mr-3 text-[1.2rem]">🛒</span>
                         Products
                       </Link>
@@ -516,7 +556,9 @@ const Header: React.FC = () => {
                               transition={{ delay: index * 0.05 }}
                             >
                               <Link
-                                to={`/category/${category.name.toLowerCase().replace(/\s/g, "-")}`}
+                                to={`/category/${category.name
+                                  .toLowerCase()
+                                  .replace(/\s/g, "-")}`}
                                 className="flex items-center px-4 py-3 text-gray-600 text-[0.95rem] rounded-lg transition-all duration-200 hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] mb-0.5"
                               >
                                 <div className="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center bg-gray-100 border border-black/10 me-2">
@@ -537,13 +579,17 @@ const Header: React.FC = () => {
 
                   <li
                     className={`rounded-xl overflow-hidden ${
-                      location.pathname === "/about" ? "bg-gradient-to-r from-[#3a7bfc]/10 to-transparent" : ""
+                      location.pathname === "/about"
+                        ? "bg-gradient-to-r from-[#3a7bfc]/10 to-transparent"
+                        : ""
                     }`}
                   >
                     <Link
                       to="/about"
                       className={`flex items-center justify-between px-4 py-3.5 text-gray-700 font-medium rounded-xl transition-all duration-200 hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] min-h-[52px] ${
-                        location.pathname === "/about" ? "text-[#3a7bfc] font-semibold" : ""
+                        location.pathname === "/about"
+                          ? "text-[#3a7bfc] font-semibold"
+                          : ""
                       }`}
                     >
                       <span className="mr-3 text-[1.2rem]">ℹ️</span>
@@ -553,13 +599,17 @@ const Header: React.FC = () => {
 
                   <li
                     className={`rounded-xl overflow-hidden ${
-                      location.pathname === "/testimonials" ? "bg-gradient-to-r from-[#3a7bfc]/10 to-transparent" : ""
+                      location.pathname === "/testimonials"
+                        ? "bg-gradient-to-r from-[#3a7bfc]/10 to-transparent"
+                        : ""
                     }`}
                   >
                     <Link
                       to="/testimonials"
                       className={`flex items-center justify-between px-4 py-3.5 text-gray-700 font-medium rounded-xl transition-all duration-200 hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] min-h-[52px] ${
-                        location.pathname === "/testimonials" ? "text-[#3a7bfc] font-semibold" : ""
+                        location.pathname === "/testimonials"
+                          ? "text-[#3a7bfc] font-semibold"
+                          : ""
                       }`}
                     >
                       <span className="mr-3 text-[1.2rem]">⭐</span>
@@ -569,13 +619,17 @@ const Header: React.FC = () => {
 
                   <li
                     className={`rounded-xl overflow-hidden ${
-                      location.pathname === "/contact" ? "bg-gradient-to-r from-[#3a7bfc]/10 to-transparent" : ""
+                      location.pathname === "/contact"
+                        ? "bg-gradient-to-r from-[#3a7bfc]/10 to-transparent"
+                        : ""
                     }`}
                   >
                     <Link
                       to="/contact"
                       className={`flex items-center justify-between px-4 py-3.5 text-gray-700 font-medium rounded-xl transition-all duration-200 hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] min-h-[52px] ${
-                        location.pathname === "/contact" ? "text-[#3a7bfc] font-semibold" : ""
+                        location.pathname === "/contact"
+                          ? "text-[#3a7bfc] font-semibold"
+                          : ""
                       }`}
                     >
                       <span className="mr-3 text-[1.2rem]">📞</span>

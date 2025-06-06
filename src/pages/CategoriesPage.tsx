@@ -71,7 +71,7 @@ const CategoriesPage = () => {
   return (
     <div className="pt-16 overflow-x-hidden lg:px-20">
       {/* Hero Section */}
-      <section className="bg-white py-24 md:py-28 lg:py-32 relative rounded-b-3xl shadow-lg overflow-hidden">
+      <section className="bg-white pb-20 pt-30 md:pt-30 lg:pt-34 relative rounded-b-3xl shadow-lg overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(58,123,252,0.03)_0%,transparent_50%),radial-gradient(circle_at_80%_80%,rgba(111,66,193,0.03)_0%,transparent_50%)]"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex justify-center">
@@ -80,7 +80,7 @@ const CategoriesPage = () => {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, ease: "easeOut" }}
-                className="text-4xl md:text-5xl font-bold mb-4"
+                className="text-5xl md:text-6xl font-bold mb-4"
               >
                 Browse Our{" "}
                 <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
