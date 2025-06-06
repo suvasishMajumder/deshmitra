@@ -11,7 +11,7 @@ import {
 import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 
-const Header:React.FC = () => {
+const Header: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
@@ -21,21 +21,12 @@ const Header:React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const catalogs = useSelector((state: RootState) => state.catalog.catalogs);
-  // Update the navigation links to use /category instead of /category
-  //   const navigation = [
-  //     { name: "Home", path: "/" },
-  //     { name: "Categories", path: "/category" }, // Changed from /category to /category
-  //     { name: "About", path: "/about" },
-  //     { name: "Contact", path: "/contact" },
-  //     { name: "Testimonials", path: "/testimonials" },
-  //   ];
 
-  // Rotating announcement text
   const announcements: string[] = [
     "Serving India's Basic Needs",
     "Spices | Rice | Sugar | Salt | Dry Fruits",
     "Premium quality products | Nationwide shipping available",
-    "Quality-assured products | Custumoized solutions for businesses",
+    "Quality-assured products | Customized solutions for businesses",
     "Explore our range of organic products | Available now",
     "Bulk orders available | Customer satisfaction guaranteed",
     "Explore our wide range of products | Get a quote today!",
@@ -44,20 +35,18 @@ const Header:React.FC = () => {
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
  
 
-  // Handle announcement rotation
   useEffect(() => {
     const timer = setInterval(() => {
       setIsAnimating(true);
       setTimeout(() => {
         setCurrentAnnouncement((prev) => (prev + 1) % announcements.length);
         setIsAnimating(false);
-      }, 600); // Slightly longer for smoother transition
-    }, 5000); // Increased to 5 seconds to give users more time to read
+      }, 600);
+    }, 5000);
 
     return () => clearInterval(timer);
   }, []);
 
-  // Handle scroll detection with enhanced threshold and behavior
   useEffect(() => {
     const handleScroll = () => {
       const scrollThreshold = 10;
@@ -76,13 +65,11 @@ const Header:React.FC = () => {
     };
   }, [isScrolled]);
 
-  // Close mobile menu when route changes
   useEffect(() => {
     setIsMobileMenuOpen(false);
     setActiveDropdown(null);
   }, [location.pathname]);
 
-  //React.FormEvent<HTMLFormElement>
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -108,11 +95,14 @@ const Header:React.FC = () => {
   };
 
   return (
-    <header className={`fixed-top ${isScrolled ? "scrolled" : ""}`}>
-      {/* Top announcement bar */}
-      <div className="announcement-bar py-2 text-center text-white">
-        <div className="container">
-          <div className="announcement-container">
+    <header
+      className={`fixed top-0 w-full z-[9998] transition-all duration-300 ${
+        isScrolled ? "shadow-[0_5px_30px_rgba(0,0,0,0.1)]" : ""
+      }`}
+    >
+      <div className="bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] py-2 text-center text-white text-[0.85rem] tracking-wider overflow-hidden relative">
+        <div className="container mx-auto">
+          <div className="min-h-6 flex items-center justify-center py-0.5">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentAnnouncement}
@@ -120,17 +110,20 @@ const Header:React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className="announcement-text"
+                className="flex flex-col items-center text-shadow-[0_1px_2px_rgba(0,0,0,0.1)] font-medium"
               >
-                {announcements[currentAnnouncement]}
-
-                <div className="announcement-indicators">
+                <span className="bg-white/15 px-2 py-0.5 rounded animate-pulse">
+                  {announcements[currentAnnouncement]}
+                </span>
+                <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
                   {announcements.map((_, index) => (
                     <span
                       key={index}
-                      className={`indicator ${
-                        currentAnnouncement === index ? "active" : ""
-                      }`}
+                      className={`w-1.5 h-1.5 rounded-full cursor-pointer transition-all duration-300 ${
+                        currentAnnouncement === index
+                          ? "bg-white w-[15px] rounded"
+                          : "bg-white/40"
+                      } hover:bg-white/80 hover:scale-125`}
                       onClick={() => {
                         setIsAnimating(true);
                         setTimeout(() => {
@@ -147,19 +140,17 @@ const Header:React.FC = () => {
         </div>
       </div>
 
-      <div className="header-container">
-        {/* Main navbar */}
+      <div className="bg-white/98 backdrop-blur-md transition-all duration-300">
         <nav
-          className={`navbar navbar-expand-lg ${
-            isScrolled ? "navbar-scrolled" : ""
+          className={`py-4 transition-all duration-300 ${
+            isScrolled ? "py-2.5" : ""
           }`}
         >
-          {" "}
-          <div className="container-fluid px-2 px-sm-3 px-md-4">
+          <div className="container mx-auto px-2 sm:px-3 md:px-4 flex items-center justify-between">
             {/* Logo */}
-            <Link className="navbar-brand me-0 me-lg-4" to="/">
+            <Link className="flex items-center" to="/">
               <motion.div
-                className="logo-container"
+                className="flex items-center gap-2.5"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
@@ -167,30 +158,36 @@ const Header:React.FC = () => {
                 <img
                   src="/logo.webp"
                   alt="Akdenar Logo"
-                  style={{ height: "70px", width: "70px" }}
-                  className="brand-logo"
+                  className={`h-[45px] w-auto object-contain transition-all duration-300 ${
+                    isScrolled ? "h-10" : ""
+                  }`}
                   onError={(e) => {
                     const target = e.target as HTMLImageElement | null;
-
                     if (target) {
                       target.src = "/logo.webp";
                     }
                   }}
                 />
-                <div className="brand-text">
-                  <span className="brand-name">Akdenar</span>
-                  <span className="brand-tagline">
+                <div className="flex flex-col">
+                  <span className="font-poppins font-bold text-2xl bg-gradient-to-r from-[#3a7bfc] via-[#6f42c1] to-[#e83e8c] bg-[300%_auto] bg-clip-text text-transparent animate-[gradient_5s_ease_infinite_alternate]">
+                    Akdenar
+                  </span>
+                  <span className="text-[0.8rem] text-[#3c3d3f] tracking-tight">
                     Premium Quality Products
                   </span>
                 </div>
               </motion.div>
             </Link>
-            {/* Desktop Search Bar - Modified to have consistent width */}{" "}
-            <div className="search-container d-none d-lg-block flex-shrink-0 mx-2">
-              <form onSubmit={handleSearch}>
+
+            {/* Desktop Search Bar and Navigation */}
+            <div className="hidden lg:flex items-center flex-grow gap-4">
+              {/* Search Bar */}
+              <form onSubmit={handleSearch} className="flex-grow">
                 <div
-                  className={`search-input-wrapper ${
-                    searchFocused ? "focused" : ""
+                  className={`relative rounded-full overflow-hidden border border-gray-200 bg-gray-100 flex items-center transition-all duration-300 ${
+                    searchFocused
+                      ? "shadow-[0_0_0_4px_rgba(58,123,252,0.15)] border-[#3a7bfc] bg-white"
+                      : ""
                   }`}
                 >
                   <input
@@ -200,19 +197,212 @@ const Header:React.FC = () => {
                       setSearchQuery(e.target.value)
                     }
                     placeholder="Search products..."
-                    className="search-input"
+                    className="w-full px-5 py-3 bg-transparent text-[0.95rem] border-none focus:outline-none placeholder:text-gray-500"
                     onFocus={() => setSearchFocused(true)}
                     onBlur={() => setSearchFocused(false)}
                   />
-                  <motion.button type="submit" className="search-button">
+                  <motion.button
+                    type="submit"
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-gradient-to-br from-[#3a7bfc] to-[#6f42c1] text-white w-10 h-10 rounded-full flex items-center justify-center cursor-pointer shadow-[0_4px_10px_rgba(58,123,252,0.3)] transition-all duration-300 hover:bg-gradient-to-br hover:from-[#6f42c1] hover:to-[#3a7bfc] hover:shadow-[0_6px_15px_rgba(58,123,252,0.4)] hover:-translate-x-0.5 focus:outline-none focus:shadow-[0_0_0_3px_rgba(58,123,252,0.2),0_6px_15px_rgba(58,123,252,0.4)] active:scale-95"
+                  >
                     <FaSearch />
                   </motion.button>
                 </div>
               </form>
+
+              {/* Navigation */}
+              <ul className="flex items-center gap-1.5">
+                <li className="relative">
+                  <Link
+                    className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 ${
+                      location.pathname === "/" ? "text-[#3a7bfc] font-semibold" : ""
+                    }`}
+                    to="/"
+                  >
+                    Home
+                    {location.pathname === "/" && (
+                      <motion.div
+                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] rounded"
+                        layoutId="navIndicator"
+                      />
+                    )}
+                  </Link>
+                </li>
+                <li className="relative">
+                  <Link to="/category" className="no-underline">
+                    <div
+                      className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 cursor-pointer flex items-center ${
+                        catalogs.some((c) =>
+                          location.pathname.includes(
+                            `/category/${c.name.toLowerCase().replace(/\s/g, "-")}`
+                          )
+                        )
+                          ? "text-[#3a7bfc] font-semibold"
+                          : ""
+                      }`}
+                      onMouseEnter={() => setActiveDropdown("products")}
+                      onMouseLeave={() => {
+                        setTimeout(() => {
+                          if (!document.querySelector(".products-dropdown:hover")) {
+                            setActiveDropdown(null);
+                          }
+                        }, 100);
+                      }}
+                    >
+                      Products
+                      <FaChevronDown size={14} className="ml-1" />
+                      {catalogs.some((c) =>
+                        location.pathname.includes(
+                          `/category/${c.name.toLowerCase().replace(/\s/g, "-")}`
+                        )
+                      ) && (
+                        <motion.div
+                          className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] rounded"
+                          layoutId="navIndicator"
+                        />
+                      )}
+                    </div>
+                  </Link>
+                  <AnimatePresence>
+                    {activeDropdown === "products" && (
+                      <motion.div
+                        className="absolute left-1/2 -translate-x-1/2 mt-2.5 bg-white rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.1)] p-4 min-w-[500px] z-[1000] products-dropdown"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        transition={{ duration: 0.2 }}
+                        onMouseEnter={() => setActiveDropdown("products")}
+                        onMouseLeave={() => setActiveDropdown(null)}
+                      >
+                        <div className="grid grid-cols-12 gap-4">
+                          <div className="col-span-5 border-r border-gray-100 max-h-[350px] overflow-y-auto pr-2.5 scrollbar-thin scrollbar-thumb-[#3a7bfc]/30 scrollbar-track-transparent">
+                            {catalogs.map((category, index) => (
+                              <Link
+                                key={index}
+                                className={`flex items-center px-4 py-2.5 text-[0.9rem] text-gray-600 rounded-lg transition-all duration-200 hover:bg-[#3a7bfc]/10 hover:text-[#3a7bfc] hover:translate-x-0.5 mb-0.5 ${
+                                  hoveredProduct === index ? "bg-[#3a7bfc]/10 text-[#3a7bfc]" : ""
+                                }`}
+                                to={`/category/${category.name.toLowerCase().replace(/\s/g, "-")}`}
+                                onMouseEnter={() => handleProductHover(index)}
+                              >
+                                <span
+                                  className="w-2.5 h-2.5 rounded-full me-2"
+                                  style={{ backgroundColor: category.colors[0] }}
+                                ></span>
+                                {category.name}
+                              </Link>
+                            ))}
+                          </div>
+                          <div className="col-span-7 flex items-center justify-center p-2.5">
+                            {hoveredProduct !== null && (
+                              <motion.div
+                                className="text-center w-full"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                              >
+                                <div className="w-full h-40 overflow-hidden rounded-xl shadow-[0_5px_15px_rgba(0,0,0,0.08)] mb-3">
+                                  <img
+                                    src={catalogs[hoveredProduct].image}
+                                    alt={catalogs[hoveredProduct].name}
+                                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                                  />
+                                </div>
+                                <h6 className="font-semibold text-gray-800 mb-1.5">
+                                  {catalogs[hoveredProduct].name}
+                                </h6>
+                                <p className="text-sm text-gray-500 mb-2">
+                                  {catalogs[hoveredProduct].categories.length} varieties available
+                                </p>
+                                <div className="flex flex-wrap justify-center gap-1.5">
+                                  {catalogs[hoveredProduct].categories
+                                    .slice(0, 3)
+                                    .map((category, idx) => (
+                                      <span
+                                        key={idx}
+                                        className="text-xs px-2 py-1 rounded-full bg-gray-100 text-gray-600"
+                                      >
+                                        {category.name}
+                                      </span>
+                                    ))}
+                                  {catalogs[hoveredProduct].categories.length > 3 && (
+                                    <span className="text-xs px-2 py-1 rounded-full bg-[#3a7bfc]/10 text-[#3a7bfc]">
+                                      +{catalogs[hoveredProduct].categories.length - 3}
+                                    </span>
+                                  )}
+                                </div>
+                              </motion.div>
+                            )}
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </li>
+                <li className="relative">
+                  <Link
+                    className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 ${
+                      location.pathname === "/about" ? "text-[#3a7bfc] font-semibold" : ""
+                    }`}
+                    to="/about"
+                  >
+                    About
+                    {location.pathname === "/about" && (
+                      <motion.div
+                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] rounded"
+                        layoutId="navIndicator"
+                      />
+                    )}
+                  </Link>
+                </li>
+                <li className="relative">
+                  <Link
+                    className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 ${
+                      location.pathname === "/testimonials" ? "text-[#3a7bfc] font-semibold" : ""
+                    }`}
+                    to="/testimonials"
+                  >
+                    Testimonials
+                    {location.pathname === "/testimonials" && (
+                      <motion.div
+                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] rounded"
+                        layoutId="navIndicator"
+                      />
+                    )}
+                  </Link>
+                </li>
+                <li className="relative">
+                  <Link
+                    className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 ${
+                      location.pathname === "/contact" ? "text-[#3a7bfc] font-semibold" : ""
+                    }`}
+                    to="/contact"
+                  >
+                    Contact
+                    {location.pathname === "/contact" && (
+                      <motion.div
+                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] rounded"
+                        layoutId="navIndicator"
+                      />
+                    )}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/contact"
+                    className="inline-flex items-center justify-center px-5 py-2 font-medium text-[0.95rem] bg-[#3a7bfc] text-white rounded-lg shadow-[0_4px_12px_rgba(58,123,252,0.2)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(58,123,252,0.4)] whitespace-nowrap"
+                  >
+                    <FaShoppingBasket className="me-1 md:me-2 xl:me-2" />
+                    <span className="cta-text">Get Quote</span>
+                  </Link>
+                </li>
+              </ul>
             </div>
-            {/* Mobile Menu Button */}
+
+            {/* Mobile Menu Toggle */}
             <button
-              className="navbar-toggler"
+              className="lg:hidden bg-[#3a7bfc]/10 p-2.5 flex items-center justify-center text-[#3a7bfc] rounded-lg transition-all duration-300 hover:bg-[#3a7bfc]/20 focus:bg-[#3a7bfc]/20 focus:outline-none"
               type="button"
               onClick={toggleMobileMenu}
               aria-expanded={isMobileMenuOpen}
@@ -226,219 +416,10 @@ const Header:React.FC = () => {
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {isMobileMenuOpen ? (
-                    <FaTimes size={24} />
-                  ) : (
-                    <FaBars size={24} />
-                  )}
+                  {isMobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
                 </motion.div>
               </AnimatePresence>
             </button>
-            {/* Desktop Menu */}{" "}
-            <div className="desktop-menu d-none d-lg-flex flex-grow-1 justify-content-end">
-              <ul className="navbar-nav ms-auto align-items-center flex-nowrap">
-                <li className="nav-item">
-                  <Link
-                    className={`nav-link ${
-                      location.pathname === "/" ? "active" : ""
-                    }`}
-                    to="/"
-                  >
-                    Home
-                    {location.pathname === "/" && (
-                      <motion.div
-                        className="nav-indicator"
-                        layoutId="navIndicator"
-                      />
-                    )}
-                  </Link>
-                </li>
-                <li className="nav-item dropdown">
-                  <Link style={{ textDecoration: "none" }} to={"/category"}>
-                    <div
-                      className={`nav-link dropdown-toggle ${
-                        catalogs.some((c) =>
-                          location.pathname.includes(
-                            `/category/${c.name
-                              .toLowerCase()
-                              .replace(/\s/g, "-")}`
-                          )
-                        )
-                          ? "active"
-                          : ""
-                      }`}
-                      onMouseEnter={() => setActiveDropdown("products")}
-                      onMouseLeave={() => {
-                        // Use setTimeout to prevent immediate closing when moving to dropdown content
-                        setTimeout(() => {
-                          if (
-                            !document.querySelector(".products-dropdown:hover")
-                          ) {
-                            setActiveDropdown(null);
-                          }
-                        }, 100);
-                      }}
-                    >
-                      Products
-                      {catalogs.some((c) =>
-                        location.pathname.includes(
-                          `/category/${c.name
-                            .toLowerCase()
-                            .replace(/\s/g, "-")}`
-                        )
-                      ) && (
-                        <motion.div
-                          className="nav-indicator"
-                          layoutId="navIndicator"
-                        />
-                      )}
-                    </div>
-                  </Link>
-                  <AnimatePresence>
-                    {activeDropdown === "products" && (
-                      <motion.div
-                        className="dropdown-menu products-dropdown show"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 20 }}
-                        transition={{ duration: 0.2 }}
-                        onMouseEnter={() => setActiveDropdown("products")}
-                        onMouseLeave={() => setActiveDropdown(null)}
-                      >
-                        <div className="row">
-                          <div className="col-5 product-list">
-                            {catalogs.map((category, index) => (
-                              <Link
-                                key={index}
-                                className={`dropdown-item ${
-                                  hoveredProduct === index ? "active" : ""
-                                }`}
-                                to={`/category/${category.name
-                                  .toLowerCase()
-                                  .replace(/\s/g, "-")}`}
-                                onMouseEnter={() => handleProductHover(index)}
-                              >
-                                <div className="d-flex align-items-center">
-                                  <span
-                                    className="dropdown-color-indicator me-2"
-                                    style={{
-                                      backgroundColor: category.colors[0],
-                                    }}
-                                  ></span>
-                                  {category.name}
-                                </div>
-                              </Link>
-                            ))}
-                          </div>
-                          <div className="col-7 product-preview">
-                            {hoveredProduct !== null && (
-                              <motion.div
-                                className="preview-content"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.2 }}
-                              >
-                                <div className="preview-image-container mb-3">
-                                  <img
-                                    src={catalogs[hoveredProduct].image}
-                                    alt={catalogs[hoveredProduct].name}
-                                    className="preview-image"
-                                  />
-                                </div>
-                                <h6 className="preview-title">
-                                  {catalogs[hoveredProduct].name}
-                                </h6>
-                                <p className="preview-subtitle mb-2 small text-muted">
-                                  {catalogs[hoveredProduct].categories.length}{" "}
-                                  varieties available
-                                </p>
-                                <div className="categories-preview">
-                                  {catalogs[hoveredProduct].categories
-                                    .slice(0, 3)
-                                    .map((category, idx) => (
-                                      <span
-                                        key={idx}
-                                        className="category-badge me-1"
-                                      >
-                                        {category.name}
-                                      </span>
-                                    ))}
-                                  {catalogs[hoveredProduct].categories.length >
-                                    3 && (
-                                    <span className="category-badge more">
-                                      +
-                                      {catalogs[hoveredProduct].categories
-                                        .length - 3}
-                                    </span>
-                                  )}
-                                </div>
-                              </motion.div>
-                            )}
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </li>
-                <li className="nav-item">
-                  <Link
-                    className={`nav-link ${
-                      location.pathname === "/about" ? "active" : ""
-                    }`}
-                    to="/about"
-                  >
-                    About
-                    {location.pathname === "/about" && (
-                      <motion.div
-                        className="nav-indicator"
-                        layoutId="navIndicator"
-                      />
-                    )}
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link
-                    className={`nav-link ${
-                      location.pathname === "/testimonials" ? "active" : ""
-                    }`}
-                    to="/testimonials"
-                  >
-                    Testimonials
-                    {location.pathname === "/testimonials" && (
-                      <motion.div
-                        className="nav-indicator"
-                        layoutId="navIndicator"
-                      />
-                    )}
-                  </Link>
-                </li>
-                <li className="nav-item">
-                  <Link
-                    className={`nav-link ${
-                      location.pathname === "/contact" ? "active" : ""
-                    }`}
-                    to="/contact"
-                  >
-                    Contact
-                    {location.pathname === "/contact" && (
-                      <motion.div
-                        className="nav-indicator"
-                        layoutId="navIndicator"
-                      />
-                    )}
-                  </Link>
-                </li>{" "}
-                <li className="nav-item ms-2 nav-cta-item">
-                  <Link to="/contact" className="btn btn-primary nav-cta-btn">
-                    <span className="d-flex align-items-center">
-                      <FaShoppingBasket className="me-md-2 me-lg-1 me-xl-2" />
-                      <span className="cta-text">Get Quote</span>
-                    </span>
-                  </Link>
-                </li>
-              </ul>
-            </div>
           </div>
         </nav>
 
@@ -446,26 +427,25 @@ const Header:React.FC = () => {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              className="mobile-menu-container"
+              className="bg-white border-t border-gray-100/20 overflow-y-auto max-h-[calc(100vh-120px)]"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
-              <div className="container py-3">
-                {/* Mobile Search */}
+              <div className="container mx-auto py-3">
                 <form onSubmit={handleSearch} className="mb-4">
-                  <div className="mobile-search-input-wrapper">
+                  <div className="relative rounded-[30px] overflow-hidden border border-gray-200 bg-gray-100">
                     <input
                       type="text"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search products..."
-                      className="mobile-search-input"
+                      className="w-full px-5 py-3.5 bg-transparent text-[0.95rem] border-none focus:outline-none placeholder:text-gray-500"
                     />
                     <motion.button
                       type="submit"
-                      className="mobile-search-button"
+                      className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-gradient-to-br from-[#3a7bfc] to-[#6f42c1] text-white w-9 h-9 rounded-full flex items-center justify-center cursor-pointer shadow-[0_4px_10px_rgba(58,123,252,0.2)] transition-all duration-300 hover:bg-gradient-to-br hover:from-[#6f42c1] hover:to-[#3a7bfc] hover:shadow-[0_6px_15px_rgba(58,123,252,0.3)]"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -474,37 +454,41 @@ const Header:React.FC = () => {
                   </div>
                 </form>
 
-                {/* Mobile Nav Links */}
-                <ul className="mobile-nav-links">
-                  <li className={location.pathname === "/" ? "active" : ""}>
-                    <Link to="/" className="mobile-nav-link">
-                      <span className="mobile-nav-icon">🏠</span>
+                <ul className="list-none p-0 m-0 mb-4">
+                  <li
+                    className={`rounded-xl overflow-hidden ${
+                      location.pathname === "/" ? "bg-gradient-to-r from-[#3a7bfc]/10 to-transparent" : ""
+                    }`}
+                  >
+                    <Link
+                      to="/"
+                      className={`flex items-center justify-between px-4 py-3.5 text-gray-700 font-medium rounded-xl transition-all duration-200 hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] min-h-[52px] ${
+                        location.pathname === "/" ? "text-[#3a7bfc] font-semibold" : ""
+                      }`}
+                    >
+                      <span className="mr-3 text-[1.2rem]">🏠</span>
                       Home
                     </Link>
                   </li>
 
                   <li
-                    className={
+                    className={`rounded-xl overflow-hidden ${
                       catalogs.some((c) =>
                         location.pathname.includes(
-                          `/category/${c.name
-                            .toLowerCase()
-                            .replace(/\s/g, "-")}`
+                          `/category/${c.name.toLowerCase().replace(/\s/g, "-")}`
                         )
                       )
-                        ? "active"
+                        ? "bg-gradient-to-r from-[#3a7bfc]/10 to-transparent"
                         : ""
-                    }
+                    }`}
                   >
                     <div
-                      className="mobile-nav-link with-dropdown"
+                      className="flex items-center justify-between px-4 py-3.5 text-gray-700 font-medium rounded-xl transition-all duration-200 hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] min-h-[52px] cursor-pointer"
                       onClick={() => toggleDropdown("products")}
                     >
-                      <Link style={{ textDecoration: "none" }} to={"/category"}>
-                        <div className="d-flex align-items-center">
-                          <span className="mobile-nav-icon">🛒</span>
-                          <span>Products</span>
-                        </div>
+                      <Link to="/category" className="no-underline flex items-center">
+                        <span className="mr-3 text-[1.2rem]">🛒</span>
+                        Products
                       </Link>
                       <motion.div
                         animate={{
@@ -515,11 +499,10 @@ const Header:React.FC = () => {
                         <FaChevronDown size={14} />
                       </motion.div>
                     </div>
-
                     <AnimatePresence>
                       {activeDropdown === "products" && (
                         <motion.ul
-                          className="mobile-dropdown-menu"
+                          className="list-none p-0 pl-4 m-0 max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-thumb-[#3a7bfc]/30 scrollbar-track-gray-100"
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: "auto" }}
                           exit={{ opacity: 0, height: 0 }}
@@ -533,21 +516,17 @@ const Header:React.FC = () => {
                               transition={{ delay: index * 0.05 }}
                             >
                               <Link
-                                to={`/category/${category.name
-                                  .toLowerCase()
-                                  .replace(/\s/g, "-")}`}
-                                className="mobile-dropdown-item"
+                                to={`/category/${category.name.toLowerCase().replace(/\s/g, "-")}`}
+                                className="flex items-center px-4 py-3 text-gray-600 text-[0.95rem] rounded-lg transition-all duration-200 hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] mb-0.5"
                               >
-                                <div className="d-flex align-items-center">
-                                  <div className="mobile-dropdown-image-container me-2">
-                                    <img
-                                      src={category.image}
-                                      alt={category.name}
-                                      className="mobile-dropdown-image"
-                                    />
-                                  </div>
-                                  {category.name}
+                                <div className="w-9 h-9 rounded-full overflow-hidden flex items-center justify-center bg-gray-100 border border-black/10 me-2">
+                                  <img
+                                    src={category.image}
+                                    alt={category.name}
+                                    className="w-full h-full object-cover"
+                                  />
                                 </div>
+                                {category.name}
                               </Link>
                             </motion.li>
                           ))}
@@ -557,39 +536,58 @@ const Header:React.FC = () => {
                   </li>
 
                   <li
-                    className={location.pathname === "/about" ? "active" : ""}
+                    className={`rounded-xl overflow-hidden ${
+                      location.pathname === "/about" ? "bg-gradient-to-r from-[#3a7bfc]/10 to-transparent" : ""
+                    }`}
                   >
-                    <Link to="/about" className="mobile-nav-link">
-                      <span className="mobile-nav-icon">ℹ️</span>
+                    <Link
+                      to="/about"
+                      className={`flex items-center justify-between px-4 py-3.5 text-gray-700 font-medium rounded-xl transition-all duration-200 hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] min-h-[52px] ${
+                        location.pathname === "/about" ? "text-[#3a7bfc] font-semibold" : ""
+                      }`}
+                    >
+                      <span className="mr-3 text-[1.2rem]">ℹ️</span>
                       About
                     </Link>
                   </li>
 
                   <li
-                    className={
-                      location.pathname === "/testimonials" ? "active" : ""
-                    }
+                    className={`rounded-xl overflow-hidden ${
+                      location.pathname === "/testimonials" ? "bg-gradient-to-r from-[#3a7bfc]/10 to-transparent" : ""
+                    }`}
                   >
-                    <Link to="/testimonials" className="mobile-nav-link">
-                      <span className="mobile-nav-icon">⭐</span>
+                    <Link
+                      to="/testimonials"
+                      className={`flex items-center justify-between px-4 py-3.5 text-gray-700 font-medium rounded-xl transition-all duration-200 hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] min-h-[52px] ${
+                        location.pathname === "/testimonials" ? "text-[#3a7bfc] font-semibold" : ""
+                      }`}
+                    >
+                      <span className="mr-3 text-[1.2rem]">⭐</span>
                       Testimonials
                     </Link>
                   </li>
 
                   <li
-                    className={location.pathname === "/contact" ? "active" : ""}
+                    className={`rounded-xl overflow-hidden ${
+                      location.pathname === "/contact" ? "bg-gradient-to-r from-[#3a7bfc]/10 to-transparent" : ""
+                    }`}
                   >
-                    <Link to="/contact" className="mobile-nav-link">
-                      <span className="mobile-nav-icon">📞</span>
+                    <Link
+                      to="/contact"
+                      className={`flex items-center justify-between px-4 py-3.5 text-gray-700 font-medium rounded-xl transition-all duration-200 hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] min-h-[52px] ${
+                        location.pathname === "/contact" ? "text-[#3a7bfc] font-semibold" : ""
+                      }`}
+                    >
+                      <span className="mr-3 text-[1.2rem]">📞</span>
                       Contact
                     </Link>
                   </li>
                 </ul>
 
-                <div className="text-center mt-4">
+                <div className="text-center mt-4 pb-4">
                   <Link
                     to="/contact"
-                    className="btn btn-primary mobile-cta-btn"
+                    className="inline-flex items-center justify-center w-full px-6 py-3.5 font-medium text-white bg-[#3a7bfc] rounded-full shadow-[0_4px_15px_rgba(58,123,252,0.25)] transition-all duration-300"
                   >
                     <FaShoppingBasket className="me-2" />
                     Get Quote
@@ -601,874 +599,14 @@ const Header:React.FC = () => {
         </AnimatePresence>
       </div>
 
-      {/* Progress bar on scroll */}
       {isScrolled && (
         <motion.div
-          className="scroll-progress-bar"
+          className="absolute bottom-0 left-0 w-full h-[3px] bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1]"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
           transition={{ duration: 0.5 }}
         />
       )}
-
-      {/* CSS Styles */}
-      <style>{`
-        /* Header Base Styles */
-        header {
-          width: 100%;
-          z-index: 9998;
-          transition: all 0.3s ease;
-        }
-
-        header.scrolled {
-          box-shadow: 0 5px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .announcement-bar {
-          background: linear-gradient(90deg, #3a7bfc, #6f42c1);
-          font-size: 0.85rem;
-          letter-spacing: 0.5px;
-          overflow: hidden;
-          position: relative;
-        }
-        
-        .announcement-container {
-          position: relative;
-          min-height: 24px; /* Increased height slightly */
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 2px 0;
-        }
-        
-        .announcement-text {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          width: 100%;
-          text-shadow: 0 1px 2px rgba(0,0,0,0.1);
-          font-weight: 500;
-        }
-        
-        .announcement-indicators {
-          position: absolute;
-          bottom: -15px;
-          left: 50%;
-          transform: translateX(-50%);
-          display: flex;
-          gap: 6px;
-          z-index: 10;
-        }
-        
-        .indicator {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          background-color: rgba(255,255,255,0.4);
-          cursor: pointer;
-          transition: all 0.3s ease;
-        }
-        
-        .indicator.active {
-          background-color: white;
-          width: 15px;
-          border-radius: 3px;
-        }
-        
-        .indicator:hover {
-          background-color: rgba(255,255,255,0.8);
-          transform: scale(1.2);
-        }
-
-        /* Add animation for text highlight */
-        .announcement-text span {
-          background-color: rgba(255,255,255,0.15);
-          padding: 1px 8px;
-          border-radius: 3px;
-          margin: 0 4px;
-          animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-          0% { background-color: rgba(255,255,255,0.15); }
-          50% { background-color: rgba(255,255,255,0.25); }
-          100% { background-color: rgba(255,255,255,0.15); }
-        }
-
-        .header-container {
-          background-color: rgba(255, 255, 255, 0.98);
-          backdrop-filter: blur(10px);
-          transition: all 0.3s ease;
-        }        .navbar {
-          padding: 16px 0;
-          transition: all 0.3s ease;
-          position: relative;
-        }
-
-        .navbar-scrolled {
-          padding: 10px 0;
-        }
-
-        /* Logo & Brand Styling */
-        .logo-container {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-        }
-
-        .brand-logo {
-          height: 45px;
-          width: auto;
-          transition: all 0.3s ease;
-          object-fit: contain;
-        }
-
-        .navbar-scrolled .brand-logo {
-          height: 40px;
-        }
-
-        .brand-text {
-          display: flex;
-          flex-direction: column;
-        }
-
-        .brand-name {
-          font-family: 'Poppins', sans-serif;
-          font-weight: 700;
-          font-size: 1.5rem;
-          line-height: 1.1;
-          background: linear-gradient(to right, #3a7bfc, #6f42c1, #e83e8c, #3a7bfc);
-          background-size: 300% auto;
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: gradient 5s ease infinite alternate;
-        }
-
-        @keyframes gradient {
-          0% {
-            background-position: 0% 50%;
-          }
-          50% {
-            background-position: 100% 50%;
-          }
-          100% {
-            background-position: 0% 50%;
-          }
-        }
-
-        .brand-tagline {
-          font-size: 0.8rem;
-          color:rgb(60, 61, 63);
-          letter-spacing: 0.5px;
-          line-height: 1.1;
-        }
-
-        /* Desktop Navigation Styling */
-        .desktop-menu .nav-item {
-          position: relative;
-          margin: 0 5px;
-        }
-
-        .desktop-menu .nav-link {
-          font-size: 0.95rem;
-          font-weight: 500;
-          color: #444;
-          padding: 8px 16px;
-          border-radius: 8px;
-          transition: all 0.3s ease;
-          position: relative;
-        }
-
-        .desktop-menu .nav-link:hover {
-          color: #3a7bfc;
-          background-color: rgba(58, 123, 252, 0.08);
-          transform: translateY(-2px);
-        }
-
-        .desktop-menu .nav-link.active {
-          color: #3a7bfc;
-          font-weight: 600;
-        }
-
-        .desktop-menu .nav-indicator {
-          position: absolute;
-          bottom: -4px;
-          left: 50%;
-          transform: translateX(-50%);
-          height: 3px;
-          width: 20px;
-          background: linear-gradient(90deg, #3a7bfc, #6f42c1);
-          border-radius: 2px;
-        }        .nav-cta-btn {
-          padding: 8px 20px;
-          font-weight: 500;
-          border-radius: 8px;
-          font-size: 0.95rem;
-          box-shadow: 0 4px 12px rgba(58, 123, 252, 0.2);
-          transition: all 0.3s ease;
-          white-space: nowrap;
-          min-width: fit-content;
-          text-overflow: ellipsis;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .nav-cta-btn:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 8px 20px rgba(58, 123, 252, 0.4);
-        }
-
-        /* Enhanced Products Dropdown Menu Styling */
-        .dropdown-toggle {
-          cursor: pointer;
-          user-select: none;
-          position: relative;
-          z-index: 10;
-        }
-
-        .products-dropdown {
-          border: none;
-          border-radius: 16px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-          padding: 15px;
-          min-width: 500px;
-          margin-top: 10px;
-          background: white;
-          z-index: 1000;
-          position: absolute; /* Ensure absolute positioning */
-          left: 50%;
-          transform: translateX(-50%) !important;
-          pointer-events: auto; /* Ensure the dropdown can receive mouse events */
-        }
-
-        /* Prevent dropdown from appearing on hover of inactive elements */
-        .dropdown-menu.show {
-          display: block;
-        }
-
-        /* Make dropdown items clickable without interference */
-        .dropdown-item {
-          position: relative;
-          z-index: 10;
-        }
-
-        .product-list {
-          border-right: 1px solid #f1f1f1;
-          max-height: 350px;
-          overflow-y: auto;
-          padding-right: 10px;
-        }
-
-        .product-list::-webkit-scrollbar {
-          width: 6px;
-        }
-
-        .product-list::-webkit-scrollbar-thumb {
-          background-color: rgba(58, 123, 252, 0.3);
-          border-radius: 3px;
-        }
-
-        .dropdown-item {
-          padding: 10px 15px;
-          font-size: 0.9rem;
-          color: #555;
-          border-radius: 8px;
-          transition: all 0.2s;
-          margin-bottom: 2px;
-          display: flex;
-          align-items: center;
-          white-space: nowrap;
-        }
-
-        .dropdown-item:hover,
-        .dropdown-item.active {
-          background-color: rgba(58, 123, 252, 0.08);
-          color: #3a7bfc;
-          transform: translateX(2px);
-        }
-
-        .dropdown-color-indicator {
-          width: 10px;
-          height: 10px;
-          border-radius: 50%;
-          display: inline-block;
-        }
-
-        .product-preview {
-          padding: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .preview-content {
-          text-align: center;
-          width: 100%;
-        }
-
-        .preview-image-container {
-          width: 100%;
-          height: 160px;
-          overflow: hidden;
-          border-radius: 12px;
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
-        }
-
-        .preview-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.5s ease;
-        }
-
-        .preview-image:hover {
-          transform: scale(1.05);
-        }
-
-        .preview-title {
-          font-weight: 600;
-          color: #333;
-          margin-bottom: 5px;
-        }
-
-        .categories-preview {
-          display: flex;
-          flex-wrap: wrap;
-          justify-content: center;
-          gap: 5px;
-        }
-
-        .category-badge {
-          font-size: 0.75rem;
-          padding: 3px 8px;
-          border-radius: 30px;
-          background-color: #f8f9fa;
-          color: #555;
-        }
-
-        .category-badge.more {
-          background-color: rgba(58, 123, 252, 0.1);
-          color: #3a7bfc;
-        }
-
-        /* Search Bar Styling */        .search-container {
-          flex: 0 1 auto;
-          width: 400px;
-          max-width: 400px;
-          min-width: 200px;
-          margin: 0 15px;
-          transition: width 0.3s ease;
-        }
-
-        .search-input-wrapper {
-          position: relative;
-          width: 100%;
-          border-radius: 50px;
-          overflow: hidden;
-          transition: all 0.3s ease;
-          border: 1px solid #e0e0e0;
-          background-color: #f8f9fa;
-          display: flex;
-          align-items: center;
-        }
-
-        .search-input-wrapper.focused {
-          box-shadow: 0 0 0 4px rgba(58, 123, 252, 0.15);
-          border-color: #3a7bfc;
-          background-color: white;
-        }
-
-        .search-input {
-          width: 100%;
-          padding: 12px 50px 12px 20px !important; /* Add !important to ensure padding is consistent */
-          border: none;
-          background: transparent;
-          font-size: 0.95rem;
-          transition: all 0.3s ease;
-          box-sizing: border-box; /* Ensure box sizing is consistent */
-        }
-
-        .search-input:focus {
-          outline: none;
-          padding-left: 20px !important; /* Maintain left padding when focused */
-        }
-
-        .search-input::placeholder {
-          color: #888;
-          opacity: 1; /* Ensure placeholder is visible */
-          padding-left: 0; /* Ensure placeholder text doesn't have extra padding */
-        }
-
-        /* Fix for WebKit browsers */
-        .search-input::-webkit-input-placeholder {
-          padding-left: 0;
-          color: #888;
-        }
-
-        /* Fix for Firefox */
-        .search-input::-moz-placeholder {
-          padding-left: 0;
-          color: #888;
-          opacity: 1;
-        }
-
-        /* Fix for Microsoft Edge */
-        .search-input:-ms-input-placeholder {
-          padding-left: 0;
-          color: #888;
-        }
-
-        /* Fix for newer Microsoft Edge versions */
-        .search-input::-ms-input-placeholder {
-          padding-left: 0;
-          color: #888;
-        }
-
-        .search-button {
-          position: absolute;
-          right: 5px;
-          top: 50%;
-          transform: translateY(-50%);
-          border: none;
-          background: linear-gradient(45deg, #3a7bfc, #6f42c1);
-          color: white;
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          box-shadow: 0 4px 10px rgba(58, 123, 252, 0.3);
-          z-index: 1;
-          transition: all 0.3s ease;
-          font-size: 16px;
-          outline: none;
-        }
-
-        .search-button:hover {
-          background: linear-gradient(45deg, #6f42c1, #3a7bfc);
-          box-shadow: 0 6px 15px rgba(58, 123, 252, 0.4);
-          transform: translateY(-50%) translateX(-2px);
-        }
-
-        .search-button:focus {
-          outline: none;
-          box-shadow: 0 0 0 3px rgba(58, 123, 252, 0.2), 0 6px 15px rgba(58, 123, 252, 0.4);
-        }
-
-        .search-button:active {
-          transform: translateY(-50%) scale(0.95);
-        }
-
-        /* Mobile Search Button - Apply the same fix here */
-        .mobile-search-button {
-          position: absolute;
-          right: 5px;
-          top: 50%;
-          transform: translateY(-50%);
-          border: none;
-          background: linear-gradient(45deg, #3a7bfc, #6f42c1);
-          color: white;
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          box-shadow: 0 4px 10px rgba(58, 123, 252, 0.2);
-          z-index: 1;
-          transition: background 0.3s, box-shadow 0.3s;
-        }
-
-        .mobile-search-button:hover {
-          background: linear-gradient(45deg, #6f42c1, #3a7bfc);
-          box-shadow: 0 6px 15px rgba(58, 123, 252, 0.3);
-        }
-
-        /* Hamburger Button Styling - Fixed rotation */
-        .navbar-toggler {
-          border: none;
-          background: rgba(58, 123, 252, 0.1);
-          padding: 10px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #3a7bfc;
-          transition: all 0.3s;
-          border-radius: 8px;
-          margin-left: 10px;
-        }
-
-        .navbar-toggler:focus {
-          box-shadow: none;
-          background-color: rgba(58, 123, 252, 0.2);
-        }
-
-        .navbar-toggler:hover {
-          background-color: rgba(58, 123, 252, 0.2);
-        }
-
-        /* Fixed dropdown image alignment */
-        .mobile-dropdown-image-container {
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          overflow: hidden;
-          flex-shrink: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background-color: #f8f9fa;
-          border: 1px solid rgba(0,0,0,0.1);
-        }
-
-        .mobile-dropdown-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        /* Scroll Progress Bar */
-        .scroll-progress-bar {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          height: 3px;
-          width: 100%;
-          background: linear-gradient(90deg, #3a7bfc, #6f42c1);
-          transform-origin: left;
-        }
-
-        /* Mobile Menu Styling */
-        .mobile-menu-container {
-          background-color: white;
-          border-top: 1px solid rgba(0, 0, 0, 0.05);
-          overflow-y: auto; /* Change from hidden to auto for vertical scrolling */
-          max-height: calc(100vh - 120px); /* Set a max height to ensure it doesn't go off screen */
-        }
-
-        .mobile-search-input-wrapper {
-          position: relative;
-          width: 100%;
-          overflow: hidden;
-          border-radius: 30px;
-          border: 1px solid #e0e0e0;
-          background-color: #f8f9fa;
-        }
-
-        .mobile-search-input {
-          width: 100%;
-          padding: 14px 50px 14px 20px;
-          border: none;
-          background: transparent;
-          font-size: 0.95rem;
-        }
-
-        .mobile-search-input:focus {
-          outline: none;
-        }
-
-        .mobile-search-button {
-          position: absolute;
-          right: 5px;
-          top: 50%;
-          transform: translateY(-50%);
-          border: none;
-          background: linear-gradient(45deg, #3a7bfc, #6f42c1);
-          color: white;
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          box-shadow: 0 4px 10px rgba(58, 123, 252, 0.2);
-        }
-
-        .mobile-nav-links {
-          list-style: none;
-          padding: 0;
-          margin: 0 0 15px 0; /* Added bottom margin */
-        }
-
-        .mobile-nav-links li {
-          margin-bottom: 5px;
-          position: relative;
-          border-radius: 10px;
-          overflow: hidden;
-        }
-
-        .mobile-nav-links li.active {
-          background: linear-gradient(to right, rgba(58, 123, 252, 0.1), transparent);
-        }
-
-        .mobile-nav-links li.active .mobile-nav-link {
-          color: #3a7bfc;
-          font-weight: 600;
-        }
-
-        .mobile-nav-link {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 14px 16px;
-          color: #444;
-          font-weight: 500;
-          text-decoration: none;
-          border-radius: 10px;
-          transition: all 0.2s;
-          min-height: 52px; /* Ensure touch targets are at least 48px */
-        }
-
-        .mobile-nav-icon {
-          margin-right: 12px;
-          font-size: 1.2rem;
-        }
-
-        .mobile-nav-link:hover {
-          background-color: rgba(58, 123, 252, 0.05);
-          color: #3a7bfc;
-        }
-
-        .mobile-dropdown-menu {
-          list-style: none;
-          padding: 5px 0 5px 15px;
-          margin: 0;
-          max-height: 300px; /* Set a max height for the dropdown */
-          overflow-y: auto; /* Enable vertical scrolling within the dropdown */
-        }
-
-        /* Style scrollbar for better mobile UX */
-        .mobile-dropdown-menu::-webkit-scrollbar {
-          width: 4px;
-        }
-
-        .mobile-dropdown-menu::-webkit-scrollbar-thumb {
-          background-color: rgba(58, 123, 252, 0.3);
-          border-radius: 4px;
-        }
-
-        .mobile-dropdown-menu::-webkit-scrollbar-track {
-          background: rgba(0,0,0,0.05);
-        }
-
-        .mobile-dropdown-item {
-          display: flex;
-          align-items: center;
-          padding: 12px 16px;
-          color: #666;
-          text-decoration: none;
-          border-radius: 8px;
-          transition: all 0.2s;
-          font-size: 0.95rem;
-          margin-bottom: 2px; /* Add spacing between items */
-        }
-
-        .mobile-dropdown-item:hover {
-          background-color: rgba(58, 123, 252, 0.05);
-          color: #3a7bfc;
-        }
-
-        /* Add touch-friendly targets for mobile */
-        .mobile-nav-link.with-dropdown {
-          cursor: pointer;
-        }
-
-        /* Ensure the quote button doesn't get hidden */
-        .text-center.mt-4 {
-          padding-bottom: 15px;
-        }
-
-        .mobile-cta-btn {
-          width: 100%;
-          padding: 14px 24px;
-          font-weight: 500;
-          border-radius: 50px;
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 1rem;
-          box-shadow: 0 4px 15px rgba(58, 123, 252, 0.25);
-        }
-
-        /* Responsive adjustments */        /* Extra breakpoint for specific laptop widths where "Get Quote" button might get stuck */
-        @media (min-width: 992px) and (max-width: 1080px) {
-          .search-container {
-            width: 220px;
-            min-width: 180px;
-          }
-          
-          .desktop-menu .nav-link {
-            font-size: 0.85rem;
-            padding: 8px 10px;
-          }
-          
-          .nav-cta-btn {
-            padding: 6px 10px;
-            font-size: 0.8rem;
-          }
-          
-          .cta-text {
-            font-size: 0.8rem;
-          }
-          
-          .me-lg-1 {
-            margin-right: 0.15rem !important;
-          }
-        }
-        
-        /* Large laptops to Desktop */
-        @media (min-width: 1200px) and (max-width: 1400px) {
-          .navbar .container-fluid {
-            padding-left: 15px;
-            padding-right: 15px;
-          }
-          
-          .search-container {
-            width: 300px;
-          }
-
-          .nav-cta-btn {
-            padding: 8px 16px;
-          }
-        }
-
-        /* Medium laptops and tablets */
-        @media (min-width: 992px) and (max-width: 1199px) {
-          .navbar .container-fluid {
-            padding-left: 10px;
-            padding-right: 10px;
-          }
-          
-          .search-container {
-            width: 250px;
-          }
-          
-          .nav-item {
-            margin-right: 5px;
-          }
-          
-          .nav-link {
-            font-size: 0.9rem;
-            padding-left: 8px;
-            padding-right: 8px;
-          }
-            .nav-cta-btn {
-            padding: 6px 12px;
-            font-size: 0.85rem;
-          }
-          
-          .nav-cta-item {
-            margin-left: 0 !important;
-          }
-          
-          .cta-text {
-            font-size: 0.85rem;
-          }
-        }
-
-        /* Tablets to Small laptops */
-        @media (max-width: 992px) {
-          .navbar {
-            padding: 12px 0;
-          }
-
-          .navbar-scrolled {
-            padding: 8px 0;
-          }
-
-          .brand-logo {
-            height: 38px;
-          }
-
-          .navbar-scrolled .brand-logo {
-            height: 35px;
-          }
-
-          .brand-name {
-            font-size: 1.1rem;
-          }
-
-          .brand-tagline {
-            font-size: 0.65rem;
-          }
-
-          .search-container {
-            width: 250px; /* Adjust width for smaller screens */
-          }
-
-          .products-dropdown {
-            min-width: 300px;
-          }
-        }        /* Small tablets */
-        @media (min-width: 577px) and (max-width: 767px) {
-          .brand-logo {
-            height: 36px;
-            width: 36px !important;
-          }
-          
-          .navbar-scrolled .brand-logo {
-            height: 32px;
-          }
-          
-          .brand-name {
-            font-size: 1rem;
-          }
-          
-          .brand-tagline {
-            font-size: 0.65rem;
-          }
-          
-          .navbar .container-fluid {
-            padding-left: 12px;
-            padding-right: 12px;
-          }
-          
-          .search-container {
-            width: 200px;
-          }
-        }
-
-        /* Mobile devices */
-        @media (max-width: 576px) {
-          .announcement-bar {
-            font-size: 0.75rem;
-          }
-          
-          .announcement-indicators {
-            bottom: -12px;
-          }
-
-          .brand-logo {
-            height: 35px;
-            width: 35px !important;
-          }
-
-          .navbar-scrolled .brand-logo {
-            height: 32px;
-          }
-
-          .brand-name {
-            font-size: 1rem;
-          }
-
-          .brand-tagline {
-            font-size: 0.6rem;
-          }
-
-          .mobile-menu-container {
-            max-height: calc(100vh - 100px); /* Adjust for smaller screens */
-          }
-          
-          .mobile-dropdown-menu {
-            max-height: 250px; /* Slightly smaller on very small screens */
-          }
-        }
-      `}</style>
     </header>
   );
 };
