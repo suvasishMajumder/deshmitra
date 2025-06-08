@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import ScrollToTop from './components/ScrollToTop';
 import { Helmet } from 'react-helmet';
 import Header from './components/Header';
-import CategoriesPage from './pages/CategoriesPage';
+// import CategoriesPage from './pages/CategoriesPage'; //'CategoriesPage' is declared but its value is never read . errro arahahtha isme
 import ProductDetail from './pages/ProductDetail';
 import CategoryPage from './pages/CategoryPage';
 import SearchResults from './pages/SearchResults';
@@ -169,7 +169,10 @@ export default function App() {
                 <meta property="og:title" content="Akdenar - Premium Quality Products" />
                 <meta property="og:description" content="Discover Akdenar's premium selection of high-quality products. Shop the best quality products at competitive prices." />
                 <meta property="og:type" content="website" />
-              </Helmet>              <Home />
+              
+              </Helmet>            
+                <Home />
+          
             </>
           } />
           <Route path="/category" element={
@@ -182,7 +185,7 @@ export default function App() {
                 <meta property="og:description" content="Explore our complete collection of premium products across all categories." />
                 <meta property="og:type" content="website" />
               </Helmet>
-              <CategoriesPage />
+              <Header />
             </>
           } />
           <Route path="/category/:productName" element={
@@ -194,7 +197,8 @@ export default function App() {
                 <meta property="og:title" content="Akdenar - Product Categories" />
                 <meta property="og:description" content="Browse through Akdenar's extensive collection of premium products." />
                 <meta property="og:type" content="website" />
-              </Helmet>              <CategoryPage />
+              </Helmet>  
+                          <CategoryPage />
             </>
           } />
           <Route path="/category/:productName/:categoryName/:productId" element={
@@ -206,7 +210,8 @@ export default function App() {
                 <meta property="og:title" content="Akdenar - Product Details" />
                 <meta property="og:description" content="View detailed information about Akdenar's premium products." />
                 <meta property="og:type" content="website" />
-              </Helmet>              <ProductDetail />
+              </Helmet>   
+                         <ProductDetail />
             </>
           } />
           <Route path="/search-results" element={
@@ -218,7 +223,8 @@ export default function App() {
                 <meta property="og:title" content="Akdenar - Search Results" />
                 <meta property="og:description" content="Find the products you're looking for at Akdenar." />
                 <meta property="og:type" content="website" />
-              </Helmet>              <SearchResults />
+              </Helmet>        
+                    <SearchResults />
             </>
           } />
           <Route path="/about" element={
@@ -230,7 +236,8 @@ export default function App() {
                 <meta property="og:title" content="Akdenar - About Us" />
                 <meta property="og:description" content="Learn about Akdenar's journey and commitment to quality." />
                 <meta property="og:type" content="website" />
-              </Helmet>              <About />
+              </Helmet>       
+                     <About />
             </>
           } />
           <Route path="/contact" element={
@@ -242,7 +249,8 @@ export default function App() {
                 <meta property="og:title" content="Akdenar - Contact Us" />
                 <meta property="og:description" content="Get in touch with Akdenar for any inquiries about our products and services." />
                 <meta property="og:type" content="website" />
-              </Helmet>              <Contact />
+              </Helmet>         
+                   <Contact />
             </>
           } />
           <Route path="/testimonials" element={
@@ -254,7 +262,8 @@ export default function App() {
                 <meta property="og:title" content="Akdenar - Customer Testimonials" />
                 <meta property="og:description" content="Read what our customers have to say about Akdenar's products and services." />
                 <meta property="og:type" content="website" />
-              </Helmet>              <TestimonialsPage />
+              </Helmet>          
+                  <TestimonialsPage />
             </>
           } />
           <Route path="*" element={

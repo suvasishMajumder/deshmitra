@@ -19,6 +19,12 @@ export default function SearchResults() {
 
   // Enhanced search function with weighted results and category-specific boosting
   const getSearchResults = () => {
+
+ 
+
+
+
+
   let results = [];
     const searchTerms = query
       .toLowerCase()

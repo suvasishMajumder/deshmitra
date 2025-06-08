@@ -352,7 +352,7 @@ const [formData, setFormData] = useState<IFormData>({
 
 
 {/*need clarity: whether method='post' should be added in the form or not */}
-            <form ref={formRef} onSubmit={sendEmail} className="position-relative">
+            <form ref={formRef} method='post' onSubmit={sendEmail} className="position-relative">
               <AnimatePresence>
                 {submitStatus === 'success' && (
                   <motion.div
