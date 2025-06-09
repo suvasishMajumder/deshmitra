@@ -1,6 +1,7 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from "framer-motion";
 import { FaLeaf, FaCheck, FaUsers, FaGlobe, FaHeart } from "react-icons/fa6";
+import type { TValues } from '../types/types';
 
 const About = () => {
   useEffect(() => {
@@ -11,7 +12,7 @@ const About = () => {
     };
   }, []);
 
-  const values = [
+  const values: TValues[] = [
     {
       icon: FaLeaf,
       title: "Quality First",
@@ -64,11 +65,9 @@ const About = () => {
 //       image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
 //     }
 //   ];
-``
-=======
->>>>>>> 849eb44 (Updating About.tsx)
+
   return (
-    <div className="pt-16 bg-white">
+    <div className="pt-16 bg-white px-20">
 
       {/* Hero Section */}
       <section className="hero-section position-relative py-4">
@@ -269,7 +268,7 @@ const About = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <h2 className="text-6xl font-bold mb-4">Why Choose Akdenar?</h2>
+                <h2 className="text-5xl font-bold mb-4">Why Choose Akdenar?</h2>
                 <div className="bg-blue-500 mb-4 h-1 w-20"></div>
                 <p className="text-xl mb-6">We stand apart because of our unwavering commitment to quality, transparency, and customer satisfaction.</p>
 
