@@ -8,20 +8,21 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Dependency directories
-node_modules
+node_modules/
 
 # Build output
-dist
-dist-ssr
+dist/
+dist-ssr/
 
 # Local files
 *.local
-.env
+.env*
+!.env.example
 
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
