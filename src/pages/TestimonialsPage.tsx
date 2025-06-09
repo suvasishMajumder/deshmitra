@@ -15,12 +15,23 @@ import "swiper/css/pagination";
 import fallbackImg from "../assets/fallbackImg.png";
 // import StarRating from "../components/StarRating";
 import Rating from "@mui/material/Rating";
+import amitPatelRealImg from "../assets/amiPatelReal.webp";
+import arjunReddyImg from '../assets/arjun_reddy.webp'
+import chefRajeshKumarImg from "../assets/chef_rajesh_kumar.webp";
+import drAnjaliSinghImg from "../assets/Dr.anjali_singh.webp"
+import mariafernandezImg from "../assets/maria_fernandez.webp"
+import nehaGuptaImg from "../assets/neha_gupta.webp";
+import priyaSharmaImg from "../assets/priya_sharma.webp";
+import rahulVermaImg from "../assets/rahul_verma.webp";
+import snehaIyerImg from "../assets/sneha_iyer.webp";
+import vikramMalhotraImg from "../assets/vikram_malhotra.webp"
+
 
 const testimonials: ITestimonials[] = [
   {
     quote:
       "Akdenar's premium rice varieties have transformed our restaurant's biryani. The 1121 Basmati is exceptional!",
-    image: "https://picsum.photos/120/120?random=1",
+    image: chefRajeshKumarImg,
     name: "Chef Rajesh Kumar",
     location: "Mumbai",
     rating: 4,
@@ -29,7 +40,7 @@ const testimonials: ITestimonials[] = [
   {
     quote:
       "The quality of spices from Akdenar is unmatched. Their whole spices retain their aroma for months!",
-    image: "https://picsum.photos/120/120?random=2",
+    image: priyaSharmaImg,
     name: "Priya Sharma",
     location: "Delhi",
     rating: 4,
@@ -38,7 +49,7 @@ const testimonials: ITestimonials[] = [
   {
     quote:
       "As a food manufacturer, we trust Akdenar for consistent quality in all their products. Their supply chain is impeccable.",
-    image: "https://picsum.photos/120/120?random=3",
+    image: amitPatelRealImg,
     name: "Amit Patel",
     location: "Ahmedabad",
     rating: 4.5,
@@ -47,7 +58,7 @@ const testimonials: ITestimonials[] = [
   {
     quote:
       "The variety of dry fruits they offer is outstanding. Premium quality at competitive prices.",
-    image: "https://picsum.photos/120/120?random=4",
+    image: nehaGuptaImg,
     name: "Neha Gupta",
     location: "Bangalore",
     rating: 4.6,
@@ -56,7 +67,7 @@ const testimonials: ITestimonials[] = [
   {
     quote:
       "Their customer service is exceptional. They go above and beyond to ensure customer satisfaction.",
-    image: "https://picsum.photos/120/120?random=5",
+    image:  rahulVermaImg,
     name: "Rahul Verma",
     location: "Kolkata",
     rating: 5,
@@ -65,7 +76,7 @@ const testimonials: ITestimonials[] = [
   {
     quote:
       "The organic products from Akdenar have helped us maintain our commitment to healthy living.",
-    image: "https://picsum.photos/120/120?random=6",
+    image: drAnjaliSinghImg,
     name: "Dr. Anjali Singh",
     location: "Pune",
     rating: 4.8,
@@ -74,7 +85,7 @@ const testimonials: ITestimonials[] = [
   {
     quote:
       "Their salt varieties are perfect for our food processing unit. Consistent quality and timely delivery.",
-    image: "https://picsum.photos/120/120?random=7",
+    image: vikramMalhotraImg,
     name: "Vikram Malhotra",
     location: "Chennai",
     rating: 5,
@@ -83,7 +94,7 @@ const testimonials: ITestimonials[] = [
   {
     quote:
       "Akdenar's sugar products meet our bakery's high standards. The refined sugar is perfect for our confections.",
-    image: "https://picsum.photos/120/120?random=8",
+    image:mariafernandezImg,
     name: "Maria Fernandez",
     location: "Goa",
     rating: 5,
@@ -92,7 +103,7 @@ const testimonials: ITestimonials[] = [
   {
     quote:
       "Their commitment to quality and sustainable sourcing aligns perfectly with our restaurant's values.",
-    image: "https://picsum.photos/120/120?random=9",
+    image: arjunReddyImg,
     name: "Arjun Reddy",
     location: "Hyderabad",
     rating: 5,
@@ -101,7 +112,7 @@ const testimonials: ITestimonials[] = [
   {
     quote:
       "The variety of cooking oils they offer is impressive. Each one maintains its quality consistently.",
-    image: "https://picsum.photos/120/120?random=10",
+    image: snehaIyerImg ,
     name: "Sneha Iyer",
     location: "Kochi",
     rating: 4.5,
@@ -123,7 +134,7 @@ const TestimonialsPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="testimonials-page-container pt-[65px]">
+    <div className="testimonials-page-container pt-[145px]">
       {/* Hero Section with proper padding-top to avoid navbar overlap */}
       <section
         className="testimonials-hero py-5 bg-white/95 backdrop-blur-md 
