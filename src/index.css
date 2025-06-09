@@ -7,3 +7,37 @@
     --breakpoint-ds:36rem;
 
 }
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+
+@import "tailwindcss/utilities";
+
+
+
+
+@layer utilities {
+  .font-poppins {
+    font-family: 'Poppins', sans-serif;
+  }
+}
+
+@layer utilities {
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  .animate-gradient-text {
+    background-image: linear-gradient(to right, #3a7bfc, #6f42c1, #e83e8c, #3a7bfc);
+    background-size: 300% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradient 5s ease infinite alternate;
+  }
+}
