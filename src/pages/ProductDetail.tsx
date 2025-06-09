@@ -3,7 +3,6 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaStar, FaArrowRight } from "react-icons/fa6";
 import { FaArrowLeft } from "react-icons/fa";
-
 import { useSelector } from "react-redux";
 import ProductContactForm from "../components/ProductContactForm";
 import NotFound from "./NotFound";
@@ -11,10 +10,8 @@ import type { RootState } from "../redux/store";
 
 export default function ProductDetail() {
   const catalogs = useSelector((state: RootState) => state.catalog.catalogs);
-
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("description");
-  //const { token } = useParams<{token?: string}>();
   const params = useParams<{
     productName?: string;
     categoryName?: string;
@@ -58,9 +55,7 @@ export default function ProductDetail() {
     return <NotFound />;
   }
 
-  // Get related products from the same category
   const getRelatedProducts = () => {
-    // Filter out the current product and take up to 4 related products
     return category.subItems
       .filter((_, index) => index !== parseInt(productId))
       .slice(0, 4);
@@ -72,7 +67,6 @@ export default function ProductDetail() {
     navigate(`/category/${productName}`);
   };
 
-  // Get specifications based on product type
   const getSpecifications = () => {
     if (product.name.toLowerCase() === "rice") {
       return [
@@ -132,128 +126,141 @@ export default function ProductDetail() {
   const specifications = getSpecifications();
 
   return (
-    <main className="container mt-5">
-      <div className="pt-5">
-        <nav aria-label="breadcrumb" className="mt-3">
-          <ol className="breadcrumb">
-            <li className="breadcrumb-item">
-              <Link to="/" className="text-decoration-none">
+    <main className="mx-auto max-w-7xl mt-8 px-4 sm:px-30 lg:px-8">
+      <div className="pt-30">
+        <nav aria-label="breadcrumb" className="mt-4">
+          <ol className="flex space-x-2 text-sm">
+            <li>
+              <Link to="/" className="text-gray-600 hover:text-blue-600">
                 Home
               </Link>
             </li>
-            <li className="breadcrumb-item">
+            <li className="text-gray-400">/</li>
+            <li>
               <Link
                 to={`/category/${productName}`}
-                className="text-decoration-none"
+                className="text-gray-600 hover:text-blue-600"
               >
                 {product.name}
               </Link>
             </li>
-            <li className="breadcrumb-item">
+            <li className="text-gray-400">/</li>
+            <li>
               <Link
                 to="#"
-                className="text-decoration-none"
+                className="text-gray-600 hover:text-blue-600"
                 onClick={handleBackNavigation}
               >
                 {category.name}
               </Link>
             </li>
-            <li className="breadcrumb-item active" aria-current="page">
-              {item.name}
-            </li>
+            <li className="text-gray-400">/</li>
+            <li className="text-gray-900">{item.name}</li>
           </ol>
         </nav>
 
-        <div className="d-flex justify-content-end mb-4">
+        <div className="flex justify-end mb-6">
           <button
-            className="btn btn-outline-primary d-flex align-items-center px-3 py-2"
-            style={{ marginTop: "10px " }}
+            className="flex items-center px-4 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition"
             onClick={handleBackNavigation}
           >
-            <FaArrowLeft className="me-2" />
+            <FaArrowLeft className="mr-2" />
             Back to {category.name}
           </button>
         </div>
 
-        <div className="row g-5 mb-5">
-          <div className="col-lg-5">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
+          {/* IMAGE SECTION */}
+          <div className="lg:col-span-5 w-full max-w-[500px] mx-auto lg:mx-0">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              className="position-relative"
+              className="relative"
             >
-              <div
-                className="product-image-wrapper rounded-4 overflow-hidden bg-light shadow-sm"
-                style={{ height: "500px" }}
-              >
+              <div className="rounded-2xl overflow-hidden bg-gray-100 shadow-md h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px] w-full">
                 <img
                   src={item.image}
                   alt={item.name}
-                  className="w-100 h-100 object-fit-cover"
-                  // onError={(e) => (e.target.src = "https://via.placeholder.com/500x500?text=Product")}
+                  className="w-full h-full object-cover"
                 />
               </div>
 
-              <div className="position-absolute top-0 start-0 m-3">
-                <span className="badge bg-primary px-3 py-2 rounded-pill">
+              <div className="absolute top-2 left-2 sm:top-4 sm:left-4">
+                <span className="bg-blue-600 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-medium">
                   Premium
                 </span>
               </div>
 
-              <div className="position-absolute bottom-0 end-0 m-3">
-                <span className="badge bg-white text-dark fw-medium px-3 py-2 rounded-pill shadow-sm">
+              <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4">
+                <span className="bg-white text-gray-800 font-medium px-2 py-0.5 sm:px-3 sm:py-1 text-xs sm:text-sm rounded-full shadow-sm">
                   {category.name}
                 </span>
               </div>
             </motion.div>
           </div>
 
-          <div className="col-lg-7">
+          {/* DETAILS SECTION */}
+          <div className="lg:col-span-7">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
             >
-              <h1 className="fw-bold mb-1">{item.name}</h1>
-              <p className="text-muted mb-3">
+              <h1 className="text-2xl sm:text-3xl font-bold mb-2">
+                {item.name}
+              </h1>
+              <p className="text-gray-500 mb-4 text-sm sm:text-base">
                 {product.name} › {category.name}
               </p>
 
-              <div className="d-flex align-items-center mb-3">
+              <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => (
                   <FaStar
                     key={i}
                     size={16}
-                    className="me-1"
+                    className="mr-1"
                     style={{ color: i < 4 ? "#ffc107" : "#e0e0e0" }}
                   />
                 ))}
-                <span className="ms-2 text-muted small">
+                <span className="ml-2 text-gray-500 text-xs sm:text-sm">
                   (4.0 | 24 reviews)
                 </span>
               </div>
 
               <div className="mb-4">
-                <h3 className="text-primary fw-bold mb-1">{item.priceRange}</h3>
-                <p className="text-muted small">Price includes all taxes</p>
+                <h3 className="text-blue-600 font-bold text-lg sm:text-xl mb-1">
+                  {item.priceRange}
+                </h3>
+                <p className="text-gray-500 text-xs sm:text-sm">
+                  Price includes all taxes
+                </p>
               </div>
 
               <div className="mb-4">
-                <p>{item.description}</p>
+                <p className="text-sm">{item.description}</p>
               </div>
 
               <div className="mb-4">
-                <h4 className="fw-bold mb-3">Product Specifications</h4>
-                <div className="table-responsive">
-                  <table className="table table-striped">
+                <h4 className="font-bold text-base sm:text-lg mb-3">
+                  Product Specifications
+                </h4>
+                <div className="overflow-x-auto">
+                  <table className="w-full border border-gray-200 text-sm">
                     <tbody>
                       {specifications.map((spec, index) => (
-                        <tr key={index}>
-                          <th scope="row" style={{ width: "40%" }}>
+                        <tr
+                          key={index}
+                          className={
+                            index % 2 === 0 ? "bg-gray-200" : "bg-white"
+                          }
+                        >
+                          <th className="text-left px-3 py-2 font-semibold align-top w-1/3 text-sm">
                             {spec.label}
                           </th>
-                          <td>{spec.value}</td>
+                          <td className="px-3 py-2 text-gray-800 text-sm">
+                            {spec.value}
+                          </td>
                         </tr>
                       ))}
                     </tbody>
@@ -261,49 +268,37 @@ export default function ProductDetail() {
                 </div>
               </div>
 
-              <div className="p-3 bg-light rounded-3 mb-4">
-                <div className="row g-3">
-                  <div className="col-md-4">
-                    <div className="d-flex align-items-center">
-                      <div className="me-2">🚚</div>
+              <div className="p-4 bg-gray-100 rounded-lg mb-4 text-sm">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {[
+                    {
+                      icon: "🚚",
+                      title: "Nationwide Delivery",
+                      desc: "Fast & reliable across India",
+                    },
+                    {
+                      icon: "🔄",
+                      title: "Customer Support",
+                      desc: "9am–6pm, Mon–Sat",
+                    },
+                    {
+                      icon: "✅",
+                      title: "Quality Assured",
+                      desc: "100% Authentic Products",
+                    },
+                  ].map((info, idx) => (
+                    <div className="flex items-center" key={idx}>
+                      <div className="mr-3">{info.icon}</div>
                       <div>
-                        <h6 className="mb-0 small fw-semibold">
-                          {" "}
-                          Nationwide Delivery
+                        <h6 className="font-semibold text-sm mb-0">
+                          {info.title}
                         </h6>
-                        <p className="mb-0 small text-muted">
-                          Fast & reliable across India
+                        <p className="text-gray-500 text-xs mb-0">
+                          {info.desc}
                         </p>
                       </div>
                     </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="d-flex align-items-center">
-                      <div className="me-2">🔄</div>
-                      <div>
-                        <h6 className="mb-0 small fw-semibold">
-                          {" "}
-                          Customer Support
-                        </h6>
-                        <p className="mb-0 small text-muted">
-                          9am–6pm, Mon–Sat
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-4">
-                    <div className="d-flex align-items-center">
-                      <div className="me-2">✅</div>
-                      <div>
-                        <h6 className="mb-0 small fw-semibold">
-                          Quality Assured
-                        </h6>
-                        <p className="mb-0 small text-muted">
-                          100% Authentic Products
-                        </p>
-                      </div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             </motion.div>
@@ -311,12 +306,14 @@ export default function ProductDetail() {
         </div>
 
         {/* Product Tabs Section - Description, Specifications, Reviews */}
-        <div className="mb-5">
-          <ul className="nav nav-tabs mb-4" id="productTabs" role="tablist">
-            <li className="nav-item" role="presentation">
+        <div className="mb-8">
+          <ul className="flex border-b mb-4" role="tablist">
+            <li className="mr-4">
               <button
-                className={`nav-link ${
-                  activeTab === "description" ? "active" : ""
+                className={`pb-2 px-4 text-sm font-medium ${
+                  activeTab === "description"
+                    ? "border-b-2 border-blue-600 text-blue-600"
+                    : "text-gray-600 hover:text-blue-600"
                 }`}
                 onClick={() => setActiveTab("description")}
                 type="button"
@@ -324,10 +321,12 @@ export default function ProductDetail() {
                 Description
               </button>
             </li>
-            <li className="nav-item" role="presentation">
+            <li className="mr-4">
               <button
-                className={`nav-link ${
-                  activeTab === "specifications" ? "active" : ""
+                className={`pb-2 px-4 text-sm font-medium ${
+                  activeTab === "specifications"
+                    ? "border-b-2 border-blue-600 text-blue-600"
+                    : "text-gray-600 hover:text-blue-600"
                 }`}
                 onClick={() => setActiveTab("specifications")}
                 type="button"
@@ -335,10 +334,12 @@ export default function ProductDetail() {
                 Specifications
               </button>
             </li>
-            <li className="nav-item" role="presentation">
+            <li>
               <button
-                className={`nav-link ${
-                  activeTab === "reviews" ? "active" : ""
+                className={`pb-2 px-4 text-sm font-medium ${
+                  activeTab === "reviews"
+                    ? "border-b-2 border-blue-600 text-blue-600"
+                    : "text-gray-600 hover:text-blue-600"
                 }`}
                 onClick={() => setActiveTab("reviews")}
                 type="button"
@@ -348,13 +349,10 @@ export default function ProductDetail() {
             </li>
           </ul>
 
-          <div
-            className="tab-content p-4 bg-light rounded-3"
-            id="productTabContent"
-          >
+          <div className="p-6 bg-gray-100 rounded-lg">
             {activeTab === "description" && (
               <div>
-                <h4 className="fw-bold mb-3">Product Description</h4>
+                <h4 className="font-bold text-lg mb-3">Product Description</h4>
                 <p>{item.description}</p>
                 <p>
                   This premium {product.name.toLowerCase()} is sourced from the
@@ -371,23 +369,13 @@ export default function ProductDetail() {
                   to new heights.
                 </p>
                 <div className="my-4">
-                  <h5 className="fw-bold mb-3">Key Features:</h5>
-                  <ul className="list-group list-group-flush">
-                    <li className="list-group-item bg-transparent">
-                      Premium quality {product.name.toLowerCase()}
-                    </li>
-                    <li className="list-group-item bg-transparent">
-                      Sourced from trusted farmers
-                    </li>
-                    <li className="list-group-item bg-transparent">
-                      Naturally processed
-                    </li>
-                    <li className="list-group-item bg-transparent">
-                      No artificial additives
-                    </li>
-                    <li className="list-group-item bg-transparent">
-                      Rich in natural flavor
-                    </li>
+                  <h5 className="font-bold mb-3">Key Features:</h5>
+                  <ul className="space-y-2">
+                    <li>Premium quality {product.name.toLowerCase()}</li>
+                    <li>Sourced from trusted farmers</li>
+                    <li>Naturally processed</li>
+                    <li>No artificial additives</li>
+                    <li>Rich in natural flavor</li>
                   </ul>
                 </div>
               </div>
@@ -395,51 +383,50 @@ export default function ProductDetail() {
 
             {activeTab === "specifications" && (
               <div>
-                <h4 className="fw-bold mb-3">Product Specifications</h4>
-                <div className="table-responsive">
-                  <table className="table table-striped">
+                <h4 className="font-bold text-lg mb-3">
+                  Product Specifications
+                </h4>
+                <div className="overflow-x-auto">
+                  <table className="w-full border border-gray-200 text-sm">
                     <tbody>
-                      <tr>
-                        <th scope="row" style={{ width: "30%" }}>
-                          Product Name
-                        </th>
-                        <td>{item.name}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Category</th>
-                        <td>{category.name}</td>
-                      </tr>
-                      <tr>
-                        <th scope="row">Price Range</th>
-                        <td>{item.priceRange}</td>
-                      </tr>
-                      {specifications.map((spec, index) => (
-                        <tr key={`spec-${index}`}>
-                          <th scope="row">{spec.label}</th>
-                          <td>{spec.value}</td>
+                      {[
+                        { label: "Product Name", value: item.name },
+                        { label: "Category", value: category.name },
+                        { label: "Price Range", value: item.priceRange },
+                        ...specifications,
+                        ...(product.name.toLowerCase() === "rice"
+                          ? [
+                              {
+                                label: "Usage",
+                                value:
+                                  "Suitable for all rice dishes, biryani, pulao, etc.",
+                              },
+                              {
+                                label: "Cooking Time",
+                                value: "Approximately 15–20 minutes",
+                              },
+                              {
+                                label: "Aroma",
+                                value:
+                                  "Natural fragrance characteristic of premium basmati",
+                              },
+                            ]
+                          : []),
+                      ].map((row, index) => (
+                        <tr
+                          key={`row-${index}`}
+                          className={`border-b border-gray-200 ${
+                            index % 2 === 0 ? "bg-gray-200" : "bg-white"
+                          }`}
+                        >
+                          <th className="text-left px-4 py-3 font-semibold w-1/3">
+                            {row.label}
+                          </th>
+                          <td className="px-4 py-3 text-gray-800">
+                            {row.value}
+                          </td>
                         </tr>
                       ))}
-                      {product.name.toLowerCase() === "rice" && (
-                        <>
-                          <tr>
-                            <th scope="row">Usage</th>
-                            <td>
-                              Suitable for all rice dishes, biryani, pulao, etc.
-                            </td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Cooking Time</th>
-                            <td>Approximately 15-20 minutes</td>
-                          </tr>
-                          <tr>
-                            <th scope="row">Aroma</th>
-                            <td>
-                              Natural fragrance characteristic of premium
-                              basmati
-                            </td>
-                          </tr>
-                        </>
-                      )}
                     </tbody>
                   </table>
                 </div>
@@ -447,7 +434,7 @@ export default function ProductDetail() {
                 {product.name.toLowerCase() === "rice" &&
                   item.name.toLowerCase().includes("1121") && (
                     <div className="mt-4">
-                      <h5 className="fw-bold mb-3">
+                      <h5 className="font-bold mb-3">
                         1121 Sella Basmati Rice Processing
                       </h5>
                       <p>
@@ -456,22 +443,12 @@ export default function ProductDetail() {
                         while maintaining the authentic aroma. The process
                         involves:
                       </p>
-                      <ol className="list-group list-group-numbered">
-                        <li className="list-group-item border-0 bg-transparent">
-                          Soaking the paddy in water
-                        </li>
-                        <li className="list-group-item border-0 bg-transparent">
-                          Steaming to gelatinize the starch
-                        </li>
-                        <li className="list-group-item border-0 bg-transparent">
-                          Drying to reduce moisture content
-                        </li>
-                        <li className="list-group-item border-0 bg-transparent">
-                          Milling to remove husks
-                        </li>
-                        <li className="list-group-item border-0 bg-transparent">
-                          Sorting and grading for quality
-                        </li>
+                      <ol className="list-decimal pl-5 space-y-2">
+                        <li>Soaking the paddy in water</li>
+                        <li>Steaming to gelatinize the starch</li>
+                        <li>Drying to reduce moisture content</li>
+                        <li>Milling to remove husks</li>
+                        <li>Sorting and grading for quality</li>
                       </ol>
                     </div>
                   )}
@@ -480,11 +457,11 @@ export default function ProductDetail() {
 
             {activeTab === "reviews" && (
               <div>
-                <h4 className="fw-bold mb-3">Customer Reviews</h4>
-                <div className="row align-items-center mb-4">
-                  <div className="col-md-4 text-center">
-                    <h2 className="display-4 fw-bold mb-0">4.0</h2>
-                    <div className="d-flex justify-content-center my-2">
+                <h4 className="font-bold text-lg mb-3">Customer Reviews</h4>
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
+                  <div className="md:col-span-4 text-center">
+                    <h2 className="text-4xl font-bold mb-2">4.0</h2>
+                    <div className="flex justify-center my-2">
                       {[...Array(5)].map((_, i) => (
                         <FaStar
                           key={i}
@@ -494,49 +471,31 @@ export default function ProductDetail() {
                         />
                       ))}
                     </div>
-                    <p className="text-muted">Based on 24 reviews</p>
+                    <p className="text-gray-500">Based on 24 reviews</p>
                   </div>
-                  <div className="col-md-8">
+                  <div className="md:col-span-8">
                     {[5, 4, 3, 2, 1].map((rating) => (
-                      <div
-                        key={rating}
-                        className="d-flex align-items-center mb-2"
-                      >
-                        <div style={{ width: "60px" }} className="me-3">
-                          {rating} stars
+                      <div key={rating} className="flex items-center mb-2">
+                        <div className="w-16 mr-3 text-sm">{rating} stars</div>
+                        <div className="flex-grow">
+                          <div className="w-full bg-gray-200 rounded-full h-2.5">
+                            <div
+                              className="bg-yellow-400 h-2.5 rounded-full"
+                              style={{
+                                width: `${
+                                  rating === 4
+                                    ? 65
+                                    : rating === 5
+                                    ? 25
+                                    : rating === 3
+                                    ? 10
+                                    : 0
+                                }%`,
+                              }}
+                            ></div>
+                          </div>
                         </div>
-                        <div
-                          className="progress flex-grow-1"
-                          style={{ height: "10px" }}
-                        >
-                          <div
-                            className="progress-bar bg-warning"
-                            role="progressbar"
-                            style={{
-                              width: `${
-                                rating === 4
-                                  ? 65
-                                  : rating === 5
-                                  ? 25
-                                  : rating === 3
-                                  ? 10
-                                  : 0
-                              }%`,
-                            }}
-                            aria-valuenow={
-                              rating === 4
-                                ? 65
-                                : rating === 5
-                                ? 25
-                                : rating === 3
-                                ? 10
-                                : 0
-                            }
-                            aria-valuemin={0}
-                            aria-valuemax={0}
-                          ></div>
-                        </div>
-                        <div style={{ width: "50px" }} className="ms-3">
+                        <div className="w-12 ml-3 text-sm">
                           {rating === 4
                             ? 15
                             : rating === 5
@@ -550,14 +509,13 @@ export default function ProductDetail() {
                   </div>
                 </div>
 
-                <div className="border-top pt-4">
+                <div className="border-t pt-4">
                   <div className="mb-4">
-                    <div className="d-flex">
+                    <div className="flex">
                       <img
                         src="https://picsum.photos/50/50?random=1"
                         alt="User"
-                        className="rounded-circle me-3"
-                        style={{ width: "50px", height: "50px" }}
+                        className="rounded-full mr-3 w-12 h-12"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement | null;
                           if (target) {
@@ -567,17 +525,17 @@ export default function ProductDetail() {
                         }}
                       />
                       <div>
-                        <h6 className="mb-1 fw-bold">Rahul Sharma</h6>
-                        <div className="d-flex align-items-center mb-2">
+                        <h6 className="font-bold mb-1">Rahul Sharma</h6>
+                        <div className="flex items-center mb-2">
                           {[...Array(5)].map((_, i) => (
                             <FaStar
                               key={i}
                               size={12}
-                              className="me-1"
+                              className="mr-1"
                               style={{ color: i < 5 ? "#ffc107" : "#e0e0e0" }}
                             />
                           ))}
-                          <span className="ms-2 text-muted small">
+                          <span className="ml-2 text-gray-500 text-xs">
                             2 months ago
                           </span>
                         </div>
@@ -591,12 +549,11 @@ export default function ProductDetail() {
                   </div>
 
                   <div className="mb-4">
-                    <div className="d-flex">
+                    <div className="flex">
                       <img
                         src="https://picsum.photos/50/50?random=2"
                         alt="User"
-                        className="rounded-circle me-3"
-                        style={{ width: "50px", height: "50px" }}
+                        className="rounded-full mr-3 w-12 h-12"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement | null;
                           if (target) {
@@ -606,17 +563,17 @@ export default function ProductDetail() {
                         }}
                       />
                       <div>
-                        <h6 className="mb-1 fw-bold">Priya Patel</h6>
-                        <div className="d-flex align-items-center mb-2">
+                        <h6 className="font-bold mb-1">Priya Patel</h6>
+                        <div className="flex items-center mb-2">
                           {[...Array(5)].map((_, i) => (
                             <FaStar
                               key={i}
                               size={12}
-                              className="me-1"
+                              className="mr-1"
                               style={{ color: i < 4 ? "#ffc107" : "#e0e0e0" }}
                             />
                           ))}
-                          <span className="ms-2 text-muted small">
+                          <span className="ml-2 text-gray-500 text-xs">
                             1 month ago
                           </span>
                         </div>
@@ -632,7 +589,7 @@ export default function ProductDetail() {
                   <div className="text-center mt-4">
                     <Link
                       to="/testimonials"
-                      className="btn btn-outline-primary rounded-pill px-4"
+                      className="inline-block px-5 py-2 border border-blue-500 text-blue-500 rounded-full hover:bg-blue-50 transition"
                     >
                       View All Reviews
                     </Link>
@@ -643,64 +600,49 @@ export default function ProductDetail() {
           </div>
         </div>
 
-        <div className="mt-5 mb-5">
-          <h3 className="fw-bold mb-4">Interested in this product?</h3>
+        <div className="mt-8 mb-8">
+          <h3 className="font-bold text-3xl mb-4">
+            Interested in this product?
+          </h3>
           <ProductContactForm
             productName={`${product.name} - ${category.name} - ${item.name}`}
           />
         </div>
 
-        {/* Related Products Section */}
         {relatedProducts.length > 0 && (
-          <div className="related-products mb-5">
-            <div className="d-flex justify-content-between align-items-center mb-4">
-              <h3 className="fw-bold">Related Products</h3>
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-bold text-xl">Related Products</h3>
               <Link
                 to={`/category/${productName}`}
-                className="btn btn-outline-primary rounded-pill"
+                className="inline-block px-4 py-2 border border-blue-500 text-blue-500 rounded-full hover:bg-blue-50 transition"
               >
-                View All <FaArrowRight className="ms-2" size={12} />
+                View All <FaArrowRight className="ml-2 inline" size={12} />
               </Link>
             </div>
 
-            <div className="row g-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
               {relatedProducts.map((relatedItem, index) => (
-                <div key={index} className="col-md-6 col-lg-3">
+                <div key={index}>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                    whileHover={{
-                      y: -10,
-                      boxShadow: "0 15px 30px rgba(0,0,0,0.1)",
-                      transition: { duration: 0.3 },
-                    }}
-                    className="card h-100 border-0 shadow-sm"
-                    style={{
-                      borderRadius: "16px",
-                      overflow: "hidden",
-                    }}
+                    className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-2 transition-shadow transition-transform"
                   >
                     <Link
                       to={`/category/${productName}/${categoryName}/${category.subItems.findIndex(
                         (subItem) => subItem.name === relatedItem.name
                       )}`}
-                      className="text-decoration-none"
+                      className="block"
                     >
                       <div style={{ height: "180px", overflow: "hidden" }}>
                         <img
                           src={relatedItem.image}
                           alt={relatedItem.name}
-                          className="card-img-top"
-                          style={{
-                            height: "100%",
-                            width: "100%",
-                            objectFit: "cover",
-                            transition: "transform 0.5s ease",
-                          }}
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement | null;
-
                             if (target) {
                               target.src =
                                 "https://via.placeholder.com/180x180?text=Product";
@@ -708,21 +650,18 @@ export default function ProductDetail() {
                           }}
                         />
                       </div>
-                      <div className="card-body p-3">
-                        <h5 className="card-title fw-semibold text-dark mb-2">
+                      <div className="p-4">
+                        <h5 className="font-semibold text-gray-800 mb-2">
                           {relatedItem.name}
                         </h5>
-                        <p
-                          className="card-text text-muted small mb-3"
-                          style={{ height: "40px", overflow: "hidden" }}
-                        >
-                          {relatedItem.description.substring(0, 70)}...
+                        <p className="text-gray-500 text-sm mb-3 line-clamp-2">
+                          {relatedItem.description}
                         </p>
-                        <div className="d-flex justify-content-between align-items-center">
-                          <span className="badge bg-light text-primary">
+                        <div className="flex justify-between items-center">
+                          <span className="bg-gray-100 text-blue-600 px-2 py-1 rounded">
                             {relatedItem.priceRange}
                           </span>
-                          <span className="text-primary fw-medium small">
+                          <span className="text-blue-600 font-medium text-sm">
                             View Details
                           </span>
                         </div>

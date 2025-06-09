@@ -157,7 +157,7 @@ const Header: React.FC = () => {
                 <img
                   src="/logo.webp"
                   alt="Akdenar Logo"
-                  className={`h-[45px] w-auto object-contain transition-all duration-300 ${
+                  className={`h-[70px] w-auto object-contain transition-all duration-300 ${
                     isScrolled ? "h-10" : ""
                   }`}
                   onError={(e) => {
@@ -168,10 +168,10 @@ const Header: React.FC = () => {
                   }}
                 />
                 <div className="flex flex-col">
-                  <span className="font-poppins font-bold text-3xl animate-gradient-text">
+                  <span className="font-poppins font-extrabold text-2xl animate-gradient-text mb-[-3px]">
                     Akdenar
                   </span>
-                  <span className="text-[0.8rem] text-[#3c3d3f] tracking-tight">
+                  <span className="text-[0.8rem] font-semibold text-[#3c3d3f] tracking-tight">
                     Premium Quality Products
                   </span>
                 </div>
@@ -458,7 +458,7 @@ const Header: React.FC = () => {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              className="bg-white border-t border-gray-100/20 overflow-y-auto max-h-[calc(100vh-120px)]"
+              className="bg-white border-t border-gray-100/20 overflow-y-auto max-h-[calc(100vh-120px)]  md:px-20"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}

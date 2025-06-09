@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-
 export default function ScrollToTopButton() {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
@@ -27,7 +26,7 @@ export default function ScrollToTopButton() {
 
   return (
     <motion.div
-      className="scroll-to-top"
+      className="fixed bottom-8 left-8 z-[1000]"
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{
         opacity: isVisible ? 1 : 0,
@@ -35,30 +34,11 @@ export default function ScrollToTopButton() {
         y: isVisible ? 0 : 20
       }}
       transition={{ duration: 0.3 }}
-      style={{
-        position: "fixed",
-        bottom: "30px",
-        left: "30px",
-        zIndex: 1000,
-        display: isVisible ? "block" : "none"
-      }}
+      style={{ display: isVisible ? "block" : "none" }}
     >
       <button
         onClick={scrollToTop}
-        className="btn btn-primary rounded-circle shadow"
-        style={{
-          width: "50px",
-          height: "50px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          fontSize: "1.2rem",
-          background: "linear-gradient(135deg, #3a7bfc, #0046c0)",
-          border: "none",
-          boxShadow: "0 4px 15px rgba(58, 123, 252, 0.4)",
-          cursor: "pointer",
-          marginBottom: "10px"
-        }}
+        className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-600 to-blue-900 text-white rounded-full shadow-lg hover:shadow-xl transition-shadow"
         aria-label="Scroll to top"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">

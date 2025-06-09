@@ -6,7 +6,7 @@ import ProductContactForm from "../components/ProductContactForm";
 import { motion } from "framer-motion";
 import NotFound from "./NotFound";
 import type { RootState } from "../redux/store";
-import type { Catalog, Category} from "../types/types";
+import type { Catalog, Category } from "../types/types";
 
 type RouteParams = {
   productName: string;
@@ -15,25 +15,16 @@ type RouteParams = {
 export default function CategoryPage() {
   const catalogs = useSelector((state: RootState) => state.catalog.catalogs);
   const { productName } = useParams<RouteParams>();
-
-  //Added newly
-
   const navigate = useNavigate();
 
-  // const decodedName: string = decodeURIComponent(productName).replace(
-  //   /-/g,
-  //   " "
-  // );
-
-
-  const decodedName: string = decodeURIComponent(productName ?? "").replace(/-/g, ' ');
-
+  const decodedName: string = decodeURIComponent(productName ?? "").replace(
+    /-/g,
+    " "
+  );
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null
   );
 
-
-  //Isme humlog aise ek array ko map karrahe jiska har ek element Catalog type ka hai
   const product: Catalog | undefined = catalogs.find(
     (item) => item.name.toLowerCase() === decodedName.toLowerCase()
   );
@@ -51,49 +42,51 @@ export default function CategoryPage() {
   };
 
   return (
-    <main className="container mt-5">
+    <main className="container mx-auto mt-35 px-25">
       <div className="pt-5">
-        <div className="d-flex justify-content-between align-items-center mb-4 mt-4">
+        <div className="flex justify-between items-center mb-4 mt-4">
           <div>
             <nav aria-label="breadcrumb">
-              <ol className="breadcrumb mb-0">
-                <li className="breadcrumb-item">
-                  <Link to="/" className="text-decoration-none">
-                    Home
+              <ol className="flex space-x-2 text-sm">
+                <li>
+                  <Link
+                    to="/"
+                    className="no-underline text-gray-600 hover:text-blue-600"
+                  >
+                    Home /
                   </Link>
                 </li>
-                <li className="breadcrumb-item active" aria-current="page">
-                  {product.name}
-                </li>
+                <li className="text-gray-900 font-semibold">{product.name}</li>
               </ol>
             </nav>
-            <h1 className="fw-bold display-6 mt-2">{product.name}</h1>
+            <h1 className="font-bold text-5xl mt-2">{product.name}</h1>
           </div>
           <button
-            className="btn btn-outline-primary d-flex align-items-center px-3 py-2"
-            style={{ marginTop: "40px" }}
+            className="flex items-center px-3 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 mt-10"
             onClick={handleBackButtonClick}
           >
-            <FaArrowLeft className="me-2" />
+            <FaArrowLeft className="mr-2" />
             {selectedCategory ? "Back to Categories" : "Back to Home"}
           </button>
         </div>
 
         {selectedCategory ? (
           <div>
-            <div className="d-flex justify-content-between align-items-center mb-4">
-              <h2 className="fw-semibold fs-2">{selectedCategory.name}</h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="font-semibold text-3xl">
+                {selectedCategory.name}
+              </h2>
               <button
-                className="btn btn-sm btn-outline-secondary"
+                className="text-sm px-3 py-1 border border-gray-500 text-gray-500 rounded-lg hover:bg-gray-100"
                 onClick={() => setSelectedCategory(null)}
               >
                 View All Categories
               </button>
             </div>
 
-            <div className="row g-4 mb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-5">
               {selectedCategory?.subItems.map((item, index) => (
-                <div key={item.name} className="col-md-4 col-sm-6">
+                <div key={item.name}>
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -103,12 +96,7 @@ export default function CategoryPage() {
                       boxShadow: "0 15px 30px rgba(0,0,0,0.1)",
                       transition: { duration: 0.3 },
                     }}
-                    className="card h-100 border-0 shadow-sm"
-                    style={{
-                      borderRadius: "16px",
-                      overflow: "hidden",
-                      cursor: "pointer",
-                    }}
+                    className="rounded-2xl overflow-hidden shadow-md bg-white cursor-pointer "
                     onClick={() =>
                       navigate(
                         `/category/${product.name
@@ -119,72 +107,41 @@ export default function CategoryPage() {
                       )
                     }
                   >
-                    <div className="position-relative">
+                    <div className="relative">
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="card-img-top"
-                        style={{ height: "200px", objectFit: "cover" }}
-                        onError={
-                          (e) => {
-                            const target = e.target as HTMLImageElement | null;
-                            if (target) {
-                              target.src =
-                                "https://via.placeholder.com/200x200?text=Product";
-                            }
+                        className="w-full h-48 object-cover"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement | null;
+                          if (target) {
+                            target.src =
+                              "https://via.placeholder.com/200x200?text=Product";
                           }
-
-                          // (e.target.src = "https://via.placeholder.com/200x200?text=Product")
-                        }
+                        }}
                       />
-                      <div className="position-absolute top-0 start-0 m-3">
-                        <span className="badge bg-dark bg-opacity-75 text-white px-2 py-1 rounded-pill">
+                      <div className="absolute top-3 left-3">
+                        <span className="bg-[rgba(33,37,41,0.7)]  text-white px-2 py-1 rounded-full text-xs">
                           {item.priceRange}
                         </span>
                       </div>
-                      <div
-                        className="position-absolute bottom-0 start-0 w-100"
-                        style={{
-                          background:
-                            "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%)",
-                          padding: "50px 15px 15px",
-                        }}
-                      >
-                        <h5 className="text-white fw-bold mb-0">{item.name}</h5>
+                      <div className="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/70 to-transparent p-4">
+                        <h5 className="text-white font-bold">{item.name}</h5>
                       </div>
                     </div>
 
-                    <div className="card-body p-4">
-                      <p
-                        className="card-text text-muted mb-3"
-                        style={{ fontSize: "0.9rem" }}
-                      >
+                    <div className="p-4">
+                      <p className="text-gray-600 text-sm mb-3">
                         {item.description.length > 120
                           ? `${item.description.substring(0, 120)}...`
                           : item.description}
                       </p>
 
-                      <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                          <span
-                            className="badge rounded-pill"
-                            style={{
-                              backgroundColor: "#f8f9fa",
-                              color: "#212529",
-                            }}
-                          >
-                            Premium Quality
-                          </span>
-                        </div>
-                        <div
-                          className="d-flex align-items-center justify-content-center text-primary"
-                          style={{
-                            width: "32px",
-                            height: "32px",
-                            borderRadius: "50%",
-                            backgroundColor: "rgba(58, 123, 252, 0.1)",
-                          }}
-                        >
+                      <div className="flex justify-between items-center">
+                        <span className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">
+                          Premium Quality
+                        </span>
+                        <div className="flex items-center justify-center w-8 h-8 rounded-full bg-blue-100 text-blue-600">
                           <FaArrowRight size={14} />
                         </div>
                       </div>
@@ -193,7 +150,7 @@ export default function CategoryPage() {
                 </div>
               ))}
 
-              <div className="col-12 mt-5">
+              <div className="col-span-full mt-5">
                 <ProductContactForm
                   productName={`${product.name} - ${selectedCategory.name}`}
                 />
@@ -201,73 +158,52 @@ export default function CategoryPage() {
             </div>
           </div>
         ) : (
-          <div className="row g-4 mb-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
             {product.categories.map((category, index) => (
               <motion.div
                 key={index}
-                className="col-md-4 col-sm-6 col-lg-3"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 whileHover={{ scale: 1.05, rotate: 2 }}
               >
                 <div
-                  className="card h-100 shadow border-0 text-center p-3"
-                  style={{
-                    borderRadius: "15px",
-                    cursor: "pointer",
-                    transition: "all 0.3s ease",
-                  }}
+                  className="rounded-2xl shadow-md hover:shadow-xl bg-white text-center p-4 cursor-pointer transition-all duration-300 h-full min-h-[350px] flex flex-col"
                   onClick={() => setSelectedCategory(category)}
                 >
-                  <div
-                    className="overflow-hidden rounded-3 mb-3"
-                    style={{ height: "150px" }}
-                  >
+                  <div className="overflow-hidden rounded-lg mb-3 h-40">
                     <motion.img
                       src={category.image}
                       alt={category.name}
-                      className="card-img-top mx-auto"
-                      style={{
-                        height: "100%",
-                        width: "100%",
-                        objectFit: "cover",
-                      }}
+                      className="w-full h-full object-cover transition-transform duration-500"
                       whileHover={{
                         scale: 1.15,
                         transition: { duration: 0.7 },
                       }}
-                      onError={
-                        (e) => {
-                          const target = e.target as HTMLImageElement | null;
-
-                          if (target) {
-                            target.src =
-                              "https://via.placeholder.com/150?text=Category";
-                          }
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement | null;
+                        if (target) {
+                          target.src =
+                            "https://via.placeholder.com/150?text=Category";
                         }
-
-                        // (e.target.src = "https://via.placeholder.com/150?text=Category")
-                      }
+                      }}
                     />
                   </div>
-                  <div className="card-body p-2">
-                    <h5
-                      className="card-title fw-semibold text-dark"
-                      style={{ fontFamily: "'Poppins', sans-serif" }}
-                    >
-                      {category.name.toUpperCase()}
-                    </h5>
-                    {category.description && (
-                      <p
-                        className="card-text text-muted"
-                        style={{ fontSize: "0.9rem", lineHeight: "1.5" }}
-                      >
-                        {category.description}
-                      </p>
-                    )}
+
+                  <div className="flex-1 flex flex-col justify-between mt-5">
+                    <div>
+                      <h5 className="text-lg font-bold text-gray-800 font-poppins uppercase">
+                        {category.name}
+                      </h5>
+                      {category.description && (
+                        <p className="text-gray-600 text-sm leading-6 mt-1">
+                          {category.description}
+                        </p>
+                      )}
+                    </div>
+
                     <motion.button
-                      className="btn btn-sm btn-primary mt-2"
+                      className="mt-4 px-4 py-2 bg-gradient-to-r from-[#3a7bfc] to-[#165ed3] text-white rounded-lg text-sm self-center"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
@@ -280,8 +216,11 @@ export default function CategoryPage() {
           </div>
         )}
         {!selectedCategory && (
-          <div className="text-center mt-4 mb-5">
-            <Link to="/" className="btn btn-primary">
+          <div className="text-center mt-10 mb-20">
+            <Link
+              to="/"
+              className="px-4 py-2 bg-gradient-to-r from-[#3a7bfc] to-[#165ed3] text-white rounded-lg hover:bg-blue-700"
+            >
               Back to Home
             </Link>
           </div>

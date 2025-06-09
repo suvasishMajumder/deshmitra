@@ -1,93 +1,34 @@
+import React from 'react';
 
-import styled from 'styled-components';
+const WhatsAppButton: React.FC = () => {
+  const message: string = "Hello! I'm interested in your products.";
+  const phoneNumber: string = "+919220852922"; // Replace with your actual WhatsApp number
+  const whatsappUrl: string = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
-const WhatsAppWrapper = styled.div`
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-
-  @media (max-width: 768px) {
-    bottom: 15px;
-    right: 15px;
-    
-    img {
-      width: 50px;
-      height: 50px;
-    }
-  }
-`;
-
-const WhatsAppLink = styled.a`
-  display: block;
-  width: 60px;
-  height: 60px;
-
-  img {
-    width: 100%;
-    height: 100%;
-  }
-
-  @media (max-width: 768px) {
-    width: 50px;
-    height: 50px;
-  }
-`;
-
-const WhatsAppButton:React.FC = () => {
-    const message:string = "Hello! I'm interested in your products."; // You can customize this message
-    const phoneNumber:string = "+919220852922"; // Replace with your actual WhatsApp number
-    const whatsappUrl:string = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-
-    const ChatText = styled.div`
-      background-color: #25D366;
-      color: white;
-      padding: 6px 12px;
-      border-radius: 16px;
-      font-size: 14px;
-      font-weight: bold;
-      text-align: center;
-      margin-top: 8px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-      opacity: 0.9;
-      transition: opacity 0.3s ease;
-      
-      &:hover {
-      opacity: 1;
-      }
-      
-      @media (max-width: 768px) {
-      font-size: 12px;
-      padding: 4px 8px;
-      }
-    `;
-
-    return (
-      <WhatsAppWrapper>
-        <WhatsAppLink
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Chat with us on WhatsApp"
-          className="whatsapp-link"
-        >
-          <img 
-            src="/whatsapp.png" 
-            alt="WhatsApp Chat"
-            className="whatsapp-icon" 
-          />
-        </WhatsAppLink>
-        <ChatText className="chat-text">Chat with us</ChatText>
-      </WhatsAppWrapper>
-    );
+  return (
+    <div
+      className="fixed bottom-5 right-5 z-[1000] flex flex-col items-center transition-transform duration-300 hover:scale-110 md:bottom-6 md:right-4"
+    >
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Chat with us on WhatsApp"
+        className="block w-[60px] h-[60px] md:w-[60px] md:h-[60px]"
+      >
+        <img
+          src="/whatsapp.png"
+          alt="WhatsApp Chat"
+          className="w-full h-full"
+        />
+      </a>
+      <div
+        className="bg-[#25D366] text-white px-3 py-1.5 rounded-2xl text-sm font-bold text-center mt-2 shadow-md opacity-90 hover:opacity-100 transition-opacity duration-300 md:text-sm md:px-4 md:py-1.7"
+      >
+        Chat with us
+      </div>
+    </div>
+  );
 };
 
-export default WhatsAppButton; 
+export default WhatsAppButton;
