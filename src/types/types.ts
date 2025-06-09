@@ -206,5 +206,15 @@ export type TTeamMembers = {
   bio:string;
   image:string;
 
-
 } 
+
+
+export type StarRatingProps = {
+  rating: number;      // e.g. 4.3. ye 4.5 , 2.8 kuch bhi ho sakta hai
+  maxStars?: number;   // default to 5
+  size?: number;       // in px, default 16
+}
+
+declare module 'swiper/css';
+declare module 'swiper/css/navigation';
+declare module 'swiper/css/pagination';
