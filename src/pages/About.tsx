@@ -1,21 +1,25 @@
 import React, { useEffect } from 'react';
 import { motion } from "framer-motion";
 import { FaLeaf, FaCheck, FaUsers, FaGlobe, FaHeart } from "react-icons/fa6";
+<<<<<<< HEAD
+=======
+import type { TValues } from '../types/types';
+>>>>>>> 849eb44 (Updating About.tsx)
 
 const About = () => {
   useEffect(() => {
-    // Force scroll to top when About component mounts
     window.scrollTo(0, 0);
-
-    // Add body class to prevent scroll issues on mobile
     document.body.classList.add('page-about');
-
     return () => {
       document.body.classList.remove('page-about');
     };
   }, []);
 
+<<<<<<< HEAD
   const values = [
+=======
+  const values: TValues[] = [
+>>>>>>> 849eb44 (Updating About.tsx)
     {
       icon: FaLeaf,
       title: "Quality First",
@@ -42,6 +46,7 @@ const About = () => {
     }
   ];
 
+<<<<<<< HEAD
 //   const teamMembers = [
 //     {
 //       name: "Rajesh Kumar",
@@ -69,12 +74,13 @@ const About = () => {
 //     }
 //   ];
 
+=======
+>>>>>>> 849eb44 (Updating About.tsx)
   return (
-    <div className="about-page-container">
+    <div className="pt-16 bg-white">
+
       {/* Hero Section */}
-      <section className="about-hero py-5">
-        <div className="container pt-4">
-          <section className="hero-section position-relative py-4">
+      <section className="hero-section position-relative py-4">
             {/* Remove background image div and keep clean white background */}
             <div className="container py-5">
               <div className="row align-items-center">
@@ -84,19 +90,42 @@ const About = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                   >
-                    <h1 className="display-4 fw-bold mb-4">Our Story</h1>
-                    <p className="lead mb-4">Founded in 2024, Akdenar has grown from a small trading company to become one of India's leading providers of premium quality products.</p>
-                    <p className="mb-4">Our journey began with a simple mission: to connect sellers directly with buyers, ensuring fair prices for producers and the highest quality for customers.</p>
-                    <div className="d-flex align-items-center">
-                      <div className="me-4">
-                        <h3 className="fw-bold text-primary mb-0">500+</h3>
-                        <p className="text-muted mb-0">Farmer Network</p>
+                    <section className="px-6 py-12 md:py-20 bg-white">
+                      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-10">
+                        
+                        {/* Left Content */}
+                        <div className="md:w-1/2">
+                          <h2 className="text-6xl font-bold text-gray-900 mb-4">Our Story</h2>
+                          <p className="text- 2xltext-gray-700 mb-6 font-sans">
+                            Founded in 2024, Akdenar has grown from a small trading company to become one of India's leading providers of premium quality products.
+                          </p>
+                          <p className="text-md text-gray-600 mb-8">
+                            Our journey began with a simple mission: to connect sellers directly with buyers, ensuring fair prices for producers and the highest quality for customers.
+                          </p>
+
+                          {/* Stats */}
+                          <div className="flex gap-12">
+                            <div>
+                              <p className="text-2xl font-bold text-blue-600">500+</p>
+                              <p className="text-gray-600">Farmer Network</p>
+                            </div>
+                            <div>
+                              <p className="text-2xl font-bold text-blue-600">5000+</p>
+                              <p className="text-gray-600">Happy Customers</p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Right Image */}
+                        <div className="md:w-1/2">
+                          <img
+                            src="https://images.unsplash.com/photo-1569880153113-76e33fc52d5f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
+                            alt="Farmer"
+                            className="w-full rounded-2xl shadow-lg object-cover"
+                          />
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="fw-bold text-primary mb-0">5000+</h3>
-                        <p className="text-muted mb-0">Happy Customers</p>
-                      </div>
-                    </div>
+                    </section>
                   </motion.div>
                 </div>
                 <div className="col-lg-6 d-none d-lg-block">
@@ -106,86 +135,76 @@ const About = () => {
                     transition={{ duration: 0.8, delay: 0.2 }}
                     className="rounded-4 overflow-hidden"
                   >
-                    <img
-                      src="https://images.unsplash.com/photo-1569880153113-76e33fc52d5f?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                      alt="Akdenar Warehouse"
-                      className="img-fluid rounded-4"
-                      style={{ objectFit: "cover", width: "100%", height: "400px" }}
-                    />
                   </motion.div>
                 </div>
               </div>
             </div>
           </section>
-        </div>
-      </section>
 
       {/* Mission & Vision Section */}
-      <section className="py-5 bg-light">
-        <div className="container py-4">
-          <div className="row justify-content-center mb-5">
-            <div className="col-lg-8 text-center">
+      <section className="py-20 font-poppins bg-gray-50">
+
+        <div className="container mx-auto px-4 py-16">
+          <div className="flex justify-center mb-20">
+            <div className="w-full max-w-4xl text-center">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <h2 className="display-5 fw-bold mb-4">Our Mission & Vision</h2>
-                <div className="divider bg-primary mx-auto mb-4" style={{ height: "3px", width: "80px" }}></div>
+                <h2 className="text-5xl font-bold mb-6">Our Mission & Vision</h2>
+                <div className="bg-blue-500 mx-auto mb-6 h-1 w-20"></div>
               </motion.div>
             </div>
           </div>
 
-          <div className="row g-4">
-            <div className="col-md-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="col-span-1">
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="card border-0 h-100 shadow-sm"
-                style={{ borderRadius: "16px" }}
+                className="card border-none h-full shadow-md rounded-2xl bg-white"
               >
-                <div className="card-body p-4">
+                <div className="p-8">
                   <div
-                    className="icon-wrapper rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                    className="inline-flex items-center justify-center mb-6 rounded-full w-14 h-14"
                     style={{
-                      width: "60px",
-                      height: "60px",
                       background: "linear-gradient(135deg, #3a7bfc22, #3a7bfc44)",
                     }}
                   >
-                    <FaLeaf size={24} className="text-primary" />
+                    <FaLeaf size={24} className="text-blue-500" />
                   </div>
-                  <h3 className="fw-bold mb-3">Our Mission</h3>
-                  <p className="mb-0">Empowering small dealers, wholesalers, and retailers to access quality manufacturers, solve bulk logistics challenges, and simplify B2B sourcing and exporting with a reliable, tech-driven platform.</p>
+                  <h3 className="font-bold text-3xl mb-4">Our Mission</h3>
+                  <p className="font-sans text-xl mb-0">
+                    Empowering small dealers, wholesalers, and retailers to access quality manufacturers, solve bulk logistics challenges, and simplify B2B sourcing and exporting with a reliable, tech-driven platform.
+                  </p>
                 </div>
               </motion.div>
             </div>
 
-            <div className="col-md-6">
+            <div className="col-span-1">
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
-                className="card border-0 h-100 shadow-sm"
-                style={{ borderRadius: "16px" }}
+                className="card border-none h-full shadow-md rounded-2xl bg-white"
               >
-                <div className="card-body p-4">
+                <div className="p-8">
                   <div
-                    className="icon-wrapper rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
+                    className="inline-flex items-center justify-center mb-6 rounded-full w-14 h-14"
                     style={{
-                      width: "60px",
-                      height: "60px",
                       background: "linear-gradient(135deg, #3a7bfc22, #3a7bfc44)",
                     }}
                   >
-                    <FaGlobe size={24} className="text-primary" />
+                    <FaGlobe size={30} className="text-blue-500" />
                   </div>
-                  <h3 className="fw-bold mb-3">Our Vision</h3>
-                  <p className="mb-0">To become the most trusted B2B platform enabling seamless trade, logistics, and exports between Indian manufacturers and global buyers through technology and transparency.
+                  <h3 className="font-bold text-3xl mb-4">Our Vision</h3>
+                  <p className="font-sans text-xl mb-0">
+                    To become the most trusted B2B platform enabling seamless trade, logistics, and exports between Indian manufacturers and global buyers through technology and transparency.
                   </p>
                 </div>
               </motion.div>
@@ -195,42 +214,41 @@ const About = () => {
       </section>
 
       {/* Values Section */}
-      <section className="py-5">
-        <div className="container py-4">
-          <div className="row justify-content-center mb-5">
-            <div className="col-lg-8 text-center">
+      <section className="py-12 font-sans">
+        <div className="container mx-auto py-4 px-4">
+          <div className="flex justify-center mb-12">
+            <div className="w-full lg:w-8/12 text-center">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <h2 className="display-5 fw-bold mb-4">Our Core Values</h2>
-                <div className="divider bg-primary mx-auto mb-4" style={{ height: "3px", width: "80px" }}></div>
-                <p className="lead text-muted">The principles that guide everything we do at Akdenar</p>
+                <h2 className="text-5xl font-bold mb-4">Our Core Values</h2>
+                <div className="bg-blue-500 mx-auto mb-4 h-1 w-20"></div>
+                <p className="text-xl text-gray-600">The principles that guide everything we do at Akdenar</p>
               </motion.div>
             </div>
           </div>
 
-          <div className="row g-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {values.map((value, index) => (
-              <div key={index} className="col-lg-3 col-md-6">
+              <div key={index} className="col-span-1">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="card border-0 h-100 shadow-sm"
-                  style={{ borderRadius: "16px" }}
+                  className="card border-0 h-full shadow-sm bg-white rounded-2xl"
                   whileHover={{
                     y: -10,
                     boxShadow: "0 10px 30px rgba(0,0,0,0.1)",
                     transition: { duration: 0.3 }
                   }}
                 >
-                  <div className="card-body p-4 text-center">
+                  <div className="card-body p-6 text-center">
                     <div
-                      className="icon-wrapper rounded-circle d-inline-flex align-items-center justify-content-center mb-3 mx-auto"
+                      className="rounded-full inline-flex items-center justify-center mb-5 mx-auto"
                       style={{
                         width: "70px",
                         height: "70px",
@@ -239,8 +257,8 @@ const About = () => {
                     >
                       <value.icon size={28} style={{ color: value.color }} />
                     </div>
-                    <h4 className="fw-bold mb-3" style={{ color: value.color }}>{value.title}</h4>
-                    <p className="text-muted mb-0">{value.description}</p>
+                    <h4 className="font-bold mb-3 text-xl" style={{ color: value.color }}>{value.title}</h4>
+                    <p className="text-gray-600 mb-0">{value.description}</p>
                   </div>
                 </motion.div>
               </div>
@@ -250,19 +268,19 @@ const About = () => {
       </section>
 
       {/* Why Choose Us Section */}
-      <section className="py-5">
-        <div className="container py-4">
-          <div className="row align-items-center">
-            <div className="col-lg-6">
+      <section className="py-12 bg-white">
+        <div className="container mx-auto py-4 px-4 ">
+          <div className="flex flex-col lg:flex-row items-center">
+            <div className="w-full lg:w-1/2 mb-10 lg:mb-0 lg:pr-10 translate-x-20">
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6 }}
               >
-                <h2 className="display-5 fw-bold mb-4">Why Choose Akdenar?</h2>
-                <div className="divider bg-primary mb-4" style={{ height: "3px", width: "80px" }}></div>
-                <p className="lead mb-4">We stand apart because of our unwavering commitment to quality, transparency, and customer satisfaction.</p>
+                <h2 className="text-6xl font-bold mb-4">Why Choose Akdenar?</h2>
+                <div className="bg-blue-500 mb-4 h-1 w-20"></div>
+                <p className="text-xl mb-6">We stand apart because of our unwavering commitment to quality, transparency, and customer satisfaction.</p>
 
                 <div className="mb-4">
                   {[
@@ -273,59 +291,41 @@ const About = () => {
                     "Competitive pricing without compromising quality",
                     "Dedicated customer support team"
                   ].map((point, idx) => (
-                    <div key={idx} className="d-flex align-items-center mb-3">
+                    <div key={idx} className="flex items-center mb-3">
                       <div
-                        className="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                        className="rounded-full flex items-center justify-center mr-3 flex-shrink-0"
                         style={{
                           width: "32px",
                           height: "32px",
                           background: "linear-gradient(135deg, #3a7bfc22, #3a7bfc44)"
                         }}
                       >
-                        <FaCheck size={14} className="text-primary" />
+                        <FaCheck size={14} className="text-blue-500" />
                       </div>
-                      <p className="mb-0">{point}</p>
+                      <p className="mb-0 text-gray-700">{point}</p>
                     </div>
                   ))}
                 </div>
               </motion.div>
             </div>
-            <div className="col-lg-6">
+            <div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-5/12 mx-auto">
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.8 }}
-                className="rounded-4 overflow-hidden"
+                className="rounded-2xl overflow-hidden"
               >
-                <img
-                  src="https://images.unsplash.com/photo-1586201375761-83865001e31c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80"
-                  alt="Quality Control at Akdenar"
-                  className="img-fluid rounded-4"
-                  style={{ objectFit: "cover", width: "100%" }}
-                />
+                <img 
+                    src="https://images.unsplash.com/photo-1586201375761-83865001e31c?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
+                    alt="Quality Control at Akdenar" 
+                    className="w-full max-w-md sm:max-w-lg lg:max-w-xl xl:max-w-2xl rounded-2xl object-cover"
+                  />
               </motion.div>
             </div>
           </div>
         </div>
       </section>
-
-      <style>{`
-        /* Fixed styles to prevent navbar overlap */
-        .about-page-container {
-          padding-top: 65px;
-        }
-
-        .about-hero {
-          background: rgba(255, 255, 255, 0.98); /* Matches navbar background */
-          backdrop-filter: blur(10px);
-          border-radius: 0 0 30px 30px;
-          position: relative;
-          overflow: hidden;
-          min-height: 220px;
-          box-shadow: 0 5px 30px rgba(0, 0, 0, 0.05);
-        }
-      `}</style>
     </div>
   );
 };
