@@ -1,4 +1,3 @@
-
 //New code  6/5/2025
 
 import { useEffect } from "react";
@@ -16,16 +15,15 @@ import fallbackImg from "../assets/fallbackImg.png";
 // import StarRating from "../components/StarRating";
 import Rating from "@mui/material/Rating";
 import amitPatelRealImg from "../assets/amiPatelReal.webp";
-import arjunReddyImg from '../assets/arjun_reddy.webp'
+import arjunReddyImg from "../assets/arjun_reddy.webp";
 import chefRajeshKumarImg from "../assets/chef_rajesh_kumar.webp";
-import drAnjaliSinghImg from "../assets/Dr.anjali_singh.webp"
-import mariafernandezImg from "../assets/maria_fernandez.webp"
+import drAnjaliSinghImg from "../assets/Dr.anjali_singh.webp";
+import mariafernandezImg from "../assets/maria_fernandez.webp";
 import nehaGuptaImg from "../assets/neha_gupta.webp";
 import priyaSharmaImg from "../assets/priya_sharma.webp";
 import rahulVermaImg from "../assets/rahul_verma.webp";
 import snehaIyerImg from "../assets/sneha_iyer.webp";
-import vikramMalhotraImg from "../assets/vikram_malhotra.webp"
-
+import vikramMalhotraImg from "../assets/vikram_malhotra.webp";
 
 const testimonials: ITestimonials[] = [
   {
@@ -67,7 +65,7 @@ const testimonials: ITestimonials[] = [
   {
     quote:
       "Their customer service is exceptional. They go above and beyond to ensure customer satisfaction.",
-    image:  rahulVermaImg,
+    image: rahulVermaImg,
     name: "Rahul Verma",
     location: "Kolkata",
     rating: 5,
@@ -94,7 +92,7 @@ const testimonials: ITestimonials[] = [
   {
     quote:
       "Akdenar's sugar products meet our bakery's high standards. The refined sugar is perfect for our confections.",
-    image:mariafernandezImg,
+    image: mariafernandezImg,
     name: "Maria Fernandez",
     location: "Goa",
     rating: 5,
@@ -112,7 +110,7 @@ const testimonials: ITestimonials[] = [
   {
     quote:
       "The variety of cooking oils they offer is impressive. Each one maintains its quality consistently.",
-    image: snehaIyerImg ,
+    image: snehaIyerImg,
     name: "Sneha Iyer",
     location: "Kochi",
     rating: 4.5,
@@ -149,12 +147,13 @@ const TestimonialsPage: React.FC = () => {
           >
             <h1
               style={{ fontFamily: "Poppins, sans-serif" }}
-              className="display-4 text-[#333333]
-             ds:text-[40px] md:text-[55px] ds:mb-4 leading-9 ds:leading-12 md:leading-14
-             fw-bold mb-3 text-[2rem] font-bold"
+              className="display-4 text-[#333333] 
+  ds:text-[40px] md:text-[55px] ds:mb-4 leading-9 
+  ds:leading-12 md:leading-14 mb-3 text-[2rem] font-black"
             >
               Our Customer Testimonials
             </h1>
+
             <p
               style={{ fontFamily: "Inter, sans-serif" }}
               className="lead ds:text-[20px] text-muted text-[1rem] 
@@ -170,7 +169,6 @@ const TestimonialsPage: React.FC = () => {
             style={{ fontFamily: "Inter, sans-serif" }}
             className="grid gap-2  grid-cols-1 md:grid-cols-2 ss:grid-cols-3"
           >
-           
             {testimonials.map((testimonial, index) => (
               <motion.div
                 key={index}
@@ -217,7 +215,6 @@ const TestimonialsPage: React.FC = () => {
                       </small>
                     </div>
                   </div>
-                
 
                   {/*option 1 : passing rating as prop to a new component i.e, StarRating.tsx*/}
                   {/* <div className="mb-3">
