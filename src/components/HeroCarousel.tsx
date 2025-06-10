@@ -42,7 +42,7 @@ const carouselItems: THeroCarouselItem[] = [
 
 export default function HeroCarousel() {
   return (
-    <div className="relative mx-20 mt-[200px] overflow-hidden rounded-3xl shadow-[0_15px_40px_rgba(0,0,0,0.15)]">
+    <div className="relative mx-2.5 ds:mx-20 mt-[150px] overflow-hidden rounded-3xl shadow-[0_15px_40px_rgba(0,0,0,0.15)]">
       <Swiper
         modules={[EffectFade, Autoplay, Navigation, Pagination]}
         effect="fade"
@@ -61,7 +61,7 @@ export default function HeroCarousel() {
       >
         {carouselItems.map((item, index) => (
           <SwiperSlide key={index}>
-            <div className="relative h-[520px] md:h-[450px] sm:h-[350px] pl-[50px] sm:pl-5">
+            <div className="relative h-[375px] md:h-[450px] sm:h-[350px] pl-[50px] sm:pl-5">
               <motion.div
                 initial={{ scale: 1.1 }}
                 animate={{ scale: 1 }}

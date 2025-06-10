@@ -132,7 +132,7 @@ const TestimonialsPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="testimonials-page-container pt-[145px]">
+    <div className="testimonials-page-container ss:px-8 lg:px-10 xl:px-56 pt-[145px]">
       {/* Hero Section with proper padding-top to avoid navbar overlap */}
       <section
         className="testimonials-hero py-5 bg-white/95 backdrop-blur-md 

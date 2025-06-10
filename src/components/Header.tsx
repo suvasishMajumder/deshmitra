@@ -34,6 +34,20 @@ const Header: React.FC = () => {
   const [currentAnnouncement, setCurrentAnnouncement] = useState<number>(0);
   const [isAnimating, setIsAnimating] = useState<boolean>(false);
 
+
+  //We remove it when deployed to vercel. We will have to check whether any deployment error will come due to it or not
+  useEffect(()=>{
+
+
+    if(isAnimating === true || isAnimating === false){
+   console.log('')
+    }else{
+
+       console.log(isAnimating);
+    }
+
+  },[]);
+
   useEffect(() => {
     const timer = setInterval(() => {
       setIsAnimating(true);
@@ -95,7 +109,7 @@ const Header: React.FC = () => {
 
   return (
     <header
-      className={`fixed top-0 w-full z-[9998] transition-all duration-300 ${
+      className={`fixed top-0 w-full  z-[9998] transition-all duration-300 ${
         isScrolled ? "shadow-[0_5px_30px_rgba(0,0,0,0.1)]" : ""
       }`}
     >
@@ -109,7 +123,7 @@ const Header: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className="flex flex-col items-center text-shadow-[0_1px_2px_rgba(0,0,0,0.1)] font-medium"
+                className="flex flex-col  items-center text-shadow-[0_1px_2px_rgba(0,0,0,0.1)] font-medium"
               >
                 <span className="bg-white/15 px-2 py-0.5 rounded animate-pulse">
                   {announcements[currentAnnouncement]}
@@ -157,7 +171,7 @@ const Header: React.FC = () => {
                 <img
                   src="/logo.webp"
                   alt="Akdenar Logo"
-                  className={`h-[70px] w-auto object-contain transition-all duration-300 ${
+                  className={`h-[40px] sm:h-[70px] w-auto object-contain transition-all duration-300 ${
                     isScrolled ? "h-10" : ""
                   }`}
                   onError={(e) => {
@@ -168,10 +182,10 @@ const Header: React.FC = () => {
                   }}
                 />
                 <div className="flex flex-col">
-                  <span className="font-poppins font-extrabold text-2xl animate-gradient-text mb-[-3px]">
+                  <span className="font-poppins font-extrabold text-lg md:text-xl lg:text-2xl animate-gradient-text mb-[-3px]">
                     Akdenar
                   </span>
-                  <span className="text-[0.8rem] font-semibold text-[#3c3d3f] tracking-tight">
+                  <span className="text-[0.6rem] sm:text-[0.7rem]  ss:text-[0.8rem] font-semibold text-[#3c3d3f] tracking-tight">
                     Premium Quality Products
                   </span>
                 </div>
@@ -655,6 +669,7 @@ const Header: React.FC = () => {
 
       {isScrolled && (
         <motion.div
+        style={{transformOrigin:'left'}}
           className="absolute bottom-0 left-0 w-full h-[3px] bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1]"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
