@@ -1,4 +1,9 @@
-import  { useState } from "react";
+
+
+//New footer cpde by dev:
+
+
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
@@ -34,8 +39,8 @@ function Footer() {
 
   return (
     <footer className="py-12 bg-gradient-to-br from-gray-900 via-gray-900 to-blue-900 border-t border-gray-700 shadow-lg">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 w-full max-w-screen-xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {/* Company Info */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -45,7 +50,7 @@ function Footer() {
             className="lg:col-span-1"
           >
             <Link to="/" className="no-underline">
-              <h2 className="text-2xl font-bold mb-6 bg-gradient-to-r from-blue-500 to-blue-300 bg-clip-text text-transparent">
+              <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-500 to-blue-300 bg-clip-text text-transparent">
                 Akdenar
               </h2>
             </Link>
@@ -133,7 +138,7 @@ function Footer() {
               <span className="absolute bottom-0 left-0 w-8 h-0.5 bg-blue-500 rounded"></span>
               Contact
             </h5>
-            <ul className="list-none m-0 p-0 mb-6">
+            <ul className="list-none m-0 p-0 mb-6 ">
               <motion.li
                 className="mb-4"
                 whileHover={{ x: 5 }}

@@ -14,16 +14,19 @@ import "swiper/css/pagination";
 import fallbackImg from "../assets/fallbackImg.png";
 // import StarRating from "../components/StarRating";
 import Rating from "@mui/material/Rating";
-import amitPatelRealImg from "../assets/amiPatelReal.webp";
+import amitPatelRealImg from "../assets/amit_patel.webp";
 import arjunReddyImg from "../assets/arjun_reddy.webp";
 import chefRajeshKumarImg from "../assets/chef_rajesh_kumar.webp";
-import drAnjaliSinghImg from "../assets/Dr.anjali_singh.webp";
+import drAnjaliSinghImg from "../assets/dr_anjali_singh.webp";
 import mariafernandezImg from "../assets/maria_fernandez.webp";
 import nehaGuptaImg from "../assets/neha_gupta.webp";
 import priyaSharmaImg from "../assets/priya_sharma.webp";
 import rahulVermaImg from "../assets/rahul_verma.webp";
 import snehaIyerImg from "../assets/sneha_iyer.webp";
 import vikramMalhotraImg from "../assets/vikram_malhotra.webp";
+
+
+
 
 const testimonials: ITestimonials[] = [
   {

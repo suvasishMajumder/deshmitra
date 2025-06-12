@@ -113,7 +113,8 @@ const Header: React.FC = () => {
         isScrolled ? "shadow-[0_5px_30px_rgba(0,0,0,0.1)]" : ""
       }`}
     >
-      <div className="bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] py-2 text-center text-white text-[0.85rem] tracking-wider overflow-hidden relative">
+      <div className="bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] py-2 text-center text-white text-[0.85rem] 
+      tracking-wider overflow-hidden relative">
         <div className="container mx-auto">
           <div className="min-h-6 flex items-center justify-center py-0.5">
             <AnimatePresence mode="wait">
@@ -218,7 +219,7 @@ const Header: React.FC = () => {
                     type="submit"
                     className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-gradient-to-br from-[#3a7bfc] to-[#6f42c1] text-white w-10 h-10 rounded-full flex items-center justify-center cursor-pointer shadow-[0_4px_10px_rgba(58,123,252,0.3)] transition-all duration-300 hover:bg-gradient-to-br hover:from-[#6f42c1] hover:to-[#3a7bfc] hover:shadow-[0_6px_15px_rgba(58,123,252,0.4)] hover:-translate-x-0.5 focus:outline-none focus:shadow-[0_0_0_3px_rgba(58,123,252,0.2),0_6px_15px_rgba(58,123,252,0.4)] active:scale-95"
                   >
-                    <FaSearch />
+                    <FaSearch aria-label="search product" />
                   </motion.button>
                 </div>
               </form>

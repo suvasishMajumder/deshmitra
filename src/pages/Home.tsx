@@ -82,8 +82,8 @@ export default function Home() {
                     onError={(e) => {
                       const target = e.target as HTMLImageElement | null;
                       if (target) {
-                        target.src =
-                          "https://via.placeholder.com/200x80?text=Akdenar";
+                        target.src = 'Akdenar'
+                          // "https://via.placeholder.com/200x80?text=Akdenar"; //This is causing issues
                       }
                     }}
                   />

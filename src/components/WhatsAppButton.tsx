@@ -23,7 +23,8 @@ const WhatsAppButton: React.FC = () => {
         />
       </a>
       <div
-        className="bg-[#25D366] text-white px-3 py-1.5 rounded-2xl text-sm font-bold text-center mt-2 shadow-md opacity-90 hover:opacity-100 transition-opacity duration-300 md:text-sm md:px-4 md:py-1.7"
+        className="bg-[#25D366] text-[#072A04] px-3 py-1.5 rounded-2xl text-sm font-extrabold 
+        text-center mt-2 shadow-md opacity-90 hover:opacity-100 transition-opacity duration-300 md:text-sm md:px-4 md:py-1.7"
       >
         Chat with us
       </div>

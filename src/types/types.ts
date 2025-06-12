@@ -1,4 +1,5 @@
 
+import type { ReactNode } from "react";
 import type { IconType } from "react-icons";
 
 export type TFooterLinks = {
@@ -160,6 +161,7 @@ export type TContactInfo = {
   title: string;
   details: string[];
   color: string;
+  ariaLabel:string;
 };
 
 
@@ -175,6 +177,7 @@ export type TSocialMedia = {
 icon:IconType;
 link:string;
 color:string;
+name:string;
 }
 
 
@@ -213,6 +216,15 @@ export type StarRatingProps = {
   rating: number;      // e.g. 4.3. ye 4.5 , 2.8 kuch bhi ho sakta hai
   maxStars?: number;   // default to 5
   size?: number;       // in px, default 16
+}
+
+
+
+export interface IFAQ{
+
+  question: string;
+  answer: ReactNode | string; //This can handle both object or string or any other data type that eact can render
+
 }
 
 declare module 'swiper/css';

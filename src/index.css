@@ -44,11 +44,16 @@
 
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
 @import "tailwindcss";
 
 @theme {
   --breakpoint-ss: 62rem;
   --breakpoint-ds: 36rem;
+}
+@theme {
+  --font-inter: "Inter", "sans-serif"; 
 }
 
 @import "tailwindcss/utilities";
@@ -82,3 +87,23 @@
   }
 }
 
+/* index.css or App.css */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #5098e9; /* Indigo-600 */
+  border-radius: 6px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* Optional: on hover */
+::-webkit-scrollbar-thumb:hover {
+  background-color: #0f0863; /* Indigo-700 */
+}

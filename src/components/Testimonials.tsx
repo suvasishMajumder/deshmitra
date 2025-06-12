@@ -134,7 +134,8 @@ export default function Testimonials() {
                           onError={(e) => {
                             const target = e.target as HTMLImageElement | null;
                             if (target) {
-                              target.src = "https://via.placeholder.com/50?text=User";
+                              // target.src = "https://via.placeholder.com/50?text=User"; //It was creating issues
+                              target.src = 'akdenar'
                             }
                           }}
                         />

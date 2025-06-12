@@ -13,7 +13,7 @@ export default function FeaturedCategories() {
     <section className="mt-20 py-5 my-4 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-gray-100 to-gray-200 z-[-1]"></div>
 
-      <div className="container mx-auto px-4">
+      <div className="container  mx-auto px-4">
         <div className="text-center mb-5">
           <motion.span
             initial={{ opacity: 0, y: 20 }}
@@ -150,15 +150,15 @@ export default function FeaturedCategories() {
                       >
                         <span className="font-medium me-auto">View Collection</span>
                         <div
-                          className="flex items-center justify-center rounded-full"
+                          className="flex items-center justify-center rounded-full bg-blue-100 text-blue-900"
                           style={{
                             width: "35px",
                             height: "35px",
-                            background: `linear-gradient(135deg, ${category.colors[0]}22, ${category.colors[0]}44)`,
+                            // background: `linear-gradient(135deg, ${category.colors[0]}22, ${category.colors[0]}44)`,
                             color: category.colors[0],
                           }}
                         >
-                          <FaArrowRight size={14} />
+                          <FaArrowRight className="text-blue-900" size={14} />
                         </div>
                       </motion.div>
                     </div>
