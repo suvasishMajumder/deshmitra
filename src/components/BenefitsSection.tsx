@@ -1,6 +1,7 @@
-import { FaUsers, FaLeaf, FaHeart, FaGlobe } from "react-icons/fa6";
+import { FaUsers, FaLeaf, FaGlobe } from "react-icons/fa6";
 import { motion } from "framer-motion";
 import type { TBenefits } from "../types/types";
+import { MdWorkspacePremium } from "react-icons/md";
 
 export default function BenefitsSection() {
   const benefits: TBenefits[] = [
@@ -12,7 +13,7 @@ export default function BenefitsSection() {
       delay: 0,
     },
     {
-      icon: FaHeart,
+      icon: MdWorkspacePremium,
       title: "Premium Quality",
       description: "Every product meets our high standards for excellence, durability, and sustainability.",
       color: "#dc3545",
