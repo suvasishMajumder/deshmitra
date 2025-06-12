@@ -112,7 +112,7 @@ function SupplyChainDiagram() {
         <div className="relative flex justify-evenly items-center flex-wrap gap-4 my-5">
           {/* Connecting line */}
           <motion.div
-            className="absolute top-1/2 left-0 right-0 h-[3px] bg-gradient-to-r from-[#28a745] via-[#3a7bfc] to-[#fd7e14] z-0"
+            className="absolute hidden ls:flex top-1/2 left-0 right-0 h-[3px] bg-gradient-to-r from-[#28a745] via-[#3a7bfc] to-[#fd7e14] z-0"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
@@ -122,7 +122,7 @@ function SupplyChainDiagram() {
 
           {/* Animated dots on the line */}
           <motion.div
-            className="absolute top-1/2 left-0 right-0 flex justify-between z-0"
+            className="absolute hidden ls:flex top-1/2 left-0 right-0  justify-between z-0"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}

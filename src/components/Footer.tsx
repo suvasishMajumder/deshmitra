@@ -92,10 +92,10 @@ function Footer() {
             className="md:col-span-1"
           >
             <h5 className="font-bold mb-6 text-white relative pb-2">
-              <span className="absolute bottom-0 left-0 w-8 h-0.5 bg-blue-500 rounded"></span>
-              Products
+              <span className="invisible sm:visible absolute bottom-0 left-0 w-8 h-0.5 bg-blue-500 rounded"></span>
+             <span className="font-poppins text-[20px] font-bold">Products</span> 
             </h5>
-            <ul className="list-none m-0 p-0">
+            <ul className="list-disc pl-3.5 text-white sm:list-none m-0 p-0">
               {["Rice", "Salt", "Sugar", "Spices", "Dry Fruits", "Oil"].map(
                 (item, index) => (
                 <motion.li
@@ -116,8 +116,8 @@ function Footer() {
                       className={`mr-2 transition-opacity ${
                         hoveredLink === `product-${index}` ? "opacity-100" : "opacity-0"
                       }`}
-                    >
-                      ›
+                    > 
+                      › 
                     </span>
                     {item}
                   </Link>
@@ -135,8 +135,8 @@ function Footer() {
             className="lg:col-span-2"
           >
             <h5 className="font-bold mb-6 text-white relative pb-2">
-              <span className="absolute bottom-0 left-0 w-8 h-0.5 bg-blue-500 rounded"></span>
-              Contact
+              <span className="invisible sm:visible absolute bottom-0 left-0 w-8 h-0.5 bg-blue-500 rounded"></span>
+              <span className="font-poppins text-[20px] font-bold">Contact</span>
             </h5>
             <ul className="list-none m-0 p-0 mb-6 ">
               <motion.li

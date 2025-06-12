@@ -150,7 +150,7 @@ export default function FeaturedCategories() {
                       >
                         <span className="font-medium me-auto">View Collection</span>
                         <div
-                          className="flex items-center justify-center rounded-full bg-blue-100 text-blue-900"
+                          className="flex items-center justify-center rounded-full bg-red-100 text-red-600"
                           style={{
                             width: "35px",
                             height: "35px",
@@ -158,7 +158,7 @@ export default function FeaturedCategories() {
                             color: category.colors[0],
                           }}
                         >
-                          <FaArrowRight className="text-blue-900" size={14} />
+                          <FaArrowRight className="text-red-600" size={14} />
                         </div>
                       </motion.div>
                     </div>

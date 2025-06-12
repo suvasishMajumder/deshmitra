@@ -18,7 +18,7 @@ const testimonials: TTestimonials[] = [
 
 export default function Testimonials() {
   return (
-    <section className="relative overflow-hidden py-5 bg-gray-100 mt-[100px]">
+    <section className="relative overflow-hidden py-5 bg-gray-100 mt-[70px]">
       {/* Background decoration */}
       <div className="absolute inset-0 bg-[radial-gradient(#3a7bfc_1px,transparent_1px),radial-gradient(#3a7bfc_1px,transparent_1px)] bg-[length:40px_40px] bg-[0_0,20px_20px] opacity-5 z-0"></div>
 
