@@ -4,6 +4,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaUser, FaEnvelope, FaPhone, FaComment, FaPaperPlane, FaCheck, FaTimes, FaMapMarkerAlt } from "react-icons/fa";
+import { TextField, InputAdornment } from "@mui/material";
 import type { IFormData, IFocused } from "../types/types";
 
 const ContactForm = () => {
@@ -22,6 +23,7 @@ const ContactForm = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [submitStatus, setSubmitStatus] = useState<string | null>(null);
+  const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
   const formRef = useRef<HTMLFormElement | null>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -34,6 +36,19 @@ const ContactForm = () => {
 
   const handleBlur = (field: keyof IFocused) => {
     setFocused({ ...focused, [field]: false });
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const char = e.key;
+    const input = e.currentTarget as HTMLInputElement;
+    const cursorPosition = input.selectionStart || 0;
+    // Allow only digits, and a '+' only at the start
+    if (
+      !/[0-9]/.test(char) &&
+      !(char === "+" && cursorPosition === 0 && !input.value.includes("+"))
+    ) {
+      e.preventDefault();
+    }
   };
 
   const isFieldValid = (field: keyof IFormData) => {
@@ -50,6 +65,7 @@ const ContactForm = () => {
 
   const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setHasSubmitted(true);
 
     if (!isFormValid()) {
       setFocused({
@@ -89,6 +105,7 @@ const ContactForm = () => {
           phone: false,
           message: false,
         });
+        setHasSubmitted(false);
         toast.success("Message sent successfully!", {
           position: "top-right",
           autoClose: 5000,
@@ -136,10 +153,10 @@ const ContactForm = () => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="my-5  rounded-3xl overflow-hidden relative bg-gradient-to-br from-white to-gray-50 shadow-[0_15px_35px_rgba(0,0,0,0.07),0_5px_15px_rgba(0,0,0,0.05)]"
+      className="my-5 rounded-3xl overflow-hidden relative bg-gradient-to-br from-white to-gray-50 shadow-[0_15px_35px_rgba(0,0,0,0.07),0_5px_15px_rgba(0,0,0,0.05)]"
     >
       <motion.div
-        className=" absolute w-[300px] h-[300px] rounded-full bg-gradient-to-br from-[rgba(58,123,252,0.07)] to-[rgba(58,123,252,0.01)] -top-[150px] -right-[100px] z-0"
+        className="absolute w-[300px] h-[300px] rounded-full bg-gradient-to-br from-[rgba(58,123,252,0.07)] to-[rgba(58,123,252,0.01)] -top-[150px] -right-[100px] z-0"
         initial={{ scale: 0 }}
         whileInView={{ scale: 1 }}
         viewport={{ once: true }}
@@ -282,51 +299,72 @@ const ContactForm = () => {
               { name: "phone", icon: FaPhone, placeholder: "Your Phone Number", type: "tel", error: "Please enter a valid phone number (10-15 digits)" },
               { name: "message", icon: FaComment, placeholder: "Your Message", type: "textarea", error: "Please enter a message with at least 10 characters" },
             ].map((field, index) => (
-              <div key={field.name} className="mb-4">
-                <motion.div
-                  className="relative"
-                  initial={{ x: -20, opacity: 0 }}
-                  whileInView={{ x: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
-                >
-                  <div className="flex items-start border border-gray-300 rounded focus-within:border-[#3a7bfc] focus-within:ring-1 focus-within:ring-[#3a7bfc]">
-                    <span className="flex items-center justify-center bg-white border-r-0 px-3 py-2">
-                      <field.icon
-                        className={`${focused[field.name as keyof IFocused] || formData[field.name as keyof IFormData] ? "text-[#3a7bfc]" : "text-gray-400"} ${field.type === "textarea" ? "mt-2" : ""}`}
-                      />
-                    </span>
-                    {field.type === "textarea" ? (
-                      <textarea
-                        name={field.name}
-                        value={formData[field.name as keyof IFormData]}
-                        onChange={handleChange}
-                        onFocus={() => handleFocus(field.name as keyof IFocused)}
-                        onBlur={() => handleBlur(field.name as keyof IFocused)}
-                        className={`flex-1 p-2 text-lg border-none focus:ring-0 ${!isFieldValid(field.name as keyof IFormData) && (focused[field.name as keyof IFocused] || formData[field.name as keyof IFormData]) ? "border-red-500" : ""}`}
-                        placeholder={field.placeholder}
-                        rows={4}
-                        required
-                      ></textarea>
-                    ) : (
-                      <input
-                        type={field.type}
-                        name={field.name}
-                        value={formData[field.name as keyof IFormData]}
-                        onChange={handleChange}
-                        onFocus={() => handleFocus(field.name as keyof IFocused)}
-                        onBlur={() => handleBlur(field.name as keyof IFocused)}
-                        className={`flex-1 p-2 text-lg border-none focus:ring-0 ${!isFieldValid(field.name as keyof IFormData) && (focused[field.name as keyof IFocused] || formData[field.name as keyof IFormData]) ? "border-red-500" : ""}`}
-                        placeholder={field.placeholder}
-                        required
-                      />
-                    )}
-                  </div>
-                  {!isFieldValid(field.name as keyof IFormData) && (focused[field.name as keyof IFocused] || formData[field.name as keyof IFormData]) && (
-                    <div className="text-red-600 text-xs mt-1 pl-2">{field.error}</div>
-                  )}
-                </motion.div>
-              </div>
+              <motion.div
+                key={field.name}
+                className="mb-4"
+                initial={{ x: -20, opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 + index * 0.1 }}
+              >
+                <TextField
+                  fullWidth
+                  variant="outlined"
+                  type={field.type === "textarea" ? "text" : field.type}
+                  name={field.name}
+                  value={formData[field.name as keyof IFormData]}
+                  onChange={handleChange}
+                  onFocus={() => handleFocus(field.name as keyof IFocused)}
+                  onBlur={() => handleBlur(field.name as keyof IFocused)}
+                  onKeyPress={field.type === "tel" ? handleKeyPress : undefined}
+                  placeholder={field.placeholder}
+                  multiline={field.type === "textarea"}
+                  rows={field.type === "textarea" ? 4 : undefined}
+                  required
+                  inputProps={
+                    field.type === "tel"
+                      ? {
+                          inputMode: "numeric",
+                        }
+                      : {}
+                  }
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <field.icon
+                          className={`${
+                            focused[field.name as keyof IFocused] || formData[field.name as keyof IFormData]
+                              ? "text-[#3a7bfc]"
+                              : "text-gray-400"
+                          } ${field.type === "textarea" ? "mt-2" : ""}`}
+                        />
+                      </InputAdornment>
+                    ),
+                    sx: {
+                      fontSize: "1.125rem",
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        borderColor: hasSubmitted && !isFieldValid(field.name as keyof IFormData) ? "red" : "gray",
+                      },
+                      "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#3a7bfc",
+                      },
+                      "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                        borderColor: "#3a7bfc",
+                        boxShadow: "0 0 0 1px #3a7bfc",
+                      },
+                    },
+                  }}
+                  error={hasSubmitted && !isFieldValid(field.name as keyof IFormData)}
+                  helperText={hasSubmitted && !isFieldValid(field.name as keyof IFormData) ? field.error : ""}
+                  sx={{
+                    "& .MuiFormHelperText-root": {
+                      marginLeft: "0.5rem",
+                      fontSize: "0.75rem",
+                      color: "red",
+                    },
+                  }}
+                />
+              </motion.div>
             ))}
 
             <motion.div
@@ -334,18 +372,18 @@ const ContactForm = () => {
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.5 }}
+              transition={{ duration: 0.5 }}
             >
               <motion.button
                 whileHover={{ scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
+                whileTap={{ scale: "scale(0.05)" }}
                 type="submit"
-                className="bg-gradient-to-br from-[#3a7bfc] to-[#0046c0] text-white text-lg px-4 py-2 rounded-full shadow-[0_4px_15px_rgba(58,123,252,0.3)] hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="bg-gradient-to-br from-[#3a7bfc] to-[#0046c0] text-white text-lg px-4 py-2 rounded-full shadow-[0_4px_20px_rgba(58,123,252,0.3)] hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
-                  <div className="flex items-center justify-center">
-                    <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                  <div className="flex items-center items-center justify-center">
+                    <div className="animate-spin h-5 w-5 border-b-2 border-white border-t-transparent rounded-full mr-2"></div>
                     <span>Sending...</span>
                   </div>
                 ) : (
