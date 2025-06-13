@@ -42,7 +42,7 @@ export default function CategoryPage() {
   };
 
   return (
-    <main className="container mx-auto mt-35 px-25">
+    <main className="container mx-auto mt-35 px-10 ds:px-25">
       <div className="pt-5">
         <div className="flex justify-between items-center mb-4 mt-4">
           <div>
@@ -59,10 +59,10 @@ export default function CategoryPage() {
                 <li className="text-gray-900 font-semibold">{product.name}</li>
               </ol>
             </nav>
-            <h1 className="font-bold text-5xl mt-2">{product.name}</h1>
+            <h1 className="font-bold  text-4xl ds:text-5xl mt-2">{product.name}</h1>
           </div>
           <button
-            className="flex items-center px-3 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 mt-10"
+            className="flex items-center text-xs ds:text-sm sm:text-lg px-3 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 mt-10"
             onClick={handleBackButtonClick}
           >
             <FaArrowLeft className="mr-2" />

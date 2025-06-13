@@ -138,7 +138,7 @@ export default function Home() {
         <section className="py-10 px-[6rem] space-around my-5 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-[#3a7bfc]/90 to-[#0046c0]/95 z-0"></div>
 
-          <div className="container relative z-[1] mx-auto px-4">
+          <div className="container relative z-[1] mx-auto px-0.5 sm:px-4">
             <div className="grid grid-cols-1 lg:grid-cols-12 items-center gap-6">
               <div className="lg:col-span-7">
                 <motion.h2
@@ -146,7 +146,7 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.6 }}
-                  className="text-4xl md:text-5xl font-bold mb-4 text-white"
+                  className="text-4xl md:text-5xl text-left font-bold mb-4 text-white"
                 >
                   Ready to Experience <br />
                   <span className="text-white">Premium Shopping?</span>
