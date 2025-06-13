@@ -1,20 +1,70 @@
 
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import type {ErrorBoundaryComponentProp} from './types/types'
 import ScrollToTop from "./components/ScrollToTop";
 import { Helmet } from "react-helmet";
 import Header from "./components/Header";
-import CategoriesPage from "./pages/CategoriesPage";
-import ProductDetail from "./pages/ProductDetail";
-import CategoryPage from "./pages/CategoryPage";
-import SearchResults from "./pages/SearchResults";
-import About from "./pages/About";
-import Contact from "./pages/Contact";
-import TestimonialsPage from "./pages/TestimonialsPage";
-import NotFound from "./pages/NotFound";
-import Footer from "./components/Footer";
+import {  lazy, Suspense, useEffect, useState, type ReactNode } from "react";
+import PropTypes from "prop-types";
+// import CategoriesPage from "./pages/CategoriesPage";
+// import ProductDetail from "./pages/ProductDetail";
+// import CategoryPage from "./pages/CategoryPage";
+// import SearchResults from "./pages/SearchResults";
+// import About from "./pages/About";
+// import Contact from "./pages/Contact";
+// import TestimonialsPage from "./pages/TestimonialsPage";
+// import NotFound from "./pages/NotFound";
+// import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import Home from "./pages/Home";
+const CategoriesPage = lazy(()=>import("./pages/CategoriesPage"));
+const ProductDetail = lazy(()=>import("./pages/ProductDetail"));
+const CategoryPage = lazy(()=>import("./pages/CategoryPage"));
+const SearchResults = lazy(()=>import("./pages/SearchResults"));
+const About = lazy(()=>import("./pages/About"));
+const Contact = lazy(()=>import("./pages/Contact"));
+const TestimonialsPage = lazy(()=>import("./pages/TestimonialsPage"));
+const NotFound = lazy(()=>import("./pages/NotFound"));
+const Footer = lazy(()=>import("./components/Footer"));
+import {BarLoader, BeatLoader} from 'react-spinners'
+
+
+
+
+
+const ErrorBoundaryComponent:React.FC<ErrorBoundaryComponentProp> = ({children})=>{
+
+const [isError , setIsError] = useState(false);
+
+
+const handleErrorFunction = () =>{
+
+
+  setIsError(true);
+
+}
+
+
+  useEffect(()=>{
+
+    window.addEventListener('error',handleErrorFunction);
+
+
+
+    return ()=>window.removeEventListener('error',handleErrorFunction);
+
+  },[])
+
+
+
+  return isError ? <div className='text-white text-xl font-medium'>Error loading component</div> : children;
+
+
+}
+
+
+
 
 export default function App() {
   return (
@@ -62,6 +112,9 @@ export default function App() {
           <Route
             path="/"
             element={
+
+              <ErrorBoundaryComponent>
+                <Suspense fallback={<div className=""><BeatLoader /></div>}>
               <>
                 <Helmet>
                   <title>Akdenar - Premium Quality Products | Home</title>
@@ -82,11 +135,15 @@ export default function App() {
                 </Helmet>
                 <Home />
               </>
+              </Suspense>
+              </ErrorBoundaryComponent>
             }
           />
           <Route
             path="/category"
             element={
+              <ErrorBoundaryComponent>
+                <Suspense fallback={<div className="w-full flex justify-center items-center h-36"><BeatLoader/></div>}>
               <>
                 <Helmet>
                   <title>Akdenar - Browse All Categories</title>
@@ -104,11 +161,15 @@ export default function App() {
                 </Helmet>
                 <CategoriesPage />
               </>
+              </Suspense>
+                 </ErrorBoundaryComponent>
             }
           />
           <Route
             path="/category/:productName"
             element={
+              <ErrorBoundaryComponent>
+                <Suspense fallback={<div className="w-full flex justify-center items-center h-36"><BeatLoader/></div>}>
               <>
                 <Helmet>
                   <title>Akdenar - Product Categories</title>
@@ -123,11 +184,15 @@ export default function App() {
                 </Helmet>
                 <CategoryPage />
               </>
+                    </Suspense>
+              </ErrorBoundaryComponent>
             }
           />
           <Route
             path="/category/:productName/:categoryName/:productId"
             element={
+              <ErrorBoundaryComponent>
+                <Suspense fallback={<div className="w-full flex justify-center items-center h-36"><BeatLoader/></div>}>
               <>
                 <Helmet>
                   <title>Akdenar - Product Details</title>
@@ -142,11 +207,15 @@ export default function App() {
                 </Helmet>
                 <ProductDetail />
               </>
+              </Suspense>
+                  </ErrorBoundaryComponent>
             }
           />
             <Route
             path="/search-results"
             element={
+              <ErrorBoundaryComponent>
+                <Suspense fallback={<div className="w-full flex justify-center items-center h-36"><BeatLoader/></div>}>
               <>
                 <Helmet>
                   <title>Akdenar - Search Results</title>
@@ -158,11 +227,15 @@ export default function App() {
                 </Helmet>
                 <SearchResults />
               </>
+              </Suspense>
+                    </ErrorBoundaryComponent>
             }
           />
           <Route
             path="/about"
             element={
+              <ErrorBoundaryComponent>
+                <Suspense fallback={<div className="w-full flex justify-center items-center h-36"><BeatLoader/></div>}>
               <>
                 <Helmet>
                   <title>Akdenar - About Us</title>
@@ -174,11 +247,15 @@ export default function App() {
                 </Helmet>
                 <About />
               </>
+              </Suspense>
+               </ErrorBoundaryComponent>
             }
           />
             <Route
             path="/contact"
             element={
+                  <ErrorBoundaryComponent>
+                    <Suspense fallback={<div className="w-full flex justify-center items-center h-36"><BeatLoader/></div>}>
               <>
                 <Helmet>
                   <title>Akdenar - Contact Us</title>
@@ -190,11 +267,15 @@ export default function App() {
                 </Helmet>
                 <Contact />
               </>
+              </Suspense>
+                </ErrorBoundaryComponent>
             }
           />
           <Route
             path="/testimonials"
             element={
+              <ErrorBoundaryComponent>
+                <Suspense fallback={<div className="w-full flex justify-center items-center h-36"><BeatLoader/></div>}>
               <>
                 <Helmet>
                   <title>Akdenar - Customer Testimonials</title>
@@ -206,11 +287,16 @@ export default function App() {
                 </Helmet>
                 <TestimonialsPage />
               </>
+              </Suspense>
+              </ErrorBoundaryComponent>
+
             }
           />
           <Route
             path="*"
             element={
+              <ErrorBoundaryComponent>
+                <Suspense fallback={<div className="w-full flex justify-center items-center h-36"><BarLoader/></div>}>
               <>
                 <Helmet>
                   <title>Akdenar - Page Not Found</title>
@@ -222,6 +308,8 @@ export default function App() {
                 </Helmet>
                 <NotFound />
               </>
+              </Suspense>
+              </ErrorBoundaryComponent>
             }
           />
         </Routes>
