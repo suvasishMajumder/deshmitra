@@ -49,10 +49,15 @@
 @import "tailwindcss";
 
 @theme {
-  --breakpoint-ss: 62rem;
+  --breakpoint-ss: 62rem; 
   --breakpoint-ds: 36rem;
   --breakpoint-ls:36.75rem;
 }
+
+/* 62rem  =  992px */
+/* 36 rem = 576px */
+/* 36.75rem = 588px */
+
 @theme {
   --font-inter: "Inter", "sans-serif"; 
 }

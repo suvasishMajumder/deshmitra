@@ -303,7 +303,7 @@ const ContactForm = () => {
                         onChange={handleChange}
                         onFocus={() => handleFocus(field.name as keyof IFocused)}
                         onBlur={() => handleBlur(field.name as keyof IFocused)}
-                        className={`flex-1 p-2 text-lg border-none focus:ring-0 ${!isFieldValid(field.name as keyof IFormData) && (focused[field.name as keyof IFocused] || formData[field.name as keyof IFormData]) ? "border-red-500" : ""}`}
+                        className={`flex-1 p-2 text-lg resize-none border-none focus:ring-0 ${!isFieldValid(field.name as keyof IFormData) && (focused[field.name as keyof IFocused] || formData[field.name as keyof IFormData]) ? "border-red-500" : ""}`}
                         placeholder={field.placeholder}
                         rows={4}
                         required

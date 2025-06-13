@@ -421,7 +421,9 @@ const ProductContactForm: React.FC<ProductContactFormProps> = ({ productName = "
                                     whileHover={{ scale: 1.03 }}
                                     whileTap={{ scale: 0.98 }}
                                     type="submit"
-                                    className="bg-gradient-to-r from-blue-600 to-blue-900 text-white px-8 py-4 rounded-full font-medium text-lg hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                    className="bg-gradient-to-r from-blue-600 to-blue-900
+                                     text-white px-5 ds:px-8 py-3 ds:py-4 rounded-full font-medium text-lg
+                                      hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
                                     disabled={isSubmitting}
                                 >
                                     {isSubmitting ? (

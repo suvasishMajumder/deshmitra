@@ -126,7 +126,7 @@ export default function ProductDetail() {
   const specifications = getSpecifications();
 
   return (
-    <main className="mx-auto max-w-7xl mt-8 px-4 sm:px-30 lg:px-8">
+    <main className="mx-auto  max-w-7xl mt-8 px-4 sm:px-30 lg:px-8">
       <div className="pt-30">
         <nav aria-label="breadcrumb" className="mt-4">
           <ol className="flex space-x-2 text-sm">
@@ -307,10 +307,10 @@ export default function ProductDetail() {
 
         {/* Product Tabs Section - Description, Specifications, Reviews */}
         <div className="mb-8">
-          <ul className="flex border-b mb-4" role="tablist">
+          <ul className="flex  border-b mb-4" role="tablist">
             <li className="mr-4">
               <button
-                className={`pb-2 px-4 text-sm font-medium ${
+                className={`pb-2 px-1 ds:px-4 text-sm font-medium ${
                   activeTab === "description"
                     ? "border-b-2 border-blue-600 text-blue-600"
                     : "text-gray-600 hover:text-blue-600"
@@ -323,7 +323,7 @@ export default function ProductDetail() {
             </li>
             <li className="mr-4">
               <button
-                className={`pb-2 px-4 text-sm font-medium ${
+                className={`pb-2 px-1 ds:px-4 text-sm font-medium ${
                   activeTab === "specifications"
                     ? "border-b-2 border-blue-600 text-blue-600"
                     : "text-gray-600 hover:text-blue-600"
@@ -336,7 +336,7 @@ export default function ProductDetail() {
             </li>
             <li>
               <button
-                className={`pb-2 px-4 text-sm font-medium ${
+                className={`pb-2 px-1 ds:px-4 text-sm font-medium ${
                   activeTab === "reviews"
                     ? "border-b-2 border-blue-600 text-blue-600"
                     : "text-gray-600 hover:text-blue-600"
