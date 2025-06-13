@@ -52,6 +52,7 @@
   --breakpoint-ss: 62rem; 
   --breakpoint-ds: 36rem;
   --breakpoint-ls:36.75rem;
+    --breakpoint-ms:25rem;
 }
 
 /* 62rem  =  992px */
