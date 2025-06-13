@@ -404,7 +404,7 @@ const About = () => {
   useEffect(() => {
     const id = setInterval(() => {
       setFarmerCounter(prev => {
-        if (prev < 500) return prev + 1;
+        if (prev < 500) return prev + 10;
         clearInterval(id);
         return prev;
       });
@@ -415,7 +415,7 @@ const About = () => {
   useEffect(() => {
     const id = setInterval(() => {
       setCustomerCounter(prev => {
-        if (prev < 5000) return prev + 1;
+        if (prev < 5000) return prev + 10;
         clearInterval(id);
         return prev;
       });
