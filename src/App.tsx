@@ -4,8 +4,8 @@ import type {ErrorBoundaryComponentProp} from './types/types'
 import ScrollToTop from "./components/ScrollToTop";
 import { Helmet } from "react-helmet";
 import Header from "./components/Header";
-import {  lazy, Suspense, useEffect, useState, type ReactNode } from "react";
-import PropTypes from "prop-types";
+import {  lazy, Suspense, useEffect, useState } from "react";
+
 // import CategoriesPage from "./pages/CategoriesPage";
 // import ProductDetail from "./pages/ProductDetail";
 // import CategoryPage from "./pages/CategoryPage";
