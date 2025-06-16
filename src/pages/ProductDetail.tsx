@@ -1,1080 +1,679 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { FaStar, FaArrowRight, FaShareNodes, FaHeadset, FaShippingFast, FaShieldHalved, FaChevronRight, FaChevronLeft } from 'react-icons/fa6';
-import { useSelector } from 'react-redux';
+import { useState, useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FaStar, FaArrowRight } from "react-icons/fa6";
+import { FaArrowLeft } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import ProductContactForm from "../components/ProductContactForm";
+import NotFound from "./NotFound";
+import type { RootState } from "../redux/store";
 
-const ProductDetail = () => {
-    const { category, product } = useParams();
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const [relatedProducts, setRelatedProducts] = useState([]);
-    const catalogs= useSelector((state:RootState) => state.catalog.catalogs);
-    useEffect(() => {
-        // Find the selected product from the catalog data
-        window.scrollTo(0, 0);
+export default function ProductDetail() {
+  const catalogs = useSelector((state: RootState) => state.catalog.catalogs);
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("description");
+  const params = useParams<{
+    productName?: string;
+    categoryName?: string;
+    productId?: string;
+  }>();
+  const { productName, categoryName, productId } = params;
 
-        const fetchData = () => {
-            setIsLoading(true);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [productName, categoryName, productId]);
 
-            // Convert category slug to category name
-            const categoryName = category.split('-').map(word =>
-                word.charAt(0).toUpperCase() + word.slice(1)
-            ).join(' ');
+  if (!productName || !categoryName || !productId) {
+    return <NotFound searchTerm="Invalid product route" />;
+  }
 
-            // Convert product slug to product name
-            const productName = product.split('-').map(word =>
-                word.charAt(0).toUpperCase() + word.slice(1)
-            ).join(' ');
+  const decodedProductName = decodeURIComponent(productName)
+    .replace(/-/g, " ")
+    .toLowerCase();
+  const decodedCategoryName = decodeURIComponent(categoryName)
+    .replace(/-/g, " ")
+    .toLowerCase();
+  const product = catalogs.find(
+    (c) => c.name.toLowerCase() === decodedProductName
+  );
 
-            // Find the matching catalog entry
-            const catalogEntry = catalogs.find(cat =>
-                cat.name.toLowerCase() === categoryName.toLowerCase()
-            );
+  if (!product) {
+    return <NotFound searchTerm={decodedProductName} />;
+  }
 
-            if (catalogEntry) {
-                // Find the product within this catalog
-                const categoryEntry = catalogEntry.categories.find(cat =>
-                    cat.name.toLowerCase() === productName.toLowerCase()
-                );
+  const category = product.categories.find(
+    (c) => c.name.toLowerCase() === decodedCategoryName
+  );
 
-                if (categoryEntry) {
-                    setSelectedProduct(categoryEntry);
+  if (!category) {
+    return <NotFound searchTerm={decodedCategoryName} />;
+  }
 
-                    // Get related products (other products from the same category)
-                    const related = catalogEntry.categories
-                        .filter(cat => cat.name !== categoryEntry.name)
-                        .slice(0, 4); // Limit to 4 related products
+  const item = category.subItems[parseInt(productId)];
 
-                    setRelatedProducts(related);
-                }
-            }
+  if (!item) {
+    return <NotFound />;
+  }
 
-            setIsLoading(false);
-        };
+  const getRelatedProducts = () => {
+    return category.subItems
+      .filter((_, index) => index !== parseInt(productId))
+      .slice(0, 4);
+  };
 
-        fetchData();
-    }, [category, product]);
+  const relatedProducts = getRelatedProducts();
 
-    const handleImageChange = (index) => {
-        setCurrentImageIndex(index);
-    };
+  const handleBackNavigation = () => {
+    navigate(`/category/${productName}`);
+  };
 
-    const nextImage = () => {
-        if (selectedProduct && selectedProduct.images) {
-            setCurrentImageIndex((prevIndex) =>
-                prevIndex === selectedProduct.images.length - 1 ? 0 : prevIndex + 1
-            );
-        }
-    };
-
-    const prevImage = () => {
-        if (selectedProduct && selectedProduct.images) {
-            setCurrentImageIndex((prevIndex) =>
-                prevIndex === 0 ? selectedProduct.images.length - 1 : prevIndex - 1
-            );
-        }
-    };
-
-    if (isLoading) {
-        return (
-            <div className="container mt-5 pt-5 text-center product-detail-page">
-                <div className="spinner-border text-primary" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                </div>
-            </div>
-        );
+  const getSpecifications = () => {
+    if (product.name.toLowerCase() === "rice") {
+      return [
+        { label: "Purity", value: "95%" },
+        { label: "Natural Admixture", value: "5%" },
+        {
+          label: "Average Grain Length",
+          value: item.name.toLowerCase().includes("8.35")
+            ? "8.35 MM"
+            : "As specified",
+        },
+        { label: "Moisture", value: "12.5% Max" },
+        { label: "Broken Grain", value: "1% Max." },
+        { label: "Damage/Discolour Grain", value: "1% Max" },
+        { label: "Immature Grain", value: "1% Max" },
+        { label: "Foreign Matter", value: "Nil" },
+        {
+          label: "Packaging Type",
+          value: "Jute bag, PP bag, Non-woven bag or as per requirement",
+        },
+      ];
+    } else if (product.name.toLowerCase() === "salt") {
+      return [
+        { label: "Purity", value: "99.5%" },
+        { label: "Moisture Content", value: "< 0.5%" },
+        { label: "Sodium Chloride", value: "> 98%" },
+        { label: "Anti-caking Agent", value: "Present" },
+        {
+          label: "Packaging Type",
+          value: "Available in various packaging options",
+        },
+      ];
+    } else if (product.name.toLowerCase() === "spices") {
+      return [
+        { label: "Origin", value: "India" },
+        { label: "Freshness", value: "100% Fresh" },
+        {
+          label: "Processing",
+          value: item.name.toLowerCase().includes("whole") ? "Whole" : "Ground",
+        },
+        { label: "Packaging", value: "Moisture-resistant packaging" },
+        { label: "Shelf Life", value: "24 months from packaging" },
+      ];
     }
+    return [
+      { label: "Quality", value: "Premium" },
+      { label: "Origin", value: "India" },
+      { label: "Packaging", value: "Available in various sizes" },
+      {
+        label: "Storage Instructions",
+        value: "Store in a cool, dry place away from direct sunlight",
+      },
+      { label: "Shelf Life", value: "12 months from date of packaging" },
+    ];
+  };
 
-    if (!selectedProduct) {
-        return (
-            <div className="container mt-5 pt-5 text-center product-detail-page">
-                <h2>Product not found</h2>
-                <p>Sorry, we couldn't find the product you're looking for.</p>
-                <Link to="/category" className="btn btn-primary">
-                    Browse Categories
-                </Link>
-            </div>
-        );
-    }
+  const specifications = getSpecifications();
 
-    // Use the selected product's image if available, or fall back to the main image
-    const productImages = selectedProduct.images || [selectedProduct.image];
+  return (
+    <main className="mx-auto  max-w-7xl mt-8 px-4 sm:px-30 lg:px-8">
+      <div className="pt-30">
+        <nav aria-label="breadcrumb" className="mt-4">
+          <ol className="flex space-x-2 text-sm">
+            <li>
+              <Link to="/" className="text-gray-600 hover:text-blue-600">
+                Home
+              </Link>
+            </li>
+            <li className="text-gray-400">/</li>
+            <li>
+              <Link
+                to={`/category/${productName}`}
+                className="text-gray-600 hover:text-blue-600"
+              >
+                {product.name}
+              </Link>
+            </li>
+            <li className="text-gray-400">/</li>
+            <li>
+              <Link
+                to="#"
+                className="text-gray-600 hover:text-blue-600"
+                onClick={handleBackNavigation}
+              >
+                {category.name}
+              </Link>
+            </li>
+            <li className="text-gray-400">/</li>
+            <li className="text-gray-900">{item.name}</li>
+          </ol>
+        </nav>
 
-    return (
-        <main className="container mt-5 product-detail-page">
-            <div className="row mb-4">
-                <div className="col-12">
-                    <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb">
-                            <li className="breadcrumb-item">
-                                <Link to="/" className="text-decoration-none">Home</Link>
-                            </li>
-                            <li className="breadcrumb-item">
-                                <Link to="/category" className="text-decoration-none">Categories</Link>
-                            </li>
-                            <li className="breadcrumb-item">
-                                <Link to={`/category/${category}`} className="text-decoration-none">
-                                    {category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
-                                </Link>
-                            </li>
-                            <li className="breadcrumb-item active" aria-current="page">
-                                {selectedProduct.name}
-                            </li>
-                        </ol>
-                    </nav>
+        <div className="flex justify-end mb-6">
+          <button
+            className="flex items-center px-4 py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 transition"
+            onClick={handleBackNavigation}
+          >
+            <FaArrowLeft className="mr-2" />
+            Back to {category.name}
+          </button>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-8">
+          {/* IMAGE SECTION */}
+          <div className="lg:col-span-5 w-full max-w-[500px] mx-auto lg:mx-0">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="relative"
+            >
+              <div className="rounded-2xl overflow-hidden bg-gray-100 shadow-md h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px] w-full">
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+
+              <div className="absolute top-2 left-2 sm:top-4 sm:left-4">
+                <span className="bg-blue-600 text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-full text-xs sm:text-sm font-medium">
+                  Premium
+                </span>
+              </div>
+
+              <div className="absolute bottom-2 right-2 sm:bottom-4 sm:right-4">
+                <span className="bg-white text-gray-800 font-medium px-2 py-0.5 sm:px-3 sm:py-1 text-xs sm:text-sm rounded-full shadow-sm">
+                  {category.name}
+                </span>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* DETAILS SECTION */}
+          <div className="lg:col-span-7">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+            >
+              <h1 className="text-2xl sm:text-3xl font-bold mb-2">
+                {item.name}
+              </h1>
+              <p className="text-gray-500 mb-4 text-sm sm:text-base">
+                {product.name} › {category.name}
+              </p>
+
+              <div className="flex items-center mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <FaStar
+                    key={i}
+                    size={16}
+                    className="mr-1"
+                    style={{ color: i < 4 ? "#ffc107" : "#e0e0e0" }}
+                  />
+                ))}
+                <span className="ml-2 text-gray-500 text-xs sm:text-sm">
+                  (4.0 | 24 reviews)
+                </span>
+              </div>
+
+              <div className="mb-4">
+                <h3 className="text-blue-600 font-bold text-lg sm:text-xl mb-1">
+                  {item.priceRange}
+                </h3>
+                <p className="text-gray-500 text-xs sm:text-sm">
+                  Price includes all taxes
+                </p>
+              </div>
+
+              <div className="mb-4">
+                <p className="text-sm">{item.description}</p>
+              </div>
+
+              <div className="mb-4">
+                <h4 className="font-bold text-base sm:text-lg mb-3">
+                  Product Specifications
+                </h4>
+                <div className="overflow-x-auto">
+                  <table className="w-full border border-gray-200 text-sm">
+                    <tbody>
+                      {specifications.map((spec, index) => (
+                        <tr
+                          key={index}
+                          className={
+                            index % 2 === 0 ? "bg-gray-200" : "bg-white"
+                          }
+                        >
+                          <th className="text-left px-3 py-2 font-semibold align-top w-1/3 text-sm">
+                            {spec.label}
+                          </th>
+                          <td className="px-3 py-2 text-gray-800 text-sm">
+                            {spec.value}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
-            </div>
+              </div>
 
-            <div className="row g-5">
-                {/* Product Gallery Column */}
-                <div className="col-lg-6 mb-4">
-                    <div className="product-gallery">
-                        <div className="main-image-container">
-                            {productImages.length > 1 && (
-                                <button
-                                    className="gallery-nav prev"
-                                    onClick={prevImage}
-                                    aria-label="Previous image"
-                                >
-                                    <FaChevronLeft />
-                                </button>
-                            )}
-
-                            <img
-                                src={productImages[currentImageIndex]}
-                                alt={selectedProduct.name}
-                                className="main-product-image"
-                                onError={(e) => {
-                                    e.target.src = "https://via.placeholder.com/600x600?text=Product+Image";
-                                }}
-                            />
-
-                            {productImages.length > 1 && (
-                                <button
-                                    className="gallery-nav next"
-                                    onClick={nextImage}
-                                    aria-label="Next image"
-                                >
-                                    <FaChevronRight />
-                                </button>
-                            )}
-                        </div>
-
-                        {productImages.length > 1 && (
-                            <div className="thumbnail-container">
-                                {productImages.map((image, index) => (
-                                    <div
-                                        key={index}
-                                        className={`thumbnail ${currentImageIndex === index ? 'active' : ''}`}
-                                        onClick={() => handleImageChange(index)}
-                                    >
-                                        <img
-                                            src={image}
-                                            alt={`${selectedProduct.name} - thumbnail ${index + 1}`}
-                                            onError={(e) => {
-                                                e.target.src = "https://via.placeholder.com/100x100?text=Thumbnail";
-                                            }}
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+              <div className="p-4 bg-gray-100 rounded-lg mb-4 text-sm">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {[
+                    {
+                      icon: "🚚",
+                      title: "Nationwide Delivery",
+                      desc: "Fast & reliable across India",
+                    },
+                    {
+                      icon: "🔄",
+                      title: "Customer Support",
+                      desc: "9am–6pm, Mon–Sat",
+                    },
+                    {
+                      icon: "✅",
+                      title: "Quality Assured",
+                      desc: "100% Authentic Products",
+                    },
+                  ].map((info, idx) => (
+                    <div className="flex items-center" key={idx}>
+                      <div className="mr-3">{info.icon}</div>
+                      <div>
+                        <h6 className="font-semibold text-sm mb-0">
+                          {info.title}
+                        </h6>
+                        <p className="text-gray-500 text-xs mb-0">
+                          {info.desc}
+                        </p>
+                      </div>
                     </div>
+                  ))}
                 </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
 
-                {/* Product Details Column */}
-                <div className="col-lg-6">
-                    <div className="product-details">
-                        <motion.h1
-                            className="product-title mb-2"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5 }}
-                        >
-                            {selectedProduct.name}
-                        </motion.h1>
+        {/* Product Tabs Section - Description, Specifications, Reviews */}
+        <div className="mb-8">
+          <ul className="flex  border-b mb-4" role="tablist">
+            <li className="mr-4">
+              <button
+                className={`pb-2 px-1 ds:px-4 text-sm font-medium ${
+                  activeTab === "description"
+                    ? "border-b-2 border-blue-600 text-blue-600"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
+                onClick={() => setActiveTab("description")}
+                type="button"
+              >
+                Description
+              </button>
+            </li>
+            <li className="mr-4">
+              <button
+                className={`pb-2 px-1 ds:px-4 text-sm font-medium ${
+                  activeTab === "specifications"
+                    ? "border-b-2 border-blue-600 text-blue-600"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
+                onClick={() => setActiveTab("specifications")}
+                type="button"
+              >
+                Specifications
+              </button>
+            </li>
+            <li>
+              <button
+                className={`pb-2 px-1 ds:px-4 text-sm font-medium ${
+                  activeTab === "reviews"
+                    ? "border-b-2 border-blue-600 text-blue-600"
+                    : "text-gray-600 hover:text-blue-600"
+                }`}
+                onClick={() => setActiveTab("reviews")}
+                type="button"
+              >
+                Reviews
+              </button>
+            </li>
+          </ul>
 
-                        <motion.div
-                            className="product-meta mb-4"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.1 }}
-                        >
-                            <div className="ratings">
-                                <div className="stars">
-                                    {[...Array(5)].map((_, index) => (
-                                        <FaStar key={index} className={index < 4 ? 'filled' : ''} />
-                                    ))}
-                                </div>
-                                <span className="rating-count">(4.0/5)</span>
-                                <span className="separator">|</span>
-                                <span className="stock in-stock">In Stock</span>
-                            </div>
-                        </motion.div>
-
-                        <motion.div
-                            className="product-description mb-4"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.2 }}
-                        >
-                            <p>{selectedProduct.description}</p>
-                        </motion.div>
-
-                        <motion.div
-                            className="product-options mb-4"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.3 }}
-                        >
-                            <h6>Available Variants</h6>
-                            <div className="variant-grid">
-                                {selectedProduct.subItems && selectedProduct.subItems.map((variant, index) => (
-                                    <div key={index} className="variant-item">
-                                        {variant.name}
-                                    </div>
-                                ))}
-                            </div>
-                        </motion.div>
-
-                        <motion.div
-                            className="product-features mb-4"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.4 }}
-                        >
-                            <h6>Key Features</h6>
-                            <ul className="features-list">
-                                <li>Premium quality assurance</li>
-                                <li>Sourced directly from producers</li>
-                                <li>Natural ingredients with no additives</li>
-                                <li>Highest grade available in market</li>
-                                <li>Available in bulk quantities</li>
-                            </ul>
-                        </motion.div>
-
-                        <motion.div
-                            className="product-cta"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.5 }}
-                        >
-                            <Link to="/contact" className="btn btn-primary quote-btn">
-                                Request a Quote
-                            </Link>
-                            <button className="btn btn-outline-primary share-btn">
-                                <FaShareNodes /> Share
-                            </button>
-                        </motion.div>
-
-                        <motion.div
-                            className="product-guarantees mt-5"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.5, delay: 0.6 }}
-                        >
-                            <div className="guarantee-item">
-                                <FaShippingFast className="guarantee-icon" />
-                                <div className="guarantee-text">
-                                    <h6>Fast Delivery</h6>
-                                    <p>Nationwide shipping available</p>
-                                </div>
-                            </div>
-                            <div className="guarantee-item">
-                                <FaShieldHalved className="guarantee-icon" />
-                                <div className="guarantee-text">
-                                    <h6>Quality Assured</h6>
-                                    <p>100% quality guarantee</p>
-                                </div>
-                            </div>
-                            <div className="guarantee-item">
-                                <FaHeadset className="guarantee-icon" />
-                                <div className="guarantee-text">
-                                    <h6>24/7 Support</h6>
-                                    <p>Dedicated customer service</p>
-                                </div>
-                            </div>
-                        </motion.div>
-                    </div>
+          <div className="p-6 bg-gray-100 rounded-lg">
+            {activeTab === "description" && (
+              <div>
+                <h4 className="font-bold text-lg mb-3">Product Description</h4>
+                <p>{item.description}</p>
+                <p>
+                  This premium {product.name.toLowerCase()} is sourced from the
+                  finest producers and undergoes rigorous quality checks to
+                  ensure you receive only the best product. Our{" "}
+                  {item.name.toLowerCase()}
+                  is known for its exceptional quality and authentic flavor
+                  profile.
+                </p>
+                <p>
+                  Whether you're cooking for your family or hosting a special
+                  occasion, our
+                  {item.name.toLowerCase()} will elevate your culinary creations
+                  to new heights.
+                </p>
+                <div className="my-4">
+                  <h5 className="font-bold mb-3">Key Features:</h5>
+                  <ul className="space-y-2">
+                    <li>Premium quality {product.name.toLowerCase()}</li>
+                    <li>Sourced from trusted farmers</li>
+                    <li>Naturally processed</li>
+                    <li>No artificial additives</li>
+                    <li>Rich in natural flavor</li>
+                  </ul>
                 </div>
-            </div>
-
-            {/* Product Detail Tabs */}
-            <div className="row mt-5">
-                <div className="col-12">
-                    <div className="product-tabs">
-                        <ul className="nav nav-tabs" id="productTabs" role="tablist">
-                            <li className="nav-item" role="presentation">
-                                <button
-                                    className="nav-link active"
-                                    id="description-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#description-tab-pane"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="description-tab-pane"
-                                    aria-selected="true"
-                                >
-                                    Detailed Description
-                                </button>
-                            </li>
-                            <li className="nav-item" role="presentation">
-                                <button
-                                    className="nav-link"
-                                    id="specifications-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#specifications-tab-pane"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="specifications-tab-pane"
-                                    aria-selected="false"
-                                >
-                                    Specifications
-                                </button>
-                            </li>
-                            <li className="nav-item" role="presentation">
-                                <button
-                                    className="nav-link"
-                                    id="usage-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#usage-tab-pane"
-                                    type="button"
-                                    role="tab"
-                                    aria-controls="usage-tab-pane"
-                                    aria-selected="false"
-                                >
-                                    Usage & Storage
-                                </button>
-                            </li>
-                        </ul>
-                        <div className="tab-content py-4 px-3" id="productTabsContent">
-                            <div
-                                className="tab-pane fade show active"
-                                id="description-tab-pane"
-                                role="tabpanel"
-                                aria-labelledby="description-tab"
-                                tabIndex="0"
-                            >
-                                <h5>About {selectedProduct.name}</h5>
-                                <p>{selectedProduct.description}</p>
-                                <p>
-                                    At Akdenar, we take pride in offering only the highest quality products sourced directly from
-                                    trusted producers. Our {selectedProduct.name} is carefully selected to ensure premium quality
-                                    and authentic taste that our customers have come to expect from our brand.
-                                </p>
-                                <p>
-                                    Each batch undergoes strict quality control measures to guarantee consistency and excellence.
-                                    Whether you're buying for personal use or for your business, you can trust that our
-                                    {selectedProduct.name} meets the highest industry standards.
-                                </p>
-                            </div>
-                            <div
-                                className="tab-pane fade"
-                                id="specifications-tab-pane"
-                                role="tabpanel"
-                                aria-labelledby="specifications-tab"
-                                tabIndex="0"
-                            >
-                                <h5>Product Specifications</h5>
-                                <table className="table specifications-table">
-                                    <tbody>
-                                        <tr>
-                                            <td>Product Name</td>
-                                            <td>{selectedProduct.name}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Category</td>
-                                            <td>{category.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Available Varieties</td>
-                                            <td>{selectedProduct.subItems ? selectedProduct.subItems.length : 1} variants</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Packaging Options</td>
-                                            <td>Retail and Bulk packaging available</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Quality Grade</td>
-                                            <td>Premium</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Origin</td>
-                                            <td>India</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Special Features</td>
-                                            <td>High quality, Consistent taste, Premium selection</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div
-                                className="tab-pane fade"
-                                id="usage-tab-pane"
-                                role="tabpanel"
-                                aria-labelledby="usage-tab"
-                                tabIndex="0"
-                            >
-                                <h5>Usage Instructions & Storage</h5>
-                                <div className="usage-storage-content">
-                                    <div className="usage-section">
-                                        <h6>Recommended Usage</h6>
-                                        <p>
-                                            Our {selectedProduct.name} is versatile and can be used in various culinary applications.
-                                            For best results, follow these guidelines:
-                                        </p>
-                                        <ul>
-                                            <li>Store in a cool, dry place away from direct sunlight</li>
-                                            <li>Keep container sealed when not in use</li>
-                                            <li>Use clean, dry utensils when handling</li>
-                                            <li>Follow recommended measurements for consistent results</li>
-                                        </ul>
-                                    </div>
-
-                                    <div className="storage-section">
-                                        <h6>Storage Recommendations</h6>
-                                        <p>
-                                            To maintain freshness and quality, proper storage is essential:
-                                        </p>
-                                        <ul>
-                                            <li>Store in the original packaging or an airtight container</li>
-                                            <li>Keep away from strong odors as the product may absorb them</li>
-                                            <li>Avoid exposure to moisture and humidity</li>
-                                            <li>Optimal storage temperature: Room temperature or slightly cooler</li>
-                                            <li>Check for any special storage instructions on the package</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Related Products Section */}
-            {relatedProducts.length > 0 && (
-                <section className="related-products mt-5 mb-5">
-                    <div className="section-header d-flex justify-content-between align-items-center mb-4">
-                        <h2 className="section-title">Related Products</h2>
-                        <Link to={`/category/${category}`} className="view-all-link">
-                            View All <FaArrowRight className="ms-2" />
-                        </Link>
-                    </div>
-
-                    <div className="row g-4">
-                        {relatedProducts.map((relatedProduct, index) => (
-                            <div key={index} className="col-md-6 col-lg-3">
-                                <motion.div
-                                    className="related-product-card"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ duration: 0.5, delay: index * 0.1 }}
-                                    whileHover={{ y: -10 }}
-                                >
-                                    <Link to={`/category/${category}/${relatedProduct.name.toLowerCase().replace(/\s/g, '-')}`} className="product-link">
-                                        <div className="product-image-container">
-                                            <img
-                                                src={relatedProduct.image}
-                                                alt={relatedProduct.name}
-                                                className="product-image"
-                                                onError={(e) => {
-                                                    e.target.src = "https://via.placeholder.com/300x300?text=Product";
-                                                }}
-                                            />
-                                        </div>
-                                        <div className="product-info">
-                                            <h5 className="product-name">{relatedProduct.name}</h5>
-                                            <p className="product-excerpt">{relatedProduct.description.substring(0, 70)}...</p>
-                                            <span className="explore-btn">
-                                                Explore <FaArrowRight className="ms-1" />
-                                            </span>
-                                        </div>
-                                    </Link>
-                                </motion.div>
-                            </div>
-                        ))}
-                    </div>
-                </section>
+              </div>
             )}
 
-            <style >{`
-        .product-detail-page {
-          padding-top: 120px;
-        }
-        
-        /* Breadcrumb styles */
-        .breadcrumb {
-          background: transparent;
-          margin-bottom: 2rem;
-        }
-
-        .breadcrumb-item a {
-          color: #3a7bfc;
-          transition: color 0.2s;
-        }
-
-        .breadcrumb-item a:hover {
-          color: #2763d5;
-        }
-
-        .breadcrumb-item.active {
-          color: #6c757d;
-        }
-
-        /* Product Gallery Styles */
-        .product-gallery {
-          position: relative;
-          margin-bottom: 2rem;
-        }
-
-        .main-image-container {
-          position: relative;
-          width: 100%;
-          height: 450px;
-          border-radius: 16px;
-          overflow: hidden;
-          background-color: #f8f9fa;
-          margin-bottom: 1rem;
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .main-product-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.4s ease;
-        }
-
-        .gallery-nav {
-          position: absolute;
-          top: 50%;
-          transform: translateY(-50%);
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          background: rgba(255, 255, 255, 0.9);
-          border: none;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-          z-index: 2;
-          transition: all 0.3s ease;
-          color: #3a7bfc;
-        }
-
-        .gallery-nav:hover {
-          background: #3a7bfc;
-          color: white;
-          box-shadow: 0 5px 15px rgba(58, 123, 252, 0.3);
-        }
-
-        .gallery-nav.prev {
-          left: 15px;
-        }
-
-        .gallery-nav.next {
-          right: 15px;
-        }
-
-        .thumbnail-container {
-          display: flex;
-          gap: 10px;
-          margin-top: 15px;
-          overflow-x: auto;
-          padding-bottom: 10px;
-          scrollbar-width: thin;
-          scrollbar-color: rgba(58, 123, 252, 0.3) transparent;
-        }
-
-        .thumbnail-container::-webkit-scrollbar {
-          height: 6px;
-        }
-
-        .thumbnail-container::-webkit-scrollbar-thumb {
-          background-color: rgba(58, 123, 252, 0.3);
-          border-radius: 10px;
-        }
-
-        .thumbnail {
-          flex: 0 0 80px;
-          height: 80px;
-          border-radius: 10px;
-          overflow: hidden;
-          cursor: pointer;
-          opacity: 0.7;
-          transition: all 0.3s ease;
-          border: 2px solid transparent;
-        }
-
-        .thumbnail:hover {
-          opacity: 1;
-        }
-
-        .thumbnail.active {
-          opacity: 1;
-          border-color: #3a7bfc;
-        }
-
-        .thumbnail img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        /* Product Details Styles */
-        .product-title {
-          font-size: 2.2rem;
-          font-weight: 700;
-          color: #333;
-          margin-bottom: 1rem;
-        }
-
-        .product-meta {
-          display: flex;
-          align-items: center;
-          margin-bottom: 1.5rem;
-        }
-
-        .ratings {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-        }
-
-        .stars {
-          display: flex;
-          color: #e0e0e0;
-        }
-
-        .stars .filled {
-          color: #ffc107;
-        }
-
-        .rating-count {
-          color: #777;
-          font-size: 0.9rem;
-        }
-
-        .separator {
-          color: #ddd;
-          margin: 0 10px;
-        }
-
-        .stock {
-          font-weight: 500;
-          font-size: 0.9rem;
-        }
-
-        .in-stock {
-          color: #28a745;
-        }
-
-        .product-description {
-          color: #666;
-          line-height: 1.7;
-          margin-bottom: 2rem;
-        }
-
-        .product-options h6 {
-          font-weight: 600;
-          margin-bottom: 1rem;
-          color: #444;
-        }
-
-        .variant-grid {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-          margin-bottom: 1.5rem;
-        }
-
-        .variant-item {
-          padding: 8px 16px;
-          background-color: #f0f4ff;
-          color: #3a7bfc;
-          border-radius: 30px;
-          font-size: 0.85rem;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-
-        .variant-item:hover {
-          background-color: #e0e9ff;
-          transform: translateY(-2px);
-        }
-
-        .product-features h6 {
-          font-weight: 600;
-          margin-bottom: 1rem;
-          color: #444;
-        }
-
-        .features-list {
-          list-style-type: none;
-          padding-left: 0;
-        }
-
-        .features-list li {
-          padding: 8px 0;
-          display: flex;
-          align-items: center;
-          color: #555;
-        }
-
-        .features-list li:before {
-          content: "✓";
-          color: #3a7bfc;
-          margin-right: 10px;
-          font-weight: bold;
-        }
-
-        .product-cta {
-          display: flex;
-          gap: 15px;
-          margin-top: 2rem;
-        }
-
-        .quote-btn {
-          padding: 12px 30px;
-          font-weight: 500;
-          border-radius: 12px;
-          background: linear-gradient(45deg, #3a7bfc, #6f42c1);
-          border: none;
-          box-shadow: 0 5px 15px rgba(58, 123, 252, 0.3);
-          transition: all 0.3s ease;
-        }
-
-        .quote-btn:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 8px 20px rgba(58, 123, 252, 0.4);
-        }
-
-        .share-btn {
-          padding: 12px 25px;
-          font-weight: 500;
-          border-radius: 12px;
-          border-color: rgba(58, 123, 252, 0.3);
-          color: #3a7bfc;
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          transition: all 0.3s ease;
-        }
-
-        .share-btn:hover {
-          background-color: rgba(58, 123, 252, 0.05);
-          border-color: #3a7bfc;
-        }
-
-        .product-guarantees {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 20px;
-          margin-top: 30px;
-          padding-top: 30px;
-          border-top: 1px solid #f0f0f0;
-        }
-
-        .guarantee-item {
-          display: flex;
-          align-items: flex-start;
-          gap: 15px;
-          width: 100%;
-          max-width: 300px;
-        }
-
-        .guarantee-icon {
-          font-size: 1.8rem;
-          color: #3a7bfc;
-        }
-
-        .guarantee-text h6 {
-          font-weight: 600;
-          margin-bottom: 5px;
-          color: #444;
-        }
-
-        .guarantee-text p {
-          font-size: 0.9rem;
-          color: #777;
-          margin-bottom: 0;
-        }
-
-        /* Product Tabs Styles */
-        .product-tabs {
-          margin-top: 4rem;
-          border-radius: 16px;
-          background-color: white;
-          box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-          overflow: hidden;
-        }
-
-        .nav-tabs {
-          border-bottom: 1px solid #f0f0f0;
-          padding: 0 15px;
-        }
-
-        .nav-tabs .nav-link {
-          border: none;
-          color: #666;
-          font-weight: 500;
-          padding: 15px 20px;
-          transition: all 0.3s ease;
-          position: relative;
-        }
-
-        .nav-tabs .nav-link:hover {
-          color: #3a7bfc;
-        }
-
-        .nav-tabs .nav-link.active {
-          color: #3a7bfc;
-          background-color: transparent;
-          font-weight: 600;
-        }
-
-        .nav-tabs .nav-link.active::after {
-          content: '';
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 100%;
-          height: 3px;
-          background: linear-gradient(90deg, #3a7bfc, #6f42c1);
-          border-radius: 3px 3px 0 0;
-        }
-
-        .tab-content {
-          padding: 30px;
-        }
-
-        .tab-pane h5 {
-          font-weight: 600;
-          margin-bottom: 1.5rem;
-          color: #333;
-        }
-
-        .tab-pane p {
-          color: #666;
-          line-height: 1.7;
-        }
-
-        .specifications-table td {
-          padding: 12px 15px;
-        }
-
-        .specifications-table td:first-child {
-          font-weight: 500;
-          color: #444;
-          width: 35%;
-        }
-
-        .usage-storage-content {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 30px;
-        }
-
-        .usage-section h6,
-        .storage-section h6 {
-          font-weight: 600;
-          margin-bottom: 1rem;
-          color: #444;
-        }
-
-        .usage-section ul,
-        .storage-section ul {
-          padding-left: 20px;
-        }
-
-        .usage-section li,
-        .storage-section li {
-          margin-bottom: 8px;
-          color: #666;
-        }
-
-        /* Related Products Styles */
-        .related-products {
-          margin-top: 5rem;
-          padding-top: 2rem;
-          border-top: 1px solid #f0f0f0;
-        }
-
-        .section-title {
-          font-weight: 700;
-          font-size: 1.8rem;
-          color: #333;
-        }
-
-        .view-all-link {
-          color: #3a7bfc;
-          font-weight: 500;
-          display: flex;
-          align-items: center;
-          text-decoration: none;
-          transition: all 0.2s ease;
-        }
-
-        .view-all-link:hover {
-          color: #2763d5;
-          transform: translateX(5px);
-        }
-
-        .related-product-card {
-          border-radius: 16px;
-          overflow: hidden;
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.07);
-          height: 100%;
-          transition: all 0.3s ease;
-          background: white;
-        }
-
-        .related-product-card:hover {
-          box-shadow: 0 15px 35px rgba(58, 123, 252, 0.12);
-        }
-
-        .product-link {
-          display: block;
-          text-decoration: none;
-          color: inherit;
-          height: 100%;
-        }
-
-        .product-image-container {
-          height: 200px;
-          overflow: hidden;
-        }
-
-        .product-image {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          transition: transform 0.5s ease;
-        }
-
-        .related-product-card:hover .product-image {
-          transform: scale(1.1);
-        }
-
-        .product-info {
-          padding: 20px;
-        }
-
-        .product-name {
-          font-weight: 600;
-          font-size: 1.1rem;
-          margin-bottom: 10px;
-          color: #333;
-        }
-
-        .product-excerpt {
-          font-size: 0.9rem;
-          color: #777;
-          margin-bottom: 15px;
-          line-height: 1.5;
-          display: -webkit-box;
-          -webkit-line-clamp: 2;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-        }
-
-        .explore-btn {
-          display: flex;
-          align-items: center;
-          font-size: 0.9rem;
-          font-weight: 500;
-          color: #3a7bfc;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 992px) {
-          .product-detail-page {
-            padding-top: 100px;
-          }
-          
-          .main-image-container {
-            height: 400px;
-          }
-          
-          .product-title {
-            font-size: 1.8rem;
-          }
-          
-          .usage-storage-content {
-            grid-template-columns: 1fr;
-            gap: 20px;
-          }
-          
-          .product-cta {
-            flex-direction: column;
-          }
-          
-          .quote-btn, .share-btn {
-            width: 100%;
-            justify-content: center;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .product-detail-page {
-            padding-top: 85px;
-          }
-          
-          .main-image-container {
-            height: 350px;
-          }
-          
-          .product-guarantees {
-            justify-content: center;
-          }
-          
-          .tab-content {
-            padding: 20px 15px;
-          }
-          
-          .nav-tabs .nav-link {
-            padding: 12px 15px;
-            font-size: 0.9rem;
-          }
-        }
-
-        @media (max-width: 576px) {
-          .product-detail-page {
-            padding-top: 70px;
-          }
-          
-          .main-image-container {
-            height: 300px;
-          }
-          
-          .product-title {
-            font-size: 1.5rem;
-          }
-          
-          .thumbnail {
-            flex: 0 0 60px;
-            height: 60px;
-          }
-          
-          .product-cta {
-            flex-direction: column;
-            gap: 10px;
-          }
-          
-          .section-title {
-            font-size: 1.5rem;
-          }
-        }
-      `}</style>
-        </main>
-    );
-};
-
-export default ProductDetail;
+            {activeTab === "specifications" && (
+              <div>
+                <h4 className="font-bold text-lg mb-3">
+                  Product Specifications
+                </h4>
+                <div className="overflow-x-auto">
+                  <table className="w-full border border-gray-200 text-sm">
+                    <tbody>
+                      {[
+                        { label: "Product Name", value: item.name },
+                        { label: "Category", value: category.name },
+                        { label: "Price Range", value: item.priceRange },
+                        ...specifications,
+                        ...(product.name.toLowerCase() === "rice"
+                          ? [
+                              {
+                                label: "Usage",
+                                value:
+                                  "Suitable for all rice dishes, biryani, pulao, etc.",
+                              },
+                              {
+                                label: "Cooking Time",
+                                value: "Approximately 15–20 minutes",
+                              },
+                              {
+                                label: "Aroma",
+                                value:
+                                  "Natural fragrance characteristic of premium basmati",
+                              },
+                            ]
+                          : []),
+                      ].map((row, index) => (
+                        <tr
+                          key={`row-${index}`}
+                          className={`border-b border-gray-200 ${
+                            index % 2 === 0 ? "bg-gray-200" : "bg-white"
+                          }`}
+                        >
+                          <th className="text-left px-4 py-3 font-semibold w-1/3">
+                            {row.label}
+                          </th>
+                          <td className="px-4 py-3 text-gray-800">
+                            {row.value}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {product.name.toLowerCase() === "rice" &&
+                  item.name.toLowerCase().includes("1121") && (
+                    <div className="mt-4">
+                      <h5 className="font-bold mb-3">
+                        1121 Sella Basmati Rice Processing
+                      </h5>
+                      <p>
+                        Our 1121 Sella Basmati Rice undergoes a specialized
+                        parboiling process that enhances its nutritional value
+                        while maintaining the authentic aroma. The process
+                        involves:
+                      </p>
+                      <ol className="list-decimal pl-5 space-y-2">
+                        <li>Soaking the paddy in water</li>
+                        <li>Steaming to gelatinize the starch</li>
+                        <li>Drying to reduce moisture content</li>
+                        <li>Milling to remove husks</li>
+                        <li>Sorting and grading for quality</li>
+                      </ol>
+                    </div>
+                  )}
+              </div>
+            )}
+
+            {activeTab === "reviews" && (
+              <div>
+                <h4 className="font-bold text-lg mb-3">Customer Reviews</h4>
+                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-4">
+                  <div className="md:col-span-4 text-center">
+                    <h2 className="text-4xl font-bold mb-2">4.0</h2>
+                    <div className="flex justify-center my-2">
+                      {[...Array(5)].map((_, i) => (
+                        <FaStar
+                          key={i}
+                          size={20}
+                          className="mx-1"
+                          style={{ color: i < 4 ? "#ffc107" : "#e0e0e0" }}
+                        />
+                      ))}
+                    </div>
+                    <p className="text-gray-500">Based on 24 reviews</p>
+                  </div>
+                  <div className="md:col-span-8">
+                    {[5, 4, 3, 2, 1].map((rating) => (
+                      <div key={rating} className="flex items-center mb-2">
+                        <div className="w-16 mr-3 text-sm">{rating} stars</div>
+                        <div className="flex-grow">
+                          <div className="w-full bg-gray-200 rounded-full h-2.5">
+                            <div
+                              className="bg-yellow-400 h-2.5 rounded-full"
+                              style={{
+                                width: `${
+                                  rating === 4
+                                    ? 65
+                                    : rating === 5
+                                    ? 25
+                                    : rating === 3
+                                    ? 10
+                                    : 0
+                                }%`,
+                              }}
+                            ></div>
+                          </div>
+                        </div>
+                        <div className="w-12 ml-3 text-sm">
+                          {rating === 4
+                            ? 15
+                            : rating === 5
+                            ? 6
+                            : rating === 3
+                            ? 3
+                            : 0}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="border-t pt-4">
+                  <div className="mb-4">
+                    <div className="flex">
+                      <img
+                        src="https://picsum.photos/50/50?random=1"
+                        alt="User"
+                        className="rounded-full mr-3 w-12 h-12"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement | null;
+                          if (target) {
+                            target.src =
+                              "https://via.placeholder.com/50?text=User";
+                          }
+                        }}
+                      />
+                      <div>
+                        <h6 className="font-bold mb-1">Rahul Sharma</h6>
+                        <div className="flex items-center mb-2">
+                          {[...Array(5)].map((_, i) => (
+                            <FaStar
+                              key={i}
+                              size={12}
+                              className="mr-1"
+                              style={{ color: i < 5 ? "#ffc107" : "#e0e0e0" }}
+                            />
+                          ))}
+                          <span className="ml-2 text-gray-500 text-xs">
+                            2 months ago
+                          </span>
+                        </div>
+                        <p className="mb-0">
+                          Exceptional quality! I've been using this product for
+                          months and it's consistently excellent. The flavor is
+                          unmatched compared to other brands.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mb-4">
+                    <div className="flex">
+                      <img
+                        src="https://picsum.photos/50/50?random=2"
+                        alt="User"
+                        className="rounded-full mr-3 w-12 h-12"
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement | null;
+                          if (target) {
+                            target.src =
+                              "https://via.placeholder.com/50?text=User";
+                          }
+                        }}
+                      />
+                      <div>
+                        <h6 className="font-bold mb-1">Priya Patel</h6>
+                        <div className="flex items-center mb-2">
+                          {[...Array(5)].map((_, i) => (
+                            <FaStar
+                              key={i}
+                              size={12}
+                              className="mr-1"
+                              style={{ color: i < 4 ? "#ffc107" : "#e0e0e0" }}
+                            />
+                          ))}
+                          <span className="ml-2 text-gray-500 text-xs">
+                            1 month ago
+                          </span>
+                        </div>
+                        <p className="mb-0">
+                          Great product for the price. Delivery was prompt and
+                          packaging was secure. I would definitely recommend it
+                          to others.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="text-center mt-4">
+                    <Link
+                      to="/testimonials"
+                      className="inline-block px-5 py-2 border border-blue-500 text-blue-500 rounded-full hover:bg-blue-50 transition"
+                    >
+                      View All Reviews
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="mt-8 mb-8">
+          <h3 className="font-bold text-3xl mb-4">
+            Interested in this product?
+          </h3>
+          <ProductContactForm
+            productName={`${product.name} - ${category.name} - ${item.name}`}
+          />
+        </div>
+
+        {relatedProducts.length > 0 && (
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-bold text-xl">Related Products</h3>
+              <Link
+                to={`/category/${productName}`}
+                className="inline-block px-4 py-2 border border-blue-500 text-blue-500 rounded-full hover:bg-blue-50 transition"
+              >
+                View All <FaArrowRight className="ml-2 inline" size={12} />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {relatedProducts.map((relatedItem, index) => (
+                <div key={index}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-2 transition-shadow transition-transform"
+                  >
+                    <Link
+                      to={`/category/${productName}/${categoryName}/${category.subItems.findIndex(
+                        (subItem) => subItem.name === relatedItem.name
+                      )}`}
+                      className="block"
+                    >
+                      <div style={{ height: "180px", overflow: "hidden" }}>
+                        <img
+                          src={relatedItem.image}
+                          alt={relatedItem.name}
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement | null;
+                            if (target) {
+                              target.src =
+                                "https://via.placeholder.com/180x180?text=Product";
+                            }
+                          }}
+                        />
+                      </div>
+                      <div className="p-4">
+                        <h5 className="font-semibold text-gray-800 mb-2">
+                          {relatedItem.name}
+                        </h5>
+                        <p className="text-gray-500 text-sm mb-3 line-clamp-2">
+                          {relatedItem.description}
+                        </p>
+                        <div className="flex justify-between items-center">
+                          <span className="bg-gray-100 text-blue-600 px-2 py-1 rounded">
+                            {relatedItem.priceRange}
+                          </span>
+                          <span className="text-blue-600 font-medium text-sm">
+                            View Details
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </main>
+  );
+}

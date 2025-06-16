@@ -1,4 +1,9 @@
-import React, { useState } from "react";
+
+
+//New footer cpde by dev:
+
+
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import {
@@ -33,380 +38,203 @@ function Footer() {
   const [hoveredSocial, setHoveredSocial] = useState<number | null>(null);
 
   return (
-    <footer
-      className="py-5"
-      style={{
-        background: "linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)",
-        borderTop: "1px solid rgba(255, 255, 255, 0.1)",
-        boxShadow: "0 -5px 15px rgba(0, 0, 0, 0.1)",
-      }}
-    >
-      <div className="container">
-        <div className="row g-4">
-          <div className="col-lg-4 col-md-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
-              className="pe-lg-4"
-            >
-              <Link to="/" className="text-decoration-none">
-                <h2
-                  className="text-white fw-bold mb-4"
-                  style={{
-                    background: "linear-gradient(90deg, #3a7bfc, #6e9fff)",
-                    WebkitBackgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                  }}
+    <footer className="py-12 bg-gradient-to-br from-gray-900 via-gray-900 to-blue-900 border-t border-gray-700 shadow-lg">
+      <div className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 w-full max-w-screen-xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Company Info */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="lg:col-span-1"
+          >
+            <Link to="/" className="no-underline">
+              <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-blue-500 to-blue-300 bg-clip-text text-transparent">
+                Akdenar
+              </h2>
+            </Link>
+
+            <p className="mb-6 text-gray-300 leading-relaxed">
+              India's premier goods provider bringing quality products directly
+              to your doorstep since 2024.
+            </p>
+
+            <div className="flex gap-3 mb-6">
+              {socialLinks.map((social, index) => (
+                <motion.a
+                  key={index}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onHoverStart={() => setHoveredSocial(index)}
+                  onHoverEnd={() => setHoveredSocial(null)}
+                  whileHover={{ y: -5 }}
+                  transition={{ duration: 0.2 }}
+                  className={`inline-flex items-center justify-center w-10 h-10 rounded-full transition-all ${
+                    hoveredSocial === index
+                      ? "bg-blue-500 text-white shadow-lg shadow-blue-500/40"
+                      : "bg-white/10 text-white"
+                  }`}
                 >
-                  Akdenar
-                </h2>
-              </Link>
+                  <social.Icon size={18} />
+                </motion.a>
+              ))}
+            </div>
+          </motion.div>
 
-              <p
+          {/* Products Links */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            className="md:col-span-1"
+          >
+            <h5 className="font-bold mb-6 text-white relative pb-2">
+              <span className="invisible sm:visible absolute bottom-0 left-0 w-8 h-0.5 bg-blue-500 rounded"></span>
+             <span className="font-poppins text-[20px] font-bold">Products</span> 
+            </h5>
+            <ul className="list-disc pl-3.5 text-white sm:list-none m-0 p-0">
+              {["Rice", "Salt", "Sugar", "Spices", "Dry Fruits", "Oil"].map(
+                (item, index) => (
+                <motion.li
+                  key={index}
+                  className="mb-3"
+                  onHoverStart={() => setHoveredLink(`product-${index}`)}
+                  onHoverEnd={() => setHoveredLink(null)}
+                >
+                  <Link
+                    to={`/category/${item.toLowerCase()}`}
+                    className={`no-underline flex items-center py-1 transition-all ${
+                      hoveredLink === `product-${index}`
+                        ? "text-blue-500 translate-x-2"
+                        : "text-gray-300"
+                    }`}
+                  >
+                    <span
+                      className={`mr-2 transition-opacity ${
+                        hoveredLink === `product-${index}` ? "opacity-100" : "opacity-0"
+                      }`}
+                    > 
+                      › 
+                    </span>
+                    {item}
+                  </Link>
+                </motion.li>
+              ))}
+            </ul>
+          </motion.div>
+
+          {/* Contact Info */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="lg:col-span-2"
+          >
+            <h5 className="font-bold mb-6 text-white relative pb-2">
+              <span className="invisible sm:visible absolute bottom-0 left-0 w-8 h-0.5 bg-blue-500 rounded"></span>
+              <span className="font-poppins text-[20px] font-bold">Contact</span>
+            </h5>
+            <ul className="list-none m-0 p-0 mb-6 ">
+              <motion.li
                 className="mb-4"
-                style={{ color: "#d1d5db", lineHeight: "1.7" }}
+                whileHover={{ x: 5 }}
+                transition={{ duration: 0.2 }}
               >
-                India's premier goods provider bringing quality products
-                directly to your doorstep since 2024.
-              </p>
-
-              <div className="d-flex gap-3 mb-4">
-                {socialLinks.map((social, index) => (
-                  <motion.a
-                    key={index}
-                    href={social.href}
+                <div className="flex items-center">
+                  <div className="w-9 h-9 rounded-full bg-blue-500/15 flex items-center justify-center mr-4">
+                    <FaLocationDot size={16} className="text-blue-500" />
+                  </div>
+                  <a
+                    href="https://maps.google.com/?q=Third Floor, 69, New Manglapuri, New Delhi, Delhi 110030, India"
                     target="_blank"
                     rel="noopener noreferrer"
-                    onHoverStart={() => setHoveredSocial(index)}
-                    onHoverEnd={() => setHoveredSocial(null)}
-                    whileHover={{ y: -5 }}
-                    transition={{ duration: 0.2 }}
-                    className="d-inline-flex align-items-center justify-content-center"
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      backgroundColor:
-                        hoveredSocial === index
-                          ? "#3a7bfc"
-                          : "rgba(255, 255, 255, 0.08)",
-                      color: hoveredSocial === index ? "#fff" : "#fff",
-                      transition: "all 0.3s ease",
-                      boxShadow:
-                        hoveredSocial === index
-                          ? "0 5px 15px rgba(58, 123, 252, 0.4)"
-                          : "none",
-                    }}
+                    className="text-gray-300 leading-normal no-underline transition-colors hover:text-blue-500"
                   >
-                    <social.Icon size={18} />
-                  </motion.a>
-                ))}
-              </div>
-            </motion.div>
-          </div>
+                    Third Floor, 69, New Manglapuri, New Delhi, Delhi 110030,
+                    India
+                  </a>
+                </div>
+              </motion.li>
 
-          <div className="col-lg-2 col-md-6 col-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-            >
-              <h5
-                className="fw-bold mb-4"
-                style={{
-                  color: "#fff",
-                  position: "relative",
-                  paddingBottom: "10px",
-                }}
+              <motion.li
+                className="mb-4"
+                whileHover={{ x: 5 }}
+                transition={{ duration: 0.2 }}
               >
-                <span
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    width: "30px",
-                    height: "3px",
-                    background: "#3a7bfc",
-                    borderRadius: "3px",
-                  }}
-                ></span>
-                Products
-              </h5>
-              <ul className="list-unstyled mb-0">
-                {["Rice", "Salt", "Sugar", "Spices", "Dry Fruits", "Oil"].map(
-                  (item, index) => (
-                    <motion.li
-                      key={index}
-                      className="mb-2"
-                      onHoverStart={() => setHoveredLink(`product-${index}`)}
-                      onHoverEnd={() => setHoveredLink(null)}
-                    >
-                      <Link
-                        to={`/category/${item.toLowerCase()}`}
-                        className="text-decoration-none d-flex align-items-center py-1"
-                        style={{
-                          color:
-                            hoveredLink === `product-${index}`
-                              ? "#3a7bfc"
-                              : "#d1d5db",
-                          transform:
-                            hoveredLink === `product-${index}`
-                              ? "translateX(8px)"
-                              : "translateX(0)",
-                          transition: "all 0.3s ease",
-                        }}
-                      >
-                        <span
-                          style={{
-                            opacity: hoveredLink === `product-${index}` ? 1 : 0,
-                            marginRight: "8px",
-                            transition: "opacity 0.3s ease",
-                          }}
-                        >
-                          ›
-                        </span>
-                        {item}
-                      </Link>
-                    </motion.li>
-                  )
-                )}
-              </ul>
-            </motion.div>
-          </div>
+                <div className="flex items-center">
+                  <div className="w-9 h-9 rounded-full bg-blue-500/15 flex items-center justify-center mr-4">
+                    <FaPhoneFlip size={16} className="text-blue-500" />
+                  </div>
+                  <a
+                    href="tel:+919220852922"
+                    className="text-gray-300 no-underline transition-colors hover:text-blue-500"
+                  >
+                    +91-92208 52922
+                  </a>
+                </div>
+              </motion.li>
 
-          <div className="col-lg-4 col-md-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-            >
-              <h5
-                className="fw-bold mb-4"
-                style={{
-                  color: "#fff",
-                  position: "relative",
-                  paddingBottom: "10px",
-                }}
+              <motion.li
+                className="mb-4"
+                whileHover={{ x: 5 }}
+                transition={{ duration: 0.2 }}
               >
-                <span
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    width: "30px",
-                    height: "3px",
-                    background: "#3a7bfc",
-                    borderRadius: "3px",
-                  }}
-                ></span>
-                Contact
-              </h5>
-              <ul className="list-unstyled mb-4">
-                <motion.li
-                  className="mb-3"
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <div className="d-flex align-items-center">
-                    <div
-                      style={{
-                        width: "36px",
-                        height: "36px",
-                        borderRadius: "50%",
-                        backgroundColor: "rgba(58, 123, 252, 0.15)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginRight: "15px",
-                      }}
-                    >
-                      <FaLocationDot size={16} color="#3a7bfc" />
-                    </div>{" "}
-                    <a
-                      href="https://maps.google.com/?q=Third Floor, 69, New Manglapuri, New Delhi, Delhi 110030, India"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        color: "#d1d5db",
-                        lineHeight: "1.5",
-                        textDecoration: "none",
-                        transition: "color 0.3s ease",
-                      }}
-                      className="hover-effect"
-                      // onMouseOver={(e) => e.target.style.color = "#3a7bfc"}
-                      onMouseOver={(e) => {
-                        if (e.target instanceof HTMLElement) {
-                          e.target.style.color = "#3a7bfc";
-                        }
-                      }}
-                      // onMouseOut={(e) => e.target.style.color = "#d1d5db"}
-                    >
-                      Third Floor, 69, New Manglapuri, New Delhi, Delhi 110030,
-                      India
-                    </a>
+                <div className="flex items-center">
+                  <div className="w-9 h-9 rounded-full bg-blue-500/15 flex items-center justify-center mr-4">
+                    <FaEnvelope size={16} className="text-blue-500" />
                   </div>
-                </motion.li>{" "}
-                <motion.li
-                  className="mb-3"
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <div className="d-flex align-items-center">
-                    <div
-                      style={{
-                        width: "36px",
-                        height: "36px",
-                        borderRadius: "50%",
-                        backgroundColor: "rgba(58, 123, 252, 0.15)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginRight: "15px",
-                      }}
-                    >
-                      <FaPhoneFlip size={16} color="#3a7bfc" />
-                    </div>
-                    <a
-                      href="tel:+919220852922"
-                      style={{
-                        color: "#d1d5db",
-                        textDecoration: "none",
-                        transition: "color 0.3s ease",
-                      }}
-                      className="hover-effect"
-                      // onMouseOver={(e) => e.target.style.color = "#3a7bfc"}
-                      onMouseOver={(e: React.MouseEvent) => {
-                        if (e.target instanceof HTMLElement) {
-                          e.target.style.color = "#3a7bfc";
-                        }
-                      }}
-                      //   onMouseOut={(e) => (e.target.style.color = "#d1d5db")}
-                      onMouseOut={(e: React.MouseEvent) => {
-                        if (e.target instanceof HTMLElement) {
-                          e.target.style.color = "#d1d5db";
-                        }
-                      }}
-                    >
-                      +91-92208 52922
-                    </a>
-                  </div>
-                </motion.li>
-                <motion.li
-                  className="mb-3"
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <div className="d-flex align-items-center">
-                    <div
-                      style={{
-                        width: "36px",
-                        height: "36px",
-                        borderRadius: "50%",
-                        backgroundColor: "rgba(58, 123, 252, 0.15)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        marginRight: "15px",
-                      }}
-                    >
-                      <FaEnvelope size={16} color="#3a7bfc" />
-                    </div>
-                    <a
-                      href="mailto:customercare@akdenar.com"
-                      style={{
-                        color: "#d1d5db",
-                        textDecoration: "none",
-                        transition: "color 0.3s ease",
-                      }}
-                      className="hover-effect"
-                      onMouseDown={(e: React.MouseEvent) => {
-                        if (e.target instanceof HTMLElement) {
-                          e.target.style.color = "#3a7bfc";
-                        }
-                      }}
-                      onMouseOut={(e: React.MouseEvent) => {
-                        if (e.target instanceof HTMLElement) {
-                          e.target.style.color = "#d1d5db";
-                        }
-                      }}
-                    >
-                      support@akdenar.com
-                    </a>
-                  </div>
-                </motion.li>
-              </ul>
-            </motion.div>
-          </div>
+                  <a
+                    href="mailto:customercare@akdenar.com"
+                    className="text-gray-300 no-underline transition-colors hover:text-blue-500"
+                  >
+                    support@akdenar.com
+                  </a>
+                </div>
+              </motion.li>
+            </ul>
+          </motion.div>
         </div>
 
+        {/* Divider */}
         <motion.div
           initial={{ opacity: 0, width: "0%" }}
           whileInView={{ opacity: 1, width: "100%" }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.5 }}
-          className="my-4"
-          style={{
-            height: "1px",
-            background:
-              "linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent)",
-          }}
+          className="my-8 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"
         />
 
+        {/* Copyright and Links */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.6 }}
-          className="row align-items-center"
+          className="flex flex-col md:flex-row justify-between items-center"
         >
-          <div className="col-md-6 text-center text-md-start">
-            <p
-              className="mb-0"
-              style={{ color: "#9ca3af", fontSize: "0.9rem" }}
-            >
+          <div className="mb-4 md:mb-0 text-center md:text-left">
+            <p className="text-gray-400 text-sm">
               © {currentYear}{" "}
-              <span style={{ color: "#d1d5db" }}>Akdenar Products</span>. All
-              rights reserved.
+              <span className="text-gray-300">Akdenar Products</span>. All rights
+              reserved.
             </p>
           </div>
-          <div className="col-md-6 mt-3 mt-md-0">
-            <ul className="list-inline mb-0 text-center text-md-end">
+          <div className="flex justify-center md:justify-end">
+            <ul className="flex flex-wrap justify-center gap-2">
               {footerLinks.map((link, index) => (
-                <li key={index} className="list-inline-item">
+                <li key={index} className="flex items-center">
                   <Link
                     to={link.href}
-                    className="text-decoration-none"
-                    style={{
-                      color: "#9ca3af",
-                      fontSize: "0.85rem",
-                      transition: "color 0.3s ease",
-                    }}
-                    // onMouseOver={(e) => (e.target.style.color = "#3a7bfc")}
-                    // onMouseOut={(e) => (e.target.style.color = "#9ca3af")}
-                    onMouseOver={(e: React.MouseEvent) => {
-                      if (e.target instanceof HTMLElement) {
-                        e.target.style.color = "#317bfc";
-                      }
-                    }}
-                    onMouseOut={(e: React.MouseEvent) => {
-                      if (e.target instanceof HTMLElement) {
-                        e.target.style.color = "#9ca3af";
-                      }
-                    }}
+                    className="text-gray-400 text-sm no-underline transition-colors hover:text-blue-500"
                   >
                     {link.name}
                   </Link>
                   {index < footerLinks.length - 1 && (
-                    <span
-                      className="mx-2"
-                      style={{ color: "#4b5563", fontSize: "0.8rem" }}
-                    >
-                      •
-                    </span>
+                    <span className="mx-2 text-gray-600 text-xs">•</span>
                   )}
                 </li>
               ))}

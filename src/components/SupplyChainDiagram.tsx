@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import type { TSupplyChainItems } from "../types/types";
 
 function SupplyChainDiagram() {
-  const supplyChainItems:TSupplyChainItems[] = [
+  const supplyChainItems: TSupplyChainItems[] = [
     {
       title: "Product Sourcing from Farms",
       description: "Fresh groceries from healthy farms",
@@ -20,7 +20,7 @@ function SupplyChainDiagram() {
       emoji: "✓",
     },
     {
-      title: "Internation and National Delivery ",
+      title: "International and National Delivery",
       description: "Fast and reliable service",
       image: "/FAMTOHOME3.webp",
       color: "#fd7e14",
@@ -29,14 +29,14 @@ function SupplyChainDiagram() {
     },
   ];
 
-  const cities:string[] = [
+  const cities: string[] = [
     "Chennai",
-    "Banglore",
+    "Bangalore",
     "Pune",
     "Chandigarh",
     "Gorakhpur",
     "Patna",
-    "Ahemdabad",
+    "Ahmedabad",
     "Surat",
     "Guntur",
     "Delhi NCR",
@@ -62,21 +62,11 @@ function SupplyChainDiagram() {
   ];
 
   return (
-    <section className="supply-chain-section my-5 position-relative overflow-hidden py-5">
-      <div
-        className="position-absolute top-0 start-0 w-100 h-100"
-        style={{
-          background:
-            "linear-gradient(135deg, rgba(240, 249, 255, 1) 0%, rgba(214, 240, 253, 0.5) 100%)",
-          zIndex: -1,
-        }}
-      ></div>
+    <section className="my-5 relative overflow-hidden py-5 mx-4 rounded-[30px] md:mx-0 md:rounded-none">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#f0f9ff] to-[rgba(214,240,253,0.5)] z-[-1]"></div>
 
       {/* Decorative elements */}
-      <div
-        className="position-absolute top-0 end-0 d-none d-lg-block"
-        style={{ width: "20%", height: "20%", opacity: 0.1, zIndex: 0 }}
-      >
+      <div className="absolute top-0 right-0 hidden lg:block w-[20%] h-[20%] opacity-10 z-0">
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
           <path
             fill="#28a745"
@@ -86,10 +76,7 @@ function SupplyChainDiagram() {
         </svg>
       </div>
 
-      <div
-        className="position-absolute bottom-0 start-0 d-none d-lg-block"
-        style={{ width: "15%", height: "15%", opacity: 0.1, zIndex: 0 }}
-      >
+      <div className="absolute bottom-0 left-0 hidden lg:block w-[15%] h-[15%] opacity-10 z-0">
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
           <path
             fill="#3a7bfc"
@@ -99,56 +86,53 @@ function SupplyChainDiagram() {
         </svg>
       </div>
 
-      <div className="container position-relative" style={{ zIndex: 1 }}>
+      <div className="container relative mx-auto px-4 z-[1]">
         <motion.h2
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center fw-bold mb-2 display-5"
+          className="text-center text-3xl md:text-4xl font-bold mb-2"
         >
-          From <span className="text-gradient">Farm to You</span>
+          From{" "}
+          <span className="bg-gradient-to-r from-[#28a745] to-[#3a7bfc] bg-clip-text text-transparent">
+            Farm to You
+          </span>
         </motion.h2>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-muted mb-5 fw-medium text-center fs-5 mx-auto"
-          style={{ maxWidth: "700px" }}
+          className="text-gray-500 font-medium text-center text-lg md:text-xl mx-auto mb-5 max-w-[700px]"
         >
           Fresh products delivered directly from producers to your doorstep
         </motion.p>
 
-        <div className="position-relative d-flex justify-content-evenly align-items-center flex-wrap gap-4 my-5">
+        <div className="relative flex justify-evenly items-center flex-wrap gap-4 my-5">
           {/* Connecting line */}
           <motion.div
-            className="position-absolute top-50 start-0 end-0"
+            className="absolute hidden ls:flex top-1/2 left-0 right-0 h-[3px] bg-gradient-to-r from-[#28a745] via-[#3a7bfc] to-[#fd7e14] z-0"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.5 }}
-            style={{
-              transform: "translateY(-50%)",
-              height: "3px",
-              background: "linear-gradient(90deg, #28a745, #3a7bfc, #fd7e14)",
-              zIndex: 0,
-            }}
+            style={{ transform: "translateY(-50%)" }}
           />
 
           {/* Animated dots on the line */}
           <motion.div
-            className="position-absolute top-50 start-0 end-0 d-flex justify-content-between"
-            style={{ transform: "translateY(-50%)", zIndex: 0 }}
+            className="absolute hidden ls:flex top-1/2 left-0 right-0  justify-between z-0"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.5 }}
+            style={{ transform: "translateY(-50%)" }}
           >
             {[...Array(5)].map((_, i) => (
               <motion.div
                 key={i}
-                className="rounded-circle"
+                className="rounded-full w-[10px] h-[10px] bg-white border-2 border-[#3a7bfc] shadow-[0_0_10px_rgba(58,123,252,0.5)]"
                 initial={{ scale: 0 }}
                 whileInView={{ scale: 1 }}
                 viewport={{ once: true }}
@@ -158,13 +142,6 @@ function SupplyChainDiagram() {
                   type: "spring",
                   stiffness: 300,
                   damping: 10,
-                }}
-                style={{
-                  width: "10px",
-                  height: "10px",
-                  background: "white",
-                  border: "2px solid #3a7bfc",
-                  boxShadow: "0 0 10px rgba(58, 123, 252, 0.5)",
                 }}
               />
             ))}
@@ -177,12 +154,11 @@ function SupplyChainDiagram() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.5 }}
               transition={{ duration: 0.6, delay: 0.3 + index * 0.2 }}
-              className="text-center position-relative z-2"
-              style={{ maxWidth: "260px" }}
+              className="text-center relative z-[2] max-w-[260px]"
             >
-              <div className="supply-chain-step mb-4">
+              <div className="mb-4">
                 <motion.div
-                  className="icon-wrapper mx-auto position-relative"
+                  className="mx-auto relative w-[150px] h-[150px] rounded-3xl bg-gradient-to-br from-white to-gray-100 shadow-[0_15px_30px] flex items-center justify-center overflow-hidden z-[1]"
                   initial={{ rotate: 0 }}
                   whileInView={{ rotate: [0, -5, 5, -5, 0] }}
                   viewport={{ once: true }}
@@ -191,89 +167,50 @@ function SupplyChainDiagram() {
                     scale: 1.05,
                     boxShadow: `0 10px 25px ${item.shadow}`,
                   }}
-                  style={{
-                    width: "150px",
-                    height: "150px",
-                    borderRadius: "24px",
-                    background: `linear-gradient(135deg, white, #f8f9fa)`,
-                    boxShadow: `0 15px 30px ${item.shadow}`,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    position: "relative",
-                    overflow: "hidden",
-                    zIndex: 1,
-                  }}
+                  style={{ boxShadow: `0 15px 30px ${item.shadow}` }}
                 >
                   <div
-                    className="position-absolute top-0 start-0 w-100 h-100"
+                    className="absolute inset-0 bg-gradient-to-br z-[-1]"
                     style={{
                       background: `linear-gradient(135deg, ${item.color}22, ${item.color}11)`,
-                      zIndex: -1,
                     }}
                   ></div>
 
-                  <div
-                    className="icon-circle d-flex align-items-center justify-content-center"
-                    style={{
-                      width: "110px",
-                      height: "110px",
-                      borderRadius: "20px",
-                      background: "white",
-                      boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
-                      overflow: "hidden",
-                    }}
-                  >
+                  <div className="flex items-center justify-center w-[110px] h-[110px] rounded-[20px] bg-white shadow-[0_8px_20px_rgba(0,0,0,0.08)] overflow-hidden">
                     <motion.div
                       initial={{ scale: 0.8, opacity: 0 }}
                       whileInView={{ scale: 1, opacity: 1 }}
                       viewport={{ once: true }}
                       transition={{ duration: 0.4, delay: 0.6 + index * 0.2 }}
-                      style={{ width: "100%", height: "100%" }}
+                      className="w-full h-full"
                     >
                       <img
                         src={item.image}
                         alt={item.title}
-                        className="w-100 h-100"
-                        style={{ objectFit: "cover" }}
+                        className="w-full h-full object-cover"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement | null;
-
                           if (target) {
-                            target.src =
-                              "https://via.placeholder.com/150?text=Supply";
+                            target.src = "https://via.placeholder.com/150?text=Supply";
                           }
-
-                          // (e.target.src = "https://via.placeholder.com/150?text=Supply")
                         }}
                       />
                     </motion.div>
                   </div>
 
                   <div
-                    className="position-absolute top-0 end-0 d-flex align-items-center justify-content-center m-2"
+                    className="absolute top-0 right-0 flex items-center justify-center m-2 w-9 h-9 rounded-xl text-white text-lg shadow-[0_4px_10px]"
                     style={{
-                      width: "36px",
-                      height: "36px",
-                      borderRadius: "12px",
                       background: item.color,
-                      color: "white",
                       boxShadow: `0 4px 10px ${item.shadow}`,
-                      fontSize: "18px",
                     }}
                   >
                     {item.emoji}
                   </div>
 
                   <div
-                    className="position-absolute top-0 start-0 m-2 badge"
-                    style={{
-                      background: "white",
-                      color: item.color,
-                      fontSize: "12px",
-                      fontWeight: "bold",
-                      boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                    }}
+                    className="absolute top-0 left-0 m-2 bg-white text-xs font-bold shadow-[0_2px_8px_rgba(0,0,0,0.1)] px-2 py-1 rounded"
+                    style={{ color: item.color }}
                   >
                     Step {index + 1}
                   </div>
@@ -281,7 +218,7 @@ function SupplyChainDiagram() {
 
                 <div className="mt-4 px-2">
                   <motion.h5
-                    className="fw-bold mb-2"
+                    className="font-bold mb-2"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
@@ -291,7 +228,7 @@ function SupplyChainDiagram() {
                     {item.title}
                   </motion.h5>
                   <motion.p
-                    className="text-muted mb-0"
+                    className="text-gray-500 mb-0"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
@@ -307,7 +244,7 @@ function SupplyChainDiagram() {
 
         <div className="mt-5 pt-4 text-center">
           <motion.h5
-            className="fw-bold mb-3"
+            className="font-bold mb-3"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -317,12 +254,11 @@ function SupplyChainDiagram() {
           </motion.h5>
 
           <motion.div
-            className="city-cloud d-flex justify-content-center align-items-center flex-wrap gap-2 mx-auto mt-3"
+            className="flex justify-center items-center flex-wrap gap-2 mx-auto mt-3 max-w-[800px]"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            style={{ maxWidth: "800px" }}
           >
             {cities.map((city, index) => (
               <motion.div
@@ -340,14 +276,8 @@ function SupplyChainDiagram() {
                   scale: 1.1,
                   boxShadow: "0 10px 20px rgba(0,0,0,0.1)",
                 }}
-                className="city-pill"
+                className="px-4 py-2 rounded-full bg-white shadow-[0_4px_15px_rgba(0,0,0,0.05)] text-sm font-medium cursor-pointer transition-all duration-300"
                 style={{
-                  padding: "8px 16px",
-                  borderRadius: "30px",
-                  background: "white",
-                  boxShadow: "0 4px 15px rgba(0,0,0,0.05)",
-                  fontWeight: "500",
-                  fontSize: "0.9rem",
                   color:
                     index % 3 === 0
                       ? "#28a745"
@@ -362,33 +292,6 @@ function SupplyChainDiagram() {
           </motion.div>
         </div>
       </div>
-
-      <style>{`
-                .supply-chain-section {
-                    border-radius: 30px;
-                    margin-left: 15px;
-                    margin-right: 15px;
-                }
-                
-                .text-gradient {
-                    background: linear-gradient(120deg, #28a745, #3a7bfc);
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                }
-                
-                .city-pill {
-                    transition: all 0.3s ease;
-                    cursor: pointer;
-                }
-                
-                @media (max-width: 768px) {
-                    .supply-chain-section {
-                        margin-left: 0;
-                        margin-right: 0;
-                        border-radius: 0;
-                    }
-                }
-            `}</style>
     </section>
   );
 }
