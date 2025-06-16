@@ -88,6 +88,8 @@ const ContactForm = () => {
     setIsSubmitting(true);
 
     try {
+      console.log("Sending email with data:", formData);
+      console.log("Server URL:", import.meta.env.VITE_SERVER_URL);
       const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/api/v1/send`, formData, {
         headers: {
           "Content-Type": "application/json",

@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { lazy, useEffect, useState } from 'react';
 import { motion, AnimatePresence } from "framer-motion";
 import HeroCarousel from "../components/HeroCarousel";
 import FeaturedCategories from "../components/FeaturedCategories";
 import BenefitsSection from "../components/BenefitsSection";
-import SupplyChainDiagram from "../components/SupplyChainDiagram";
-import ContactForm from "../components/ContactForm";
+const SupplyChainDiagram = lazy(()=>import("../components/SupplyChainDiagram"));
+const ContactForm = lazy(()=>import("../components/ContactForm"));
 import Testimonials from "../components/Testimonials";
 
 export default function Home() {

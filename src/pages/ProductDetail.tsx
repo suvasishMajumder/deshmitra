@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaStar, FaArrowRight } from "react-icons/fa6";
 import { FaArrowLeft } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import ProductContactForm from "../components/ProductContactForm";
-import NotFound from "./NotFound";
+const ProductContactForm = lazy(()=>import("../components/ProductContactForm"))
+const NotFound = lazy(()=>import( "./NotFound"))
 import type { RootState } from "../redux/store";
 
 export default function ProductDetail() {
@@ -628,7 +628,8 @@ export default function ProductDetail() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-2 transition-shadow transition-transform"
+                    className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-2
+                     transition-shadow transition-transform"
                   >
                     <Link
                       to={`/category/${productName}/${categoryName}/${category.subItems.findIndex(
