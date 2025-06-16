@@ -5,6 +5,16 @@ import ScrollToTop from "./components/ScrollToTop";
 import { Helmet } from "react-helmet";
 import Header from "./components/Header";
 import {  lazy, Suspense, useEffect, useState } from "react";
+
+// import CategoriesPage from "./pages/CategoriesPage";
+// import ProductDetail from "./pages/ProductDetail";
+// import CategoryPage from "./pages/CategoryPage";
+// import SearchResults from "./pages/SearchResults";
+// import About from "./pages/About";
+// import Contact from "./pages/Contact";
+// import TestimonialsPage from "./pages/TestimonialsPage";
+// import NotFound from "./pages/NotFound";
+// import Footer from "./components/Footer";
 import WhatsAppButton from "./components/WhatsAppButton";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import Home from "./pages/Home";
