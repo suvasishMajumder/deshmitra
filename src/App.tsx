@@ -4,7 +4,7 @@ import type {ErrorBoundaryComponentProp} from './types/types'
 import ScrollToTop from "./components/ScrollToTop";
 import Header from "./components/Header";
 import {  lazy, Suspense, useEffect, useState } from "react";
-import { Helmet, HelmetProvider } from "react-helmet-async";
+import { Helmet } from "react-helmet";
 import WhatsAppButton from "./components/WhatsAppButton";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import Home from "./pages/Home";
@@ -58,7 +58,7 @@ const handleErrorFunction = () =>{
 
 export default function App() {
   return (
-    <HelmetProvider>
+    
     <Router>
       <ScrollToTop />
       <Helmet>
@@ -309,6 +309,6 @@ export default function App() {
         <ScrollToTopButton />
       </div>
     </Router>
-    </HelmetProvider>
+
   );
 }
