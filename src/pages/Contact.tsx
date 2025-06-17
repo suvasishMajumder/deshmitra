@@ -377,7 +377,7 @@ const Contact = () => {
       </section>
 
       {/* Map Section */}
-      <section className="py-3 sm:py-5 bg-gray-900 text-white">
+        <section className="py-3 sm:py-5 bg-gray-900 text-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -406,7 +406,7 @@ const Contact = () => {
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
-                allowFullScreen={false}
+                allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 title="Akdenar Office Location"
@@ -414,44 +414,50 @@ const Contact = () => {
             </div>
           </motion.div>
 
-          <div className="mt-5 text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <h3 className="font-bold mb-4 text-xl sm:text-2xl">
-                Connect With Us
-              </h3>
-              <div className="flex gap-8 justify-center flex-wrap">
-                {socialMedia.map((social, index) => (
-                  <motion.a
-                  aria-label={`open ${social.name} in a completely new tab`}
-                  rel="noopener noreferrer"
-                  target="_blank"
-                    key={index}
-                    href={social.link}
-                    className="flex items-center justify-center w-[50px] h-[50px] rounded-full"
-                    style={{ background: social.color }}
-                    whileHover={{
-                      scale: 1.1,
-                      boxShadow: `0 4px 20px ${social.color}66`,
-                      transition: { duration: 0.2 },
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                  >
-                    <social.icon focusable='false' aria-hidden='true' size={24} className="text-white" />
-                    <span className="sr-only">{social.name}</span>
-                  </motion.a>
-                ))}
-              </div>
-            </motion.div>
-          </div>
+       <div className="mt-5 text-center">
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: true }}
+    transition={{ duration: 0.6, delay: 0.2 }}
+  >
+    <h3 className="font-bold mb-4 text-xl sm:text-2xl">
+      Connect With Us
+    </h3>
+    <div className="flex gap-8 justify-center flex-wrap">
+      {socialMedia.map((social, index) => (
+        <motion.a
+          key={index}
+          href={social.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open ${social.name} in a new tab`}
+          className="flex items-center justify-center w-[50px] h-[50px] rounded-full"
+          style={{ background: social.color }}
+          whileHover={{
+            scale: 1.1,
+            boxShadow: `0 4px 20px ${social.color}66`,
+            transition: { duration: 0.2 },
+          }}
+          whileTap={{ scale: 0.95 }}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+        >
+          <social.icon
+            focusable="false"
+            aria-hidden="true"
+            size={24}
+            className="text-white"
+          />
+          <span className="sr-only">{social.name}</span>
+        </motion.a>
+      ))}
+    </div>
+  </motion.div>
+</div>
+
         </div>
       </section>
     </div>
