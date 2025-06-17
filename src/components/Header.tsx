@@ -32,28 +32,28 @@ const Header: React.FC = () => {
     "Explore our wide range of products | Get a quote today!",
   ];
   const [currentAnnouncement, setCurrentAnnouncement] = useState<number>(0);
-  const [isAnimating, setIsAnimating] = useState<boolean>(false);
+  // const [isAnimating, setIsAnimating] = useState<boolean>(false);
 
 
   //We remove it when deployed to vercel. We will have to check whether any deployment error will come due to it or not
-  useEffect(()=>{
+  // useEffect(()=>{
 
 
-    if(isAnimating === true || isAnimating === false){
-   console.log('')
-    }else{
+  //   if(isAnimating === true || isAnimating === false){
+  //  console.log('')
+  //   }else{
 
-       console.log(isAnimating);
-    }
+  //      console.log(isAnimating);
+  //   }
 
-  },[]);
+  // },[]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setIsAnimating(true);
+      // setIsAnimating(true);
       setTimeout(() => {
         setCurrentAnnouncement((prev) => (prev + 1) % announcements.length);
-        setIsAnimating(false);
+        // setIsAnimating(false);
       }, 600);
     }, 5000);
 
@@ -139,10 +139,10 @@ const Header: React.FC = () => {
                           : "bg-white/40"
                       } hover:bg-white/80 hover:scale-125`}
                       onClick={() => {
-                        setIsAnimating(true);
+                        // setIsAnimating(true);
                         setTimeout(() => {
                           setCurrentAnnouncement(index);
-                          setIsAnimating(false);
+                          // setIsAnimating(false);
                         }, 300);
                       }}
                     />
