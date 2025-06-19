@@ -7,7 +7,8 @@ const WhatsAppButton: React.FC = () => {
 
   return (
     <div
-      className="fixed bottom-5 right-5 z-[1000] flex flex-col items-center transition-transform duration-300 hover:scale-110 md:bottom-6 md:right-4"
+      className="fixed bottom-5 right-5 z-[1000] flex flex-col items-center transition-transform duration-300 
+      hover:scale-110 md:bottom-6 md:right-4"
     >
       <a
         href={whatsappUrl}
@@ -23,7 +24,7 @@ const WhatsAppButton: React.FC = () => {
         />
       </a>
       <div
-        className="bg-[#25D366] text-[#072A04] px-3 py-1.5 rounded-2xl text-sm font-extrabold 
+        className="bg-[#25D366] text-[#ffffff] px-3 py-1.5 rounded-2xl text-sm font-extrabold 
         text-center mt-2 shadow-md opacity-90 hover:opacity-100 transition-opacity duration-300 md:text-sm md:px-4 md:py-1.7"
       >
         Chat with us

@@ -7,16 +7,22 @@ import "swiper/css/pagination";
 import { FaArrowRight, FaStar } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import type { TTestimonials } from "../types/types";
+import { useMemo } from "react";
 
-const testimonials: TTestimonials[] = [
+
+export default function Testimonials() {
+
+
+  const testimonials: TTestimonials[] = useMemo(()=>[
   { quote: "Their products are my family's favorite - everything is premium quality!", image: "https://picsum.photos/120/120?random=1", name: "Dipanjana Nandi", location: "Bengaluru", rating: 5 },
   { quote: "Akdenar makes shopping so convenient with fast delivery and excellent service!", image: "https://picsum.photos/120/120?random=2", name: "Shalini Bardhan", location: "Kolkata", rating: 5 },
   { quote: "Absolutely love their selection! Everything arrives in perfect condition.", image: "https://picsum.photos/120/120?random=3", name: "Rukma Dakshy", location: "Kolkata", rating: 4 },
   { quote: "I've never had a delivery service better than Akdenar!", image: "https://picsum.photos/120/120?random=4", name: "Bitu Mazumder", location: "Kolkata", rating: 5 },
   { quote: "Their premium selection is worth every penny - quality you can trust!", image: "https://picsum.photos/120/120?random=5", name: "Alfateh Mustafa", location: "Bengaluru", rating: 5 },
-];
+], []);
 
-export default function Testimonials() {
+
+
   return (
     <section className="relative overflow-hidden py-5 bg-gray-100 mt-[70px]">
       {/* Background decoration */}
@@ -131,6 +137,7 @@ export default function Testimonials() {
                           src={testimonial.image}
                           alt={testimonial.name}
                           className="w-full h-full object-cover"
+                          loading="lazy"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement | null;
                             if (target) {

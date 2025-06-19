@@ -1,10 +1,8 @@
-//New code  6/5/2025
+
 
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-// import { FaStar } from "react-icons/fa6";
 import type { ITestimonials } from "../types/types";
-
 // Swiper imports (if you use them later)
 // import { Swiper, SwiperSlide } from "swiper/react";
 // import { Navigation, Pagination, Autoplay } from "swiper/modules";

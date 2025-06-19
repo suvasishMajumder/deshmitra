@@ -1,12 +1,48 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaStar, FaArrowRight } from "react-icons/fa6";
 import { FaArrowLeft } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import ProductContactForm from "../components/ProductContactForm";
-import NotFound from "./NotFound";
+const ProductContactForm = lazy(()=>import("../components/ProductContactForm"))
+const NotFound = lazy(()=>import( "./NotFound"))
 import type { RootState } from "../redux/store";
+import type { ErrorBoundaryComponentProp } from "../types/types";
+import { BarLoader } from "react-spinners";
+
+
+
+
+const ErrorBoundaryComponent:React.FC<ErrorBoundaryComponentProp> = ({children})=>{
+
+const [isError , setIsError] = useState(false);
+
+
+const handleErrorFunction = () =>{
+
+
+  setIsError(true);
+
+}
+
+
+  useEffect(()=>{
+
+    window.addEventListener('error',handleErrorFunction);
+
+
+
+    return ()=>window.removeEventListener('error',handleErrorFunction);
+
+  },[])
+
+
+
+  return isError ? <div className='text-white text-xl font-medium'>Error loading component</div> : children;
+
+
+}
+
 
 export default function ProductDetail() {
   const catalogs = useSelector((state: RootState) => state.catalog.catalogs);
@@ -604,9 +640,16 @@ export default function ProductDetail() {
           <h3 className="font-bold text-3xl mb-4">
             Interested in this product?
           </h3>
-          <ProductContactForm
-            productName={`${product.name} - ${category.name} - ${item.name}`}
-          />
+
+          <ErrorBoundaryComponent>
+            <Suspense fallback={<div className="w-screen h-16 text-center flex justify-center space-y-6 flex-col items-center">
+             <span>Loading contact form...</span>  <BarLoader/></div>}>
+              <ProductContactForm
+                productName={`${product.name} - ${category.name} - ${item.name}`}
+              />
+            </Suspense>
+          </ErrorBoundaryComponent>
+       
         </div>
 
         {relatedProducts.length > 0 && (
@@ -628,7 +671,8 @@ export default function ProductDetail() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                    className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-2 transition-shadow transition-transform"
+                    className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-lg hover:-translate-y-2
+                     transition-shadow transition-transform"
                   >
                     <Link
                       to={`/category/${productName}/${categoryName}/${category.subItems.findIndex(

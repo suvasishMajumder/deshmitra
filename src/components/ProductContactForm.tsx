@@ -4,7 +4,8 @@ import { FaUser, FaEnvelope, FaPhone, FaBuilding, FaBox, FaComment, FaPaperPlane
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
-import type {IFormDataProductContactForm , IFocusedProductContactForm} from '../types/types';
+import { TextField, InputAdornment } from "@mui/material";
+import type { IFormDataProductContactForm, IFocusedProductContactForm } from '../types/types';
 
 type ProductContactFormProps = {
     productName?: string;
@@ -31,6 +32,7 @@ const ProductContactForm: React.FC<ProductContactFormProps> = ({ productName = "
 
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
     const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+    const [hasSubmitted, setHasSubmitted] = useState<boolean>(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -42,6 +44,19 @@ const ProductContactForm: React.FC<ProductContactFormProps> = ({ productName = "
 
     const handleBlur = (field: keyof IFocusedProductContactForm) => {
         setFocused({ ...focused, [field]: false });
+    };
+
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const char = e.key;
+        const input = e.currentTarget as HTMLInputElement;
+        const cursorPosition = input.selectionStart || 0;
+        // Allow only digits, and a '+' only at the start
+        if (
+            !/[0-9]/.test(char) &&
+            !(char === "+" && cursorPosition === 0 && !input.value.includes("+"))
+        ) {
+            e.preventDefault();
+        }
     };
 
     const isFieldValid = (field: string) => {
@@ -66,17 +81,9 @@ const ProductContactForm: React.FC<ProductContactFormProps> = ({ productName = "
 
     const contactFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setHasSubmitted(true);
 
         if (!isFormValid()) {
-            setFocused({
-                fname: true,
-                email: true,
-                phone: true,
-                companyName: false,
-                productName: true,
-                message: true
-            });
-
             toast.error("Please correct all errors in the form before submitting.", {
                 position: "top-right",
                 autoClose: 5000,
@@ -85,7 +92,6 @@ const ProductContactForm: React.FC<ProductContactFormProps> = ({ productName = "
                 pauseOnHover: true,
                 draggable: true
             });
-
             return;
         }
 
@@ -113,6 +119,7 @@ const ProductContactForm: React.FC<ProductContactFormProps> = ({ productName = "
 
             if (response.status === 200) {
                 setSubmitStatus("success");
+                setHasSubmitted(false);
 
                 setFormData({
                     fname: "",
@@ -223,223 +230,119 @@ const ProductContactForm: React.FC<ProductContactFormProps> = ({ productName = "
                     </AnimatePresence>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
+                        {[
+                            { name: "fname", icon: FaUser, placeholder: "Your Name", type: "text", error: "Please enter your name (at least 2 characters)", delay: 0 },
+                            { name: "email", icon: FaEnvelope, placeholder: "Your Email", type: "email", error: "Please enter a valid email address (e.g., name@example.com)", delay: 0.1 },
+                            { name: "phone", icon: FaPhone, placeholder: "Your Phone Number", type: "tel", error: "Please enter a valid phone number (10-15 digits)", delay: 0.2 },
+                            { name: "companyName", icon: FaBuilding, placeholder: "Company Name (Optional)", type: "text", error: "", delay: 0.3 },
+                            { name: "productName", icon: FaBox, placeholder: "Product Name", type: "text", error: "Please enter the product name (at least 2 characters)", delay: 0.4, colSpan: true },
+                            { name: "message", icon: FaComment, placeholder: "Your Message", type: "textarea", error: "Please enter a message with at least 10 characters", delay: 0.5, colSpan: true },
+                        ].map((field) => (
                             <motion.div
-                                className="mb-4"
-                                initial={{ x: -10, opacity: 0 }}
-                                whileInView={{ x: 0, opacity: 1 }}
+                                key={field.name}
+                                className={`mb-4 ${field.colSpan ? "col-span-1 md:col-span-2" : ""}`}
+                                initial={{ x: field.colSpan ? 0 : field.name === "email" || field.name === "companyName" ? 10 : -10, opacity: 0, y: field.colSpan ? 10 : 0 }}
+                                whileInView={{ x: 0, y: 0, opacity: 1 }}
                                 viewport={{ once: true }}
-                                transition={{ duration: 0.4 }}
+                                transition={{ duration: 0.4, delay: field.delay }}
                             >
-                                <div className="relative flex items-center">
-                                    <span className="absolute left-3">
-                                        <FaUser className={`${focused.fname || formData.fname ? 'text-blue-600' : 'text-gray-400'}`} />
-                                    </span>
-                                    <input
-                                        type="text"
-                                        name="fname"
-                                        value={formData.fname}
-                                        onChange={handleChange}
-                                        onFocus={() => handleFocus('fname')}
-                                        onBlur={() => handleBlur('fname')}
-                                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${!isFieldValid('fname') && (focused.fname || formData.fname) ? 'border-red-500' : 'border-gray-300'}`}
-                                        placeholder="Your Name"
-                                        required
-                                    />
-                                </div>
-                                {!isFieldValid('fname') && (focused.fname || formData.fname) && (
-                                    <div className="text-red-500 text-xs mt-1 ml-2">
-                                        Please enter your name (at least 2 characters)
+                                <TextField
+                                    fullWidth
+                                    variant="outlined"
+                                    type={field.type === "textarea" ? "text" : field.type}
+                                    name={field.name}
+                                    value={formData[field.name as keyof IFormDataProductContactForm]}
+                                    onChange={handleChange}
+                                    onFocus={() => handleFocus(field.name as keyof IFocusedProductContactForm)}
+                                    onBlur={() => handleBlur(field.name as keyof IFocusedProductContactForm)}
+                                    onKeyPress={field.type === "tel" ? handleKeyPress : undefined}
+                                    placeholder={field.placeholder}
+                                    multiline={field.type === "textarea"}
+                                    rows={field.type === "textarea" ? 4 : undefined}
+                                    required={field.name !== "companyName"}
+                                    inputProps={
+                                        field.type === "tel"
+                                            ? {
+                                                  inputMode: "numeric",
+                                              }
+                                            : {}
+                                    }
+                                    InputProps={{
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <field.icon
+                                                    className={`${
+                                                        focused[field.name as keyof IFocusedProductContactForm] || formData[field.name as keyof IFormDataProductContactForm]
+                                                            ? "text-blue-600"
+                                                            : "text-gray-400"
+                                                    } ${field.type === "textarea" ? "mt-2" : ""}`}
+                                                />
+                                            </InputAdornment>
+                                        ),
+                                        sx: {
+                                            fontSize: "1rem",
+                                            "& .MuiOutlinedInput-notchedOutline": {
+                                                borderColor: hasSubmitted && !isFieldValid(field.name) ? "red" : "gray",
+                                                transition: "border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+                                            },
+                                            "&:hover .MuiOutlinedInput-notchedOutline": {
+                                                borderColor: "#3b82f6", // blue-500
+                                            },
+                                            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                                                borderColor: "#3b82f6",
+                                                boxShadow: "0 0 0 1px #3b82f6",
+                                            },
+                                        },
+                                    }}
+                                    InputLabelProps={{
+                                        sx: {
+                                            fontSize: "1rem",
+                                            color: focused[field.name as keyof IFocusedProductContactForm] || formData[field.name as keyof IFormDataProductContactForm] ? "#3b82f6" : "gray",
+                                            "&.Mui-focused": {
+                                                color: "#3b82f6",
+                                            },
+                                        },
+                                    }}
+                                    error={hasSubmitted && !isFieldValid(field.name)}
+                                    helperText={hasSubmitted && !isFieldValid(field.name) ? field.error : ""}
+                                    sx={{
+                                        "& .MuiFormHelperText-root": {
+                                            marginLeft: "0.5rem",
+                                            fontSize: "0.75rem",
+                                            color: "red",
+                                        },
+                                    }}
+                                />
+                            </motion.div>
+                        ))}
+
+                        <motion.div
+                            className="col-span-1 md:col-span-2 text-center"
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.4, delay: 0.6 }}
+                        >
+                            <motion.button
+                                whileHover={{ scale: 1.03 }}
+                                whileTap={{ scale: 0.98 }}
+                                type="submit"
+                                className="bg-gradient-to-r from-blue-600 to-blue-900 text-white px-5 ds:px-8 py-3 ds:py-4 rounded-full font-medium text-lg hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                                disabled={isSubmitting}
+                            >
+                                {isSubmitting ? (
+                                    <div className="flex items-center justify-center">
+                                        <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></div>
+                                        <span>Sending inquiry...</span>
+                                    </div>
+                                ) : (
+                                    <div className="flex items-center justify-center">
+                                        <span>Submit Inquiry</span>
+                                        <FaPaperPlane className="ml-2" size={16} />
                                     </div>
                                 )}
-                            </motion.div>
-                        </div>
-
-                        <div>
-                            <motion.div
-                                className="mb-4"
-                                initial={{ x: 10, opacity: 0 }}
-                                whileInView={{ x: 0, opacity: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.4, delay: 0.1 }}
-                            >
-                                <div className="relative flex items-center">
-                                    <span className="absolute left-3">
-                                        <FaEnvelope className={`${focused.email || formData.email ? 'text-blue-600' : 'text-gray-400'}`} />
-                                    </span>
-                                    <input
-                                        type="email"
-                                        name="email"
-                                        value={formData.email}
-                                        onChange={handleChange}
-                                        onFocus={() => handleFocus('email')}
-                                        onBlur={() => handleBlur('email')}
-                                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${!isFieldValid('email') && (focused.email || formData.email) ? 'border-red-500' : 'border-gray-300'}`}
-                                        placeholder="Your Email"
-                                        required
-                                    />
-                                </div>
-                                {!isFieldValid('email') && (focused.email || formData.email) && (
-                                    <div className="text-red-500 text-xs mt-1 ml-2">
-                                        Please enter a valid email address (e.g., name@example.com)
-                                    </div>
-                                )}
-                            </motion.div>
-                        </div>
-
-                        <div>
-                            <motion.div
-                                className="mb-4"
-                                initial={{ x: -10, opacity: 0 }}
-                                whileInView={{ x: 0, opacity: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.4, delay: 0.2 }}
-                            >
-                                <div className="relative flex items-center">
-                                    <span className="absolute left-3">
-                                        <FaPhone className={`${focused.phone || formData.phone ? 'text-blue-600' : 'text-gray-400'}`} />
-                                    </span>
-                                    <input
-                                        type="tel"
-                                        name="phone"
-                                        value={formData.phone}
-                                        onChange={handleChange}
-                                        onFocus={() => handleFocus('phone')}
-                                        onBlur={() => handleBlur('phone')}
-                                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${!isFieldValid('phone') && (focused.phone || formData.phone) ? 'border-red-500' : 'border-gray-300'}`}
-                                        placeholder="Your Phone Number"
-                                        required
-                                    />
-                                </div>
-                                {!isFieldValid('phone') && (focused.phone || formData.phone) && (
-                                    <div className="text-red-500 text-xs mt-1 ml-2">
-                                        Please enter a valid phone number (10-15 digits)
-                                    </div>
-                                )}
-                            </motion.div>
-                        </div>
-
-                        <div>
-                            <motion.div
-                                className="mb-4"
-                                initial={{ x: 10, opacity: 0 }}
-                                whileInView={{ x: 0, opacity: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.4, delay: 0.3 }}
-                            >
-                                <div className="relative flex items-center">
-                                    <span className="absolute left-3">
-                                        <FaBuilding className={`${focused.companyName || formData.companyName ? 'text-blue-600' : 'text-gray-400'}`} />
-                                    </span>
-                                    <input
-                                        type="text"
-                                        name="companyName"
-                                        value={formData.companyName}
-                                        onChange={handleChange}
-                                        onFocus={() => handleFocus('companyName')}
-                                        onBlur={() => handleBlur('companyName')}
-                                        className="w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 border-gray-300"
-                                        placeholder="Company Name (Optional)"
-                                    />
-                                </div>
-                            </motion.div>
-                        </div>
-
-                        <div className="col-span-1 md:col-span-2">
-                            <motion.div
-                                className="mb-4"
-                                initial={{ y: 10, opacity: 0 }}
-                                whileInView={{ y: 0, opacity: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.4, delay: 0.4 }}
-                            >
-                                <div className="relative flex items-center">
-                                    <span className="absolute left-3">
-                                        <FaBox className={`${focused.productName || formData.productName ? 'text-blue-600' : 'text-gray-400'}`} />
-                                    </span>
-                                    <input
-                                        type="text"
-                                        name="productName"
-                                        value={formData.productName}
-                                        onChange={handleChange}
-                                        onFocus={() => handleFocus('productName')}
-                                        onBlur={() => handleBlur('productName')}
-                                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${!isFieldValid('productName') && (focused.productName || formData.productName) ? 'border-red-500' : 'border-gray-300'}`}
-                                        placeholder="Product Name"
-                                        required
-                                    />
-                                </div>
-                                {!isFieldValid('productName') && (focused.productName || formData.productName) && (
-                                    <div className="text-red-500 text-xs mt-1 ml-2">
-                                        Please enter the product name (at least 2 characters)
-                                    </div>
-                                )}
-                            </motion.div>
-                        </div>
-
-                        <div className="col-span-1 md:col-span-2">
-                            <motion.div
-                                className="mb-4"
-                                initial={{ y: 10, opacity: 0 }}
-                                whileInView={{ y: 0, opacity: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.4, delay: 0.5 }}
-                            >
-                                <div className="relative">
-                                    <span className="absolute left-3 top-3">
-                                        <FaComment className={`${focused.message || formData.message ? 'text-blue-600' : 'text-gray-400'}`} />
-                                    </span>
-                                    <textarea
-                                        name="message"
-                                        value={formData.message}
-                                        onChange={handleChange}
-                                        onFocus={() => handleFocus('message')}
-                                        onBlur={() => handleBlur('message')}
-                                        className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${!isFieldValid('message') && (focused.message || formData.message) ? 'border-red-500' : 'border-gray-300'}`}
-                                        placeholder="Your Message"
-                                        rows={4}
-                                        required
-                                    ></textarea>
-                                </div>
-                                {!isFieldValid('message') && (focused.message || formData.message) && (
-                                    <div className="text-red-500 text-xs mt-1 ml-2">
-                                        Please enter a message with at least 10 characters
-                                    </div>
-                                )}
-                            </motion.div>
-                        </div>
-
-                        <div className="col-span-1 md:col-span-2">
-                            <motion.div
-                                className="text-center"
-                                initial={{ opacity: 0 }}
-                                whileInView={{ opacity: 1 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.4, delay: 0.6 }}
-                            >
-                                <motion.button
-                                    whileHover={{ scale: 1.03 }}
-                                    whileTap={{ scale: 0.98 }}
-                                    type="submit"
-                                    className="bg-gradient-to-r from-blue-600 to-blue-900
-                                     text-white px-5 ds:px-8 py-3 ds:py-4 rounded-full font-medium text-lg
-                                      hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
-                                    disabled={isSubmitting}
-                                >
-                                    {isSubmitting ? (
-                                        <div className="flex items-center justify-center">
-                                            <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2"></div>
-                                            <span>Sending inquiry...</span>
-                                        </div>
-                                    ) : (
-                                        <div className="flex items-center justify-center">
-                                            <span>Submit Inquiry</span>
-                                            <FaPaperPlane className="ml-2" size={16} />
-                                        </div>
-                                    )}
-                                </motion.button>
-                            </motion.div>
-                        </div>
+                            </motion.button>
+                        </motion.div>
                     </div>
                 </form>
             </div>
