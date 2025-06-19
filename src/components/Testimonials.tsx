@@ -137,6 +137,7 @@ export default function Testimonials() {
                           src={testimonial.image}
                           alt={testimonial.name}
                           className="w-full h-full object-cover"
+                          loading="lazy"
                           onError={(e) => {
                             const target = e.target as HTMLImageElement | null;
                             if (target) {

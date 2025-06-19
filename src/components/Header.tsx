@@ -172,7 +172,7 @@ const Header: React.FC = () => {
                 <img
                   src="/logo.webp"
                   alt="Akdenar Logo"
-                  className={`h-[40px] sm:h-[70px] w-auto object-contain transition-all duration-300 ${
+                  className={`h-[40px] sm:h-[70px] lg:h-[58px] xl:h-[70px] w-auto object-contain transition-all duration-300 ${
                     isScrolled ? "h-10" : ""
                   }`}
                   onError={(e) => {
@@ -186,19 +186,22 @@ const Header: React.FC = () => {
                   <span className="font-poppins font-extrabold text-lg md:text-xl lg:text-2xl animate-gradient-text mb-[-3px]">
                     Akdenar
                   </span>
-                  <span className="text-[0.6rem] sm:text-[0.7rem]  ss:text-[0.8rem] font-semibold text-[#3c3d3f] tracking-tight">
+                  <span className="text-[0.6rem] sm:text-[0.7rem]  ss:text-[0.8rem] lg:text-[0.6rem] xl:text-[0.8rem]   
+                  font-semibold text-[#3c3d3f] tracking-tight">
                     Premium Quality Products
                   </span>
                 </div>
               </motion.div>
             </Link>
 
-            {/* Desktop Search Bar and Navigation */}
-            <div className="hidden lg:flex items-center flex-grow gap-4 ">
+            {/* Desktop Search Bar and Navigation --old code */}
+            
+            <div className="hidden lg:flex  lg:ml-8 items-center flex-grow gap-4 ">
               {/* Search Bar */}
               <form onSubmit={handleSearch} className="flex-grow">
                 <div
-                  className={`relative mx-10 w-100 rounded-full overflow-hidden border border-gray-200 bg-gray-100 flex items-center transition-all duration-300 ${
+                  className={`relative lg:mx-2 xl:mx-10 lg:w-48 xl:w-64 2xl:w-96 rounded-full overflow-hidden border border-gray-200
+                     bg-gray-100 flex items-center transition-all duration-300 ${
                     searchFocused
                       ? "shadow-[0_0_0_4px_rgba(58,123,252,0.15)] border-[#3a7bfc] bg-white"
                       : ""
@@ -217,7 +220,13 @@ const Header: React.FC = () => {
                   />
                   <motion.button
                     type="submit"
-                    className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-gradient-to-br from-[#3a7bfc] to-[#6f42c1] text-white w-10 h-10 rounded-full flex items-center justify-center cursor-pointer shadow-[0_4px_10px_rgba(58,123,252,0.3)] transition-all duration-300 hover:bg-gradient-to-br hover:from-[#6f42c1] hover:to-[#3a7bfc] hover:shadow-[0_6px_15px_rgba(58,123,252,0.4)] hover:-translate-x-0.5 focus:outline-none focus:shadow-[0_0_0_3px_rgba(58,123,252,0.2),0_6px_15px_rgba(58,123,252,0.4)] active:scale-95"
+                    className="absolute right-1.5 top-1/2 -translate-y-1/2 bg-gradient-to-br from-[#3a7bfc] 
+                    to-[#6f42c1] text-white w-10 h-10 rounded-full flex items-center
+                     justify-center cursor-pointer shadow-[0_4px_10px_rgba(58,123,252,0.3)]
+                      transition-all duration-300 hover:bg-gradient-to-br hover:from-[#6f42c1]
+                       hover:to-[#3a7bfc] hover:shadow-[0_6px_15px_rgba(58,123,252,0.4)]
+                         focus:outline-none 
+                         focus:shadow-[0_0_0_3px_rgba(58,123,252,0.2),0_6px_15px_rgba(58,123,252,0.4)] active:scale-95"
                   >
                     <FaSearch aria-label="search product" />
                   </motion.button>
@@ -228,7 +237,8 @@ const Header: React.FC = () => {
               <ul className="flex items-center gap-1.5">
                 <li className="relative">
                   <Link
-                    className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 ${
+                    className={`text-[0.95rem] font-medium text-gray-700 px-1 xl:px-2 py-2 
+                      rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:translate-y-[-2px] ${
                       location.pathname === "/"
                         ? "text-[#3a7bfc] font-semibold"
                         : ""
@@ -238,7 +248,8 @@ const Header: React.FC = () => {
                     Home
                     {location.pathname === "/" && (
                       <motion.div
-                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] rounded"
+                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r 
+                        from-[#3a7bfc] to-[#6f42c1] rounded"
                         layoutId="navIndicator"
                       />
                     )}
@@ -247,7 +258,9 @@ const Header: React.FC = () => {
                 <li className="relative">
                   <Link to="/category" className="no-underline">
                     <div
-                      className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 cursor-pointer flex items-center ${
+                      className={`text-[0.95rem] font-medium text-gray-700 px-1 xl:px-2 py-2 rounded-lg 
+                        transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10
+                         cursor-pointer flex items-center hover:translate-y-[-2px] ${
                         catalogs.some((c) =>
                           location.pathname.includes(
                             `/category/${c.name
@@ -279,7 +292,8 @@ const Header: React.FC = () => {
                         )
                       ) && (
                         <motion.div
-                          className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] rounded"
+                          className="absolute left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r from-[#3a7bfc] 
+                          to-[#6f42c1] rounded"
                           layoutId="navIndicator"
                         />
                       )}
@@ -288,7 +302,8 @@ const Header: React.FC = () => {
                   <AnimatePresence>
                     {activeDropdown === "products" && (
                       <motion.div
-                        className="absolute left-1/2 -translate-x-1/2 mt-2.5 bg-white rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.1)] p-4 min-w-[500px] z-[1000] products-dropdown"
+                        className="absolute left-1/2 -translate-x-1/2 mt-2.5 bg-white rounded-2xl
+                         shadow-[0_10px_30px_rgba(0,0,0,0.1)] p-4 min-w-[500px] z-[1000] products-dropdown"
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 20 }}
@@ -301,7 +316,9 @@ const Header: React.FC = () => {
                             {catalogs.map((category, index) => (
                               <Link
                                 key={index}
-                                className={`flex items-center px-4 py-2.5 text-[0.9rem] text-gray-600 rounded-lg transition-all duration-200 hover:bg-[#3a7bfc]/10 hover:text-[#3a7bfc] hover:translate-x-0.5 mb-0.5 ${
+                                className={`flex items-center px-1 py-2.5 text-[0.9rem]
+                                   text-gray-600 rounded-lg transition-all duration-200 hover:bg-[#3a7bfc]/10
+                                    hover:text-[#3a7bfc] hover:translate-x-0.5 mb-0.5 ${
                                   hoveredProduct === index
                                     ? "bg-[#3a7bfc]/10 text-[#3a7bfc]"
                                     : ""
@@ -374,7 +391,8 @@ const Header: React.FC = () => {
                 </li>
                 <li className="relative">
                   <Link
-                    className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 ${
+                    className={`text-[0.95rem] font-medium text-gray-700 px-1 xl:px-2 py-2 rounded-lg transition-all duration-300
+                       hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:translate-y-[-2px] ${
                       location.pathname === "/about"
                         ? "text-[#3a7bfc] font-semibold"
                         : ""
@@ -384,7 +402,8 @@ const Header: React.FC = () => {
                     About
                     {location.pathname === "/about" && (
                       <motion.div
-                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] rounded"
+                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r from-[#3a7bfc]
+                         to-[#6f42c1] rounded"
                         layoutId="navIndicator"
                       />
                     )}
@@ -392,7 +411,8 @@ const Header: React.FC = () => {
                 </li>
                 <li className="relative">
                   <Link
-                    className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 ${
+                    className={`text-[0.95rem] font-medium text-gray-700 px-1 py-2 rounded-lg transition-all duration-300
+                       hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:translate-y-[-2px] ${
                       location.pathname === "/testimonials"
                         ? "text-[#3a7bfc] font-semibold"
                         : ""
@@ -402,7 +422,8 @@ const Header: React.FC = () => {
                     Testimonials
                     {location.pathname === "/testimonials" && (
                       <motion.div
-                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] rounded"
+                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r from-[#3a7bfc]
+                         to-[#6f42c1] rounded"
                         layoutId="navIndicator"
                       />
                     )}
@@ -410,7 +431,8 @@ const Header: React.FC = () => {
                 </li>
                 <li className="relative">
                   <Link
-                    className={`text-[0.95rem] font-medium text-gray-700 px-4 py-2 rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:-translate-y-0.5 ${
+                    className={`text-[0.95rem] font-medium text-gray-700 px-1 py-2
+                       rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:translate-y-[-2px] ${
                       location.pathname === "/contact"
                         ? "text-[#3a7bfc] font-semibold"
                         : ""
@@ -420,7 +442,8 @@ const Header: React.FC = () => {
                     Contact
                     {location.pathname === "/contact" && (
                       <motion.div
-                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] rounded"
+                        className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-0.5 w-5
+                         bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] rounded"
                         layoutId="navIndicator"
                       />
                     )}
@@ -429,7 +452,8 @@ const Header: React.FC = () => {
                 <li>
                   <Link
                     to="/contact"
-                    className="inline-flex items-center justify-center px-5 py-2 font-medium text-[0.95rem] 
+                    className="inline-flex items-center justify-center px-5 lg:px-2 xl:px-5 py-2 font-medium lg:text-[0.85rem]
+                     xl:text-[0.95rem] 
              bg-gradient-to-r from-[#3a7bfc] to-[#165ed3] text-white 
              rounded-lg shadow-[0_4px_12px_rgba(58,123,252,0.2)] 
              transition-all duration-300 hover:-translate-y-1 
@@ -444,7 +468,8 @@ const Header: React.FC = () => {
 
             {/* Mobile Menu Toggle */}
             <button
-              className="lg:hidden bg-[#3a7bfc]/10 p-2.5 flex items-center justify-center text-[#3a7bfc] rounded-lg transition-all duration-300 hover:bg-[#3a7bfc]/20 focus:bg-[#3a7bfc]/20 focus:outline-none"
+              className="lg:hidden bg-[#3a7bfc]/10 p-2.5 flex items-center justify-center text-[#3a7bfc]
+               rounded-lg transition-all duration-300 hover:bg-[#3a7bfc]/20 focus:bg-[#3a7bfc]/20 focus:outline-none"
               type="button"
               onClick={toggleMobileMenu}
               aria-expanded={isMobileMenuOpen}
@@ -487,7 +512,8 @@ const Header: React.FC = () => {
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search products..."
-                      className="w-full px-5 py-3.5 bg-transparent text-[0.95rem] border-none focus:outline-none placeholder:text-gray-500"
+                      className="w-full px-5 lg:px-2.5 xl:px-5 py-3.5 bg-transparent text-[0.95rem] 
+                      border-none focus:outline-none placeholder:text-gray-500"
                     />
                     <motion.button
                       type="submit"
@@ -510,7 +536,9 @@ const Header: React.FC = () => {
                   >
                     <Link
                       to="/"
-                      className={`flex items-center justify-between px-4 py-3.5 text-gray-700 font-medium rounded-xl transition-all duration-200 hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] min-h-[52px] ${
+                      className={`flex items-center justify-between px-4 py-3.5
+                         text-gray-700 font-medium rounded-xl transition-all duration-200
+                          hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] min-h-[52px] ${
                         location.pathname === "/"
                           ? "text-[#3a7bfc] font-semibold"
                           : ""
