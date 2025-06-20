@@ -60,7 +60,13 @@ export default function ProductDetail() {
   }, [productName, categoryName, productId]);
 
   if (!productName || !categoryName || !productId) {
-    return <NotFound searchTerm="Invalid product route" />;
+    return(
+    <ErrorBoundaryComponent>
+      <Suspense fallback={<div className="w-full text-center h-10"><BarLoader /></div>}>
+    <NotFound searchTerm="Invalid product route" />;
+      </Suspense>
+        </ErrorBoundaryComponent>
+    )
   }
 
   const decodedProductName = decodeURIComponent(productName)

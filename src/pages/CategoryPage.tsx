@@ -1,4 +1,4 @@
-import { lazy, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
@@ -7,7 +7,25 @@ const ProductContactForm = lazy(()=>import("../components/ProductContactForm"));
 import { motion } from "framer-motion";
 import NotFound from "./NotFound";
 import type { RootState } from "../redux/store";
-import type { Catalog, Category } from "../types/types";
+import type { Catalog, Category, ErrorBoundaryComponentProp } from "../types/types";
+import { BarLoader} from "react-spinners";
+
+
+
+const ErrorBoundaryComponent: React.FC<ErrorBoundaryComponentProp> = ({ children }) => {
+  const [isError, setIsError] = useState(false);
+
+  const handleErrorFunction = () => {
+    setIsError(true);
+  };
+
+  useEffect(() => {
+    window.addEventListener('error', handleErrorFunction);
+    return () => window.removeEventListener('error', handleErrorFunction);
+  }, []);
+
+  return isError ? <div className='text-white text-xl font-medium'>Error loading component</div> : children;
+};
 
 type RouteParams = {
   productName: string;
@@ -153,9 +171,13 @@ export default function CategoryPage() {
               ))}
 
               <div className="col-span-full mt-5">
+                <ErrorBoundaryComponent>
+                  <Suspense fallback={<div className="w-screen h-6"><BarLoader /></div>}>
                 <ProductContactForm
                   productName={`${product.name} - ${selectedCategory.name}`}
                 />
+                 </Suspense>
+                </ErrorBoundaryComponent>
               </div>
             </div>
           </div>

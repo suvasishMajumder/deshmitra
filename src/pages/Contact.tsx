@@ -1,4 +1,4 @@
-import { lazy, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   FaPhone,
@@ -11,9 +11,28 @@ import {
 } from "react-icons/fa";
 // import ContactForm from "../components/ContactForm";
 const ContactForm = lazy(()=>import("../components/ContactForm"));
-import type { TContactInfo, TSocialMedia } from "../types/types";
+import type { ErrorBoundaryComponentProp, TContactInfo, TSocialMedia } from "../types/types";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import type { IFAQ } from "../types/types";
+import { BarLoader } from "react-spinners";
+
+
+
+const ErrorBoundaryComponent: React.FC<ErrorBoundaryComponentProp> = ({ children }) => {
+  const [isError, setIsError] = useState(false);
+
+  const handleErrorFunction = () => {
+    setIsError(true);
+  };
+
+  useEffect(() => {
+    window.addEventListener('error', handleErrorFunction);
+    return () => window.removeEventListener('error', handleErrorFunction);
+  }, []);
+
+  return isError ? <div className='text-white text-xl font-medium'>Error loading component</div> : children;
+};
+
 
 const Contact = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -295,7 +314,11 @@ const Contact = () => {
                 <h2 className="font-bold mb-5 text-center text-2xl sm:text-3xl md:text-4xl">
                   Send Us a Message
                 </h2>
+                <ErrorBoundaryComponent>
+                  <Suspense fallback={<div className="w-screen h-10"><BarLoader /></div>}>
                 <ContactForm />
+                </Suspense>
+                      </ErrorBoundaryComponent>
               </motion.div>
             </div>
           </div>

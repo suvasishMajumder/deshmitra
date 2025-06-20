@@ -7,6 +7,11 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../redux/store";
 import type { Catalog } from "../types/types";
 
+
+
+
+
+
 const CategoriesPage = () => {
   const [activeCategory, setActiveCategory] = useState<string>("all");
   const [searchTerm, setSearchTerm] = useState<string>("");
