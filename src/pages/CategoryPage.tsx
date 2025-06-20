@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { lazy, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
-import ProductContactForm from "../components/ProductContactForm";
+// import ProductContactForm from "../components/ProductContactForm";
+const ProductContactForm = lazy(()=>import("../components/ProductContactForm"));
 import { motion } from "framer-motion";
 import NotFound from "./NotFound";
 import type { RootState } from "../redux/store";

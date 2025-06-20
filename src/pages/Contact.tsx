@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import {
   FaPhone,
@@ -9,7 +9,8 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa";
-import ContactForm from "../components/ContactForm";
+// import ContactForm from "../components/ContactForm";
+const ContactForm = lazy(()=>import("../components/ContactForm"));
 import type { TContactInfo, TSocialMedia } from "../types/types";
 import { HiChevronDown, HiChevronUp } from "react-icons/hi";
 import type { IFAQ } from "../types/types";

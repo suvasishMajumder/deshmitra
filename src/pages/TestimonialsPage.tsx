@@ -120,6 +120,9 @@ const testimonials: ITestimonials[] = [
 ];
 
 const TestimonialsPage: React.FC = () => {
+
+
+  
   useEffect(() => {
     // Force scroll to top when TestimonialsPage component mounts
     window.scrollTo(0, 0);
@@ -254,3 +257,8 @@ const TestimonialsPage: React.FC = () => {
 };
 
 export default TestimonialsPage;
+
+
+
+//New Code:
+
