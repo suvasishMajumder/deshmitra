@@ -27,10 +27,10 @@ function Footer() {
   ];
 
   const socialLinks: TSocialLinks[] = [
-    { Icon: FaFacebookF, href: "https://www.facebook.com/share/1AmuCTSfNp/" },
-    { Icon: FaInstagram, href: "https://www.instagram.com/akdenar/" },
-    { Icon: FaLinkedinIn, href: "https://www.linkedin.com/company/akdenar2" },
-    { Icon: FaYoutube, href: "https://www.youtube.com/@Akdenar" },
+    { Icon: FaFacebookF, href: "https://www.facebook.com/share/1AmuCTSfNp/" , name: "Facebook" },
+    { Icon: FaInstagram, href: "https://www.instagram.com/akdenar/", name: "Instagram" },
+    { Icon: FaLinkedinIn, href: "https://www.linkedin.com/company/akdenar2", name: "LinkedIn" },
+    { Icon: FaYoutube, href: "https://www.youtube.com/@Akdenar", name: "YouTube" },
   ];
 
   const [currentYear] = useState<number | string>(new Date().getFullYear());
@@ -64,6 +64,7 @@ function Footer() {
               {socialLinks.map((social, index) => (
                 <motion.a
                   key={index}
+                  aria-label={social?.name || "social media link"}
                   href={social.href}
                   target="_blank"
                   rel="noopener noreferrer"

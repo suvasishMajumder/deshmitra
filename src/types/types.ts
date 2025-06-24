@@ -13,6 +13,7 @@ export type TFooterLinks = {
 export type TSocialLinks = {
 
   Icon:IconType;
+  name:string;
   href: string;
 
 }
