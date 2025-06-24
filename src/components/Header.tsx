@@ -214,7 +214,8 @@ const Header: React.FC = () => {
                       setSearchQuery(e.target.value)
                     }
                     placeholder="Search products..."
-                    className="w-full px-5 py-3 bg-transparent text-[0.95rem] border-none focus:outline-none placeholder:text-gray-500"
+                    className="w-full px-5 py-3 bg-transparent text-[0.95rem] border-none focus:outline-none
+                     placeholder:text-gray-500 lg:placeholder:text-sm xl:placeholder:text-[16px]"
                     onFocus={() => setSearchFocused(true)}
                     onBlur={() => setSearchFocused(false)}
                   />
@@ -292,7 +293,7 @@ const Header: React.FC = () => {
                         )
                       ) && (
                         <motion.div
-                          className="absolute left-1/2 -translate-x-1/2 h-0.5 w-5 bg-gradient-to-r from-[#3a7bfc] 
+                          className="absolute left-1/2 -translate-x-1/2 h-0.5 mt-8 w-5 bg-gradient-to-r from-[#3a7bfc] 
                           to-[#6f42c1] rounded"
                           layoutId="navIndicator"
                         />
