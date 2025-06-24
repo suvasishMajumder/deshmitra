@@ -9,7 +9,8 @@ import type { ITestimonials } from "../types/types";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import fallbackImg from "../assets/fallbackImg.png";
+// import fallbackImg from "../assets/fallbackImg.png";
+import fallbackImg from '../assets/fallbackImg.webp'
 // import StarRating from "../components/StarRating";
 import Rating from "@mui/material/Rating";
 import amitPatelRealImg from "../assets/amit_patel.webp";

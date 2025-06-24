@@ -201,7 +201,7 @@ const initialState: CatalogState ={
       {
         name: "Nuts",
         description: "Rich in healthy fats.",
-        image: "/Nuts.jpeg",
+        image: "/Nuts.webp",
         subItems: [
           { name: "Almonds", image: "/Almond.webp", description: "Great for snacking. Price: Not specified", priceRange: "Submit Request For Rates" },
           { name: "Cashews", image: "/kaju.webp", description: "Used in desserts. Price: Not specified", priceRange: "Submit Request For Rates" },
@@ -211,7 +211,7 @@ const initialState: CatalogState ={
       {
         name: "Dried Fruits",
         description: "Dehydrated for long shelf life.",
-        image: "/Dried Fruits.jpeg",
+        image: "/Dried Fruits.webp",
         subItems: [
           { name: "Raisins", image: "/kismiss.webp", description: "Sweet and chewy. Price: Not specified", priceRange: "Submit Request For Rates" },
           { name: "Anjeer", image: "/anjeer.webp", description: "Tangy and sweet. Price: Not specified", priceRange: "Submit Request For Rates" },
@@ -221,7 +221,7 @@ const initialState: CatalogState ={
       {
         name: "Seeds",
         description: "Nutritious edible seeds.",
-        image: "/sseds.jpeg",
+        image: "/sseds.webp",
         subItems: [
           { name: "Pumpkin Seeds", image: "/pumpkin seeds.webp", description: "For salads. Price: Not specified", priceRange: "Submit Request For Rates" },
           { name: "Sunflower Seeds", image: "/sun flower seeds.webp", description: "For baking. Price: Not specified", priceRange: "Submit Request For Rates" },
@@ -254,7 +254,7 @@ const initialState: CatalogState ={
       {
         name: "Specialty Oils",
         description: "Unique oils for diverse cuisines.",
-        image: "/Specialty.jpeg",
+        image: "/Specialty.webp",
         subItems: [
           { name: "Coconut Oil", image: "/coconut oil.webp", description: "Rich flavor. Price: Not specified", priceRange: "Submit Request For Rates" },
           { name: "Mustard Oil", image: "/musterd Oil.webp", description: "Pungent flavor. Price: Not specified", priceRange: "Submit Request For Rates" },

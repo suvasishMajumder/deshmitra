@@ -18,7 +18,7 @@ const WhatsAppButton: React.FC = () => {
         className="block w-[60px] h-[60px] md:w-[60px] md:h-[60px]"
       >
         <img
-          src="/whatsapp.png"
+          src="/whatsapp.webp"
           alt="WhatsApp Chat"
           className="w-full h-full"
         />

@@ -237,3 +237,15 @@ declare module 'swiper/css/pagination';
 export type ErrorBoundaryComponentProp = {
   children:ReactNode;
 }
+
+
+export interface ITestimonialItem {
+
+  quote:string;
+  image:string;
+  name:string;
+  location:string;
+  rating:number;
+  role:string;
+
+}
