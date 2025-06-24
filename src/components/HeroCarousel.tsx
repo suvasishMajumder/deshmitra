@@ -185,8 +185,6 @@
 
 
 //New code by chatgpt as of 6/24/25
-
-
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay, Pagination, EffectFade } from "swiper/modules";
 import { motion } from "framer-motion";
@@ -203,35 +201,30 @@ const carouselItems: THeroCarouselItem[] = [
     keyword: "Premium Products",
     description: "Explore our selection of high-quality everyday essentials",
     image: "/11.webp",
-    avif: "/11.avif",
     color: "#66a3ff",
   },
   {
     keyword: "Quality Selection",
     description: "From producer to your doorstep, with care and quality",
     image: "/14.webp",
-    avif: "/14.avif",
     color: "#7cb8ff",
   },
   {
     keyword: "Organic Goods",
     description: "Naturally grown and ethically sourced products",
     image: "/13.webp",
-    avif: "/13.avif",
     color: "#7cb8ff",
   },
   {
     keyword: "Global Reach",
     description: "Serving customers worldwide with premium quality products",
     image: "/12.webp",
-    avif: "/12.avif",
     color: "#7cb8ff",
   },
   {
     keyword: "Sustainable Future",
     description: "Committed to eco-friendly practices and sustainable sourcing",
     image: "/15.webp",
-    avif: "/15.avif",
     color: "#7cb8ff",
   },
 ];
@@ -278,21 +271,17 @@ export default function HeroCarousel() {
           >
             {carouselItems.map((item, index) => (
               <SwiperSlide key={index}>
-                <div className="relative h-[375px] md:h-[450px] sm:h-[350px] pl-[50px] sm:pl-5">
+                <div className="relative h-[375px] md:h-[480px] sm:h-[350px] pl-[50px] sm:pl-5">
                   {index === 0 ? (
-                    <picture>
-                      <source srcSet={item.avif} type="image/avif" />
-                      <source srcSet={item.image} type="image/webp" />
-                      <img
-                        src={item.image}
-                        alt={item.keyword}
-                        width={1200}
-                        height={450}
-                        loading="eager"
-                        fetchPriority="high"
-                        className="absolute inset-0 object-cover brightness-[0.85]"
-                      />
-                    </picture>
+                    <img
+                      src={item.image}
+                      alt={item.keyword}
+                      width={1400}
+                      height={450}
+                      loading="eager"
+                      fetchPriority="high"
+                      className="absolute inset-0 object-cover h-full bg-center brightness-[0.85]"
+                    />
                   ) : (
                     <motion.div
                       initial={{ scale: 1.1 }}
@@ -333,22 +322,15 @@ export default function HeroCarousel() {
           </Swiper>
         ) : (
           /* Fallback static first slide to show immediately */
-          <div className="relative h-[375px] md:h-[450px] sm:h-[350px] overflow-hidden rounded-3xl">
-            <picture>
-              <source srcSet={carouselItems[0].avif} type="image/avif" />
-              <source srcSet={carouselItems[0].image} type="image/webp" />
-              <img
-                src={carouselItems[0].image}
-                alt={carouselItems[0].keyword}
-                width={1200}
-                height={450}
-                loading="eager"
-                fetchPriority="high"
-                className="absolute inset-0 object-cover brightness-[0.85]"
-              />
-            </picture>
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-black/40" />
-          </div>
+          <img
+            src={carouselItems[0].image}
+            alt={carouselItems[0].keyword}
+            width={1200}
+            height={450}
+            loading="eager"
+            fetchPriority="high"
+            className="relative inset-0 object-cover brightness-[0.85]"
+          />
         )}
 
         <style>{`
