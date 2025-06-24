@@ -91,6 +91,7 @@ export type THeroCarouselItem = {
 
   keyword:string;
   description: string;
+  avif:string;
   image:string;
   color:string;
 

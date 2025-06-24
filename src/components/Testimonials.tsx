@@ -8,6 +8,7 @@ import { FaArrowRight, FaStar } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import type { TTestimonials } from "../types/types";
 import { useMemo } from "react";
+import fallbackImg from '../assets/fallbackImg.webp'; // Adjust the path as necessary
 
 
 export default function Testimonials() {
@@ -142,7 +143,7 @@ export default function Testimonials() {
                             const target = e.target as HTMLImageElement | null;
                             if (target) {
                               // target.src = "https://via.placeholder.com/50?text=User"; //It was creating issues
-                              target.src = 'akdenar'
+                              target.src = fallbackImg
                             }
                           }}
                         />
