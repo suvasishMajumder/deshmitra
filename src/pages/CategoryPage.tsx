@@ -3,16 +3,22 @@ import { useSelector } from "react-redux";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa6";
 // import ProductContactForm from "../components/ProductContactForm";
-const ProductContactForm = lazy(()=>import("../components/ProductContactForm"));
+const ProductContactForm = lazy(
+  () => import("../components/ProductContactForm")
+);
 import { motion } from "framer-motion";
 import NotFound from "./NotFound";
 import type { RootState } from "../redux/store";
-import type { Catalog, Category, ErrorBoundaryComponentProp } from "../types/types";
-import { BarLoader} from "react-spinners";
+import type {
+  Catalog,
+  Category,
+  ErrorBoundaryComponentProp,
+} from "../types/types";
+import { BarLoader } from "react-spinners";
 
-
-
-const ErrorBoundaryComponent: React.FC<ErrorBoundaryComponentProp> = ({ children }) => {
+const ErrorBoundaryComponent: React.FC<ErrorBoundaryComponentProp> = ({
+  children,
+}) => {
   const [isError, setIsError] = useState(false);
 
   const handleErrorFunction = () => {
@@ -20,11 +26,17 @@ const ErrorBoundaryComponent: React.FC<ErrorBoundaryComponentProp> = ({ children
   };
 
   useEffect(() => {
-    window.addEventListener('error', handleErrorFunction);
-    return () => window.removeEventListener('error', handleErrorFunction);
+    window.addEventListener("error", handleErrorFunction);
+    return () => window.removeEventListener("error", handleErrorFunction);
   }, []);
 
-  return isError ? <div className='text-white text-xl font-medium'>Error loading component</div> : children;
+  return isError ? (
+    <div className="text-white text-xl font-medium">
+      Error loading component
+    </div>
+  ) : (
+    children
+  );
 };
 
 type RouteParams = {
@@ -35,7 +47,6 @@ export default function CategoryPage() {
   const catalogs = useSelector((state: RootState) => state.catalog.catalogs);
   const { productName } = useParams<RouteParams>();
   const navigate = useNavigate();
-
   const decodedName: string = decodeURIComponent(productName ?? "").replace(
     /-/g,
     " "
@@ -78,7 +89,9 @@ export default function CategoryPage() {
                 <li className="text-gray-900 font-semibold">{product.name}</li>
               </ol>
             </nav>
-            <h1 className="font-bold text-4xl ds:text-5xl mt-2">{product.name}</h1>
+            <h1 className="font-bold text-4xl ds:text-5xl mt-2">
+              {product.name}
+            </h1>
           </div>
           <button
             className="flex items-center ml-5 ds:ml-1 text-xs ds:text-sm sm:text-lg px-3 
@@ -96,12 +109,12 @@ export default function CategoryPage() {
               <h2 className="font-semibold text-3xl">
                 {selectedCategory.name}
               </h2>
-              <button
+              {/* <button
                 className="text-xs ds:text-sm ml-5 ds:ml-1 px-2 ds:px-3 py-1 border border-gray-500 text-gray-500 rounded-lg hover:bg-gray-100"
                 onClick={() => setSelectedCategory(null)}
               >
                 View All Categories
-              </button>
+              </button> */}
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-5">
@@ -172,11 +185,17 @@ export default function CategoryPage() {
 
               <div className="col-span-full mt-5">
                 <ErrorBoundaryComponent>
-                  <Suspense fallback={<div className="w-screen h-6"><BarLoader /></div>}>
-                <ProductContactForm
-                  productName={`${product.name} - ${selectedCategory.name}`}
-                />
-                 </Suspense>
+                  <Suspense
+                    fallback={
+                      <div className="w-screen h-6">
+                        <BarLoader />
+                      </div>
+                    }
+                  >
+                    <ProductContactForm
+                      productName={`${product.name} - ${selectedCategory.name}`}
+                    />
+                  </Suspense>
                 </ErrorBoundaryComponent>
               </div>
             </div>

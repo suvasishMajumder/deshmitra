@@ -4,45 +4,37 @@ import { motion } from "framer-motion";
 import { FaStar, FaArrowRight } from "react-icons/fa6";
 import { FaArrowLeft } from "react-icons/fa";
 import { useSelector } from "react-redux";
-const ProductContactForm = lazy(()=>import("../components/ProductContactForm"))
-const NotFound = lazy(()=>import( "./NotFound"))
+const ProductContactForm = lazy(
+  () => import("../components/ProductContactForm")
+);
+const NotFound = lazy(() => import("./NotFound"));
 import type { RootState } from "../redux/store";
 import type { ErrorBoundaryComponentProp } from "../types/types";
 import { BarLoader } from "react-spinners";
 
+const ErrorBoundaryComponent: React.FC<ErrorBoundaryComponentProp> = ({
+  children,
+}) => {
+  const [isError, setIsError] = useState(false);
 
+  const handleErrorFunction = () => {
+    setIsError(true);
+  };
 
+  useEffect(() => {
+    window.addEventListener("error", handleErrorFunction);
 
-const ErrorBoundaryComponent:React.FC<ErrorBoundaryComponentProp> = ({children})=>{
+    return () => window.removeEventListener("error", handleErrorFunction);
+  }, []);
 
-const [isError , setIsError] = useState(false);
-
-
-const handleErrorFunction = () =>{
-
-
-  setIsError(true);
-
-}
-
-
-  useEffect(()=>{
-
-    window.addEventListener('error',handleErrorFunction);
-
-
-
-    return ()=>window.removeEventListener('error',handleErrorFunction);
-
-  },[])
-
-
-
-  return isError ? <div className='text-white text-xl font-medium'>Error loading component</div> : children;
-
-
-}
-
+  return isError ? (
+    <div className="text-white text-xl font-medium">
+      Error loading component
+    </div>
+  ) : (
+    children
+  );
+};
 
 export default function ProductDetail() {
   const catalogs = useSelector((state: RootState) => state.catalog.catalogs);
@@ -57,16 +49,23 @@ export default function ProductDetail() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log(productId);
   }, [productName, categoryName, productId]);
 
   if (!productName || !categoryName || !productId) {
-    return(
-    <ErrorBoundaryComponent>
-      <Suspense fallback={<div className="w-full text-center h-10"><BarLoader /></div>}>
-    <NotFound searchTerm="Invalid product route" />;
-      </Suspense>
-        </ErrorBoundaryComponent>
-    )
+    return (
+      <ErrorBoundaryComponent>
+        <Suspense
+          fallback={
+            <div className="w-full text-center h-10">
+              <BarLoader />
+            </div>
+          }
+        >
+          <NotFound searchTerm="Invalid product route" />;
+        </Suspense>
+      </ErrorBoundaryComponent>
+    );
   }
 
   const decodedProductName = decodeURIComponent(productName)
@@ -648,14 +647,18 @@ export default function ProductDetail() {
           </h3>
 
           <ErrorBoundaryComponent>
-            <Suspense fallback={<div className="w-screen h-16 text-center flex justify-center space-y-6 flex-col items-center">
-             <span>Loading contact form...</span>  <BarLoader/></div>}>
+            <Suspense
+              fallback={
+                <div className="w-screen h-16 text-center flex justify-center space-y-6 flex-col items-center">
+                  <span>Loading contact form...</span> <BarLoader />
+                </div>
+              }
+            >
               <ProductContactForm
                 productName={`${product.name} - ${category.name} - ${item.name}`}
               />
             </Suspense>
           </ErrorBoundaryComponent>
-       
         </div>
 
         {relatedProducts.length > 0 && (
@@ -708,10 +711,10 @@ export default function ProductDetail() {
                           {relatedItem.description}
                         </p>
                         <div className="flex justify-between items-center">
-                          <span className="bg-gray-100 text-blue-600 px-2 py-1 rounded">
+                          <span className="text-blue-600  pe-1 py-2 font-medium text-sm rounded">
                             {relatedItem.priceRange}
                           </span>
-                          <span className="text-blue-600 font-medium text-sm">
+                          <span className="text-blue-600 ps-1 py-2 font-medium text-sm">
                             View Details
                           </span>
                         </div>
