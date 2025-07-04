@@ -18,6 +18,7 @@ const Header: React.FC = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [searchFocused, setSearchFocused] = useState<boolean>(false);
   const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
   const location = useLocation();
   const catalogs = useSelector((state: RootState) => state.catalog.catalogs);
@@ -34,10 +35,8 @@ const Header: React.FC = () => {
   const [currentAnnouncement, setCurrentAnnouncement] = useState<number>(0);
   // const [isAnimating, setIsAnimating] = useState<boolean>(false);
 
-
   //We remove it when deployed to vercel. We will have to check whether any deployment error will come due to it or not
   // useEffect(()=>{
-
 
   //   if(isAnimating === true || isAnimating === false){
   //  console.log('')
@@ -51,6 +50,9 @@ const Header: React.FC = () => {
   useEffect(() => {
     const timer = setInterval(() => {
       // setIsAnimating(true);
+      if (screenWidth > 1023) {
+        setIsMobileMenuOpen(false);
+      }
       setTimeout(() => {
         setCurrentAnnouncement((prev) => (prev + 1) % announcements.length);
         // setIsAnimating(false);
@@ -113,8 +115,10 @@ const Header: React.FC = () => {
         isScrolled ? "shadow-[0_5px_30px_rgba(0,0,0,0.1)]" : ""
       }`}
     >
-      <div className="bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] py-2 text-center text-white text-[0.85rem] 
-      tracking-wider overflow-hidden relative">
+      <div
+        className="bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1] py-2 text-center text-white text-[0.85rem] 
+      tracking-wider overflow-hidden relative"
+      >
         <div className="container mx-auto">
           <div className="min-h-6 flex items-center justify-center py-0.5">
             <AnimatePresence mode="wait">
@@ -186,8 +190,10 @@ const Header: React.FC = () => {
                   <span className="font-poppins font-extrabold text-lg md:text-xl lg:text-2xl animate-gradient-text mb-[-3px]">
                     Akdenar
                   </span>
-                  <span className="text-[0.6rem] sm:text-[0.7rem]  ss:text-[0.8rem] lg:text-[0.6rem] xl:text-[0.8rem]   
-                  font-semibold text-[#3c3d3f] tracking-tight">
+                  <span
+                    className="text-[0.6rem] sm:text-[0.7rem]  ss:text-[0.8rem] lg:text-[0.6rem] xl:text-[0.8rem]   
+                  font-semibold text-[#3c3d3f] tracking-tight"
+                  >
                     Premium Quality Products
                   </span>
                 </div>
@@ -195,17 +201,17 @@ const Header: React.FC = () => {
             </Link>
 
             {/* Desktop Search Bar and Navigation --old code */}
-            
+
             <div className="hidden lg:flex  lg:ml-8 items-center flex-grow gap-4 ">
               {/* Search Bar */}
               <form onSubmit={handleSearch} className="flex-grow">
                 <div
                   className={`relative lg:mx-2 xl:mx-10 lg:w-48 xl:w-64 2xl:w-96 rounded-full overflow-hidden border border-gray-200
                      bg-gray-100 flex items-center transition-all duration-300 ${
-                    searchFocused
-                      ? "shadow-[0_0_0_4px_rgba(58,123,252,0.15)] border-[#3a7bfc] bg-white"
-                      : ""
-                  }`}
+                       searchFocused
+                         ? "shadow-[0_0_0_4px_rgba(58,123,252,0.15)] border-[#3a7bfc] bg-white"
+                         : ""
+                     }`}
                 >
                   <input
                     type="text"
@@ -240,10 +246,10 @@ const Header: React.FC = () => {
                   <Link
                     className={`text-[0.95rem] font-medium text-gray-700 px-1 xl:px-2 py-2 
                       rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:translate-y-[-2px] ${
-                      location.pathname === "/"
-                        ? "text-[#3a7bfc] font-semibold"
-                        : ""
-                    }`}
+                        location.pathname === "/"
+                          ? "text-[#3a7bfc] font-semibold"
+                          : ""
+                      }`}
                     to="/"
                   >
                     Home
@@ -262,16 +268,16 @@ const Header: React.FC = () => {
                       className={`text-[0.95rem] font-medium text-gray-700 px-1 xl:px-2 py-2 rounded-lg 
                         transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10
                          cursor-pointer flex items-center hover:translate-y-[-2px] ${
-                        catalogs.some((c) =>
-                          location.pathname.includes(
-                            `/category/${c.name
-                              .toLowerCase()
-                              .replace(/\s/g, "-")}`
-                          )
-                        )
-                          ? "text-[#3a7bfc] font-semibold"
-                          : ""
-                      }`}
+                           catalogs.some((c) =>
+                             location.pathname.includes(
+                               `/category/${c.name
+                                 .toLowerCase()
+                                 .replace(/\s/g, "-")}`
+                             )
+                           )
+                             ? "text-[#3a7bfc] font-semibold"
+                             : ""
+                         }`}
                       onMouseEnter={() => setActiveDropdown("products")}
                       onMouseLeave={() => {
                         setTimeout(() => {
@@ -320,10 +326,10 @@ const Header: React.FC = () => {
                                 className={`flex items-center px-1 py-2.5 text-[0.9rem]
                                    text-gray-600 rounded-lg transition-all duration-200 hover:bg-[#3a7bfc]/10
                                     hover:text-[#3a7bfc] hover:translate-x-0.5 mb-0.5 ${
-                                  hoveredProduct === index
-                                    ? "bg-[#3a7bfc]/10 text-[#3a7bfc]"
-                                    : ""
-                                }`}
+                                      hoveredProduct === index
+                                        ? "bg-[#3a7bfc]/10 text-[#3a7bfc]"
+                                        : ""
+                                    }`}
                                 to={`/category/${category.name
                                   .toLowerCase()
                                   .replace(/\s/g, "-")}`}
@@ -394,10 +400,10 @@ const Header: React.FC = () => {
                   <Link
                     className={`text-[0.95rem] font-medium text-gray-700 px-1 xl:px-2 py-2 rounded-lg transition-all duration-300
                        hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:translate-y-[-2px] ${
-                      location.pathname === "/about"
-                        ? "text-[#3a7bfc] font-semibold"
-                        : ""
-                    }`}
+                         location.pathname === "/about"
+                           ? "text-[#3a7bfc] font-semibold"
+                           : ""
+                       }`}
                     to="/about"
                   >
                     About
@@ -414,10 +420,10 @@ const Header: React.FC = () => {
                   <Link
                     className={`text-[0.95rem] font-medium text-gray-700 px-1 py-2 rounded-lg transition-all duration-300
                        hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:translate-y-[-2px] ${
-                      location.pathname === "/testimonials"
-                        ? "text-[#3a7bfc] font-semibold"
-                        : ""
-                    }`}
+                         location.pathname === "/testimonials"
+                           ? "text-[#3a7bfc] font-semibold"
+                           : ""
+                       }`}
                     to="/testimonials"
                   >
                     Testimonials
@@ -434,10 +440,10 @@ const Header: React.FC = () => {
                   <Link
                     className={`text-[0.95rem] font-medium text-gray-700 px-1 py-2
                        rounded-lg transition-all duration-300 hover:text-[#3a7bfc] hover:bg-[#3a7bfc]/10 hover:translate-y-[-2px] ${
-                      location.pathname === "/contact"
-                        ? "text-[#3a7bfc] font-semibold"
-                        : ""
-                    }`}
+                         location.pathname === "/contact"
+                           ? "text-[#3a7bfc] font-semibold"
+                           : ""
+                       }`}
                     to="/contact"
                   >
                     Contact
@@ -540,10 +546,10 @@ const Header: React.FC = () => {
                       className={`flex items-center justify-between px-4 py-3.5
                          text-gray-700 font-medium rounded-xl transition-all duration-200
                           hover:bg-[#3a7bfc]/5 hover:text-[#3a7bfc] min-h-[52px] ${
-                        location.pathname === "/"
-                          ? "text-[#3a7bfc] font-semibold"
-                          : ""
-                      }`}
+                            location.pathname === "/"
+                              ? "text-[#3a7bfc] font-semibold"
+                              : ""
+                          }`}
                     >
                       <span className="mr-3 text-[1.2rem]">🏠</span>
                       Home
@@ -699,7 +705,7 @@ const Header: React.FC = () => {
 
       {isScrolled && (
         <motion.div
-        style={{transformOrigin:'left'}}
+          style={{ transformOrigin: "left" }}
           className="absolute bottom-0 left-0 w-full h-[3px] bg-gradient-to-r from-[#3a7bfc] to-[#6f42c1]"
           initial={{ scaleX: 0 }}
           animate={{ scaleX: 1 }}
