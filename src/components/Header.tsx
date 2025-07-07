@@ -18,7 +18,7 @@ const Header: React.FC = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [searchFocused, setSearchFocused] = useState<boolean>(false);
   const [hoveredProduct, setHoveredProduct] = useState<number | null>(null);
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [screenWidth] = useState(window.innerWidth);
   const navigate = useNavigate();
   const location = useLocation();
   const catalogs = useSelector((state: RootState) => state.catalog.catalogs);
@@ -505,7 +505,7 @@ const Header: React.FC = () => {
         <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
-              className="bg-white border-t border-gray-100/20 overflow-y-auto max-h-[calc(100vh-120px)]  md:px-20"
+              className="bg-white lg:hidden border-t border-gray-100/20 overflow-y-auto max-h-[calc(100vh-120px)]  md:px-20"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
