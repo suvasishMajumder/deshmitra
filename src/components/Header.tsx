@@ -48,11 +48,11 @@ const Header: React.FC = () => {
   // },[]);
 
   useEffect(() => {
+    if (screenWidth > 1023) {
+      setIsMobileMenuOpen(false);
+    }
     const timer = setInterval(() => {
       // setIsAnimating(true);
-      if (screenWidth > 1023) {
-        setIsMobileMenuOpen(false);
-      }
       setTimeout(() => {
         setCurrentAnnouncement((prev) => (prev + 1) % announcements.length);
         // setIsAnimating(false);
