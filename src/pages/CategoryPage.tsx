@@ -81,25 +81,27 @@ export default function CategoryPage() {
                 <li>
                   <Link
                     to="/"
-                    className="no-underline text-gray-600 hover:text-blue-600"
+                    className="no-underline text-nowrap text-gray-600 hover:text-blue-600"
                   >
                     Home /
                   </Link>
                 </li>
-                <li className="text-gray-900 font-semibold">{product.name}</li>
+                <li className="text-gray-900 text-nowrap font-semibold">
+                  {product.name}
+                </li>
               </ol>
             </nav>
-            <h1 className="font-bold text-4xl ds:text-5xl mt-2">
+            <h1 className="font-bold text-3xl ms:text-4xl ds:text-5xl mt-2">
               {product.name}
             </h1>
           </div>
           <button
-            className="flex items-center ml-5 ds:ml-1 text-xs ds:text-sm sm:text-lg px-3 
+            className="flex items-center text-nowrap mr-2 ml-5 ds:ml-1 text-xs ds:text-sm sm:text-lg px-3 
             py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 mt-10"
             onClick={handleBackButtonClick}
           >
             <FaArrowLeft className="mr-2" />
-            {selectedCategory ? "Back to Categories" : "Back to Home"}
+            {selectedCategory ? "Back to Categories" : "Back to Home "}
           </button>
         </div>
 
@@ -262,7 +264,7 @@ export default function CategoryPage() {
           <div className="text-center mt-10 mb-20">
             <Link
               to="/"
-              className="px-4 py-2 bg-gradient-to-r from-[#3a7bfc] to-[#165ed3] text-white rounded-lg hover:bg-blue-700"
+              className="md:px-4 md:py-2 bg-gradient-to-r from-[#3a7bfc] to-[#165ed3] text-white rounded-lg hover:bg-blue-700"
             >
               Back to Home
             </Link>

@@ -1,7 +1,4 @@
-
-
 //New footer cpde by dev:
-
 
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -27,10 +24,26 @@ function Footer() {
   ];
 
   const socialLinks: TSocialLinks[] = [
-    { Icon: FaFacebookF, href: "https://www.facebook.com/share/1AmuCTSfNp/" , name: "Facebook" },
-    { Icon: FaInstagram, href: "https://www.instagram.com/akdenar/", name: "Instagram" },
-    { Icon: FaLinkedinIn, href: "https://www.linkedin.com/company/akdenar2", name: "LinkedIn" },
-    { Icon: FaYoutube, href: "https://www.youtube.com/@Akdenar", name: "YouTube" },
+    {
+      Icon: FaFacebookF,
+      href: "https://www.facebook.com/share/1AmuCTSfNp/",
+      name: "Facebook",
+    },
+    {
+      Icon: FaInstagram,
+      href: "https://www.instagram.com/akdenar/",
+      name: "Instagram",
+    },
+    {
+      Icon: FaLinkedinIn,
+      href: "https://www.linkedin.com/company/akdenar2",
+      name: "LinkedIn",
+    },
+    {
+      Icon: FaYoutube,
+      href: "https://www.youtube.com/@Akdenar",
+      name: "YouTube",
+    },
   ];
 
   const [currentYear] = useState<number | string>(new Date().getFullYear());
@@ -94,11 +107,19 @@ function Footer() {
           >
             <h5 className="font-bold mb-6 text-white relative pb-2">
               <span className="invisible sm:visible absolute bottom-0 left-0 w-8 h-0.5 bg-blue-500 rounded"></span>
-             <span className="font-poppins text-[20px] font-bold">Products</span> 
+              <span className="font-poppins text-[20px] font-bold">
+                Products
+              </span>
             </h5>
             <ul className="list-disc pl-3.5 text-white sm:list-none m-0 p-0">
-              {["Rice", "Salt", "Sugar", "Spices", "Dry Fruits", "Oil"].map(
-                (item, index) => (
+              {[
+                "Rice",
+                "Salt",
+                "Sugar",
+                "Spices",
+                "Dry Fruits",
+                "Cooking-Oil",
+              ].map((item, index) => (
                 <motion.li
                   key={index}
                   className="mb-3"
@@ -115,10 +136,12 @@ function Footer() {
                   >
                     <span
                       className={`mr-2 transition-opacity ${
-                        hoveredLink === `product-${index}` ? "opacity-100" : "opacity-0"
+                        hoveredLink === `product-${index}`
+                          ? "opacity-100"
+                          : "opacity-0"
                       }`}
-                    > 
-                      › 
+                    >
+                      ›
                     </span>
                     {item}
                   </Link>
@@ -137,7 +160,9 @@ function Footer() {
           >
             <h5 className="font-bold mb-6 text-white relative pb-2">
               <span className="invisible sm:visible absolute bottom-0 left-0 w-8 h-0.5 bg-blue-500 rounded"></span>
-              <span className="font-poppins text-[20px] font-bold">Contact</span>
+              <span className="font-poppins text-[20px] font-bold">
+                Contact
+              </span>
             </h5>
             <ul className="list-none m-0 p-0 mb-6 ">
               <motion.li
@@ -220,8 +245,8 @@ function Footer() {
           <div className="mb-4 md:mb-0 text-center md:text-left">
             <p className="text-gray-400 text-sm">
               © {currentYear}{" "}
-              <span className="text-gray-300">Akdenar Products</span>. All rights
-              reserved.
+              <span className="text-gray-300">Akdenar Products</span>. All
+              rights reserved.
             </p>
           </div>
           <div className="flex justify-center md:justify-end">
