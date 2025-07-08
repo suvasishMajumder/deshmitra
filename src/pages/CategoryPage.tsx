@@ -96,12 +96,16 @@ export default function CategoryPage() {
             </h1>
           </div>
           <button
-            className="flex items-center text-nowrap mr-2 ml-5 ds:ml-1 text-xs ds:text-sm sm:text-lg px-3 
+            className="flex items-center mr-2 ml-5 ds:ml-1 text-xs ds:text-sm sm:text-lg px-3 
             py-2 border border-blue-500 text-blue-500 rounded-lg hover:bg-blue-50 mt-10"
             onClick={handleBackButtonClick}
           >
             <FaArrowLeft className="mr-2" />
-            {selectedCategory ? "Back to Categories" : "Back to Home "}
+            {selectedCategory ? (
+              <span>Back to Categories</span>
+            ) : (
+              <span className="text-nowrap">Back to Home</span>
+            )}
           </button>
         </div>
 
