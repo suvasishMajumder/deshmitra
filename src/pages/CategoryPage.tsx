@@ -264,7 +264,7 @@ export default function CategoryPage() {
           <div className="text-center mt-10 mb-20">
             <Link
               to="/"
-              className="md:px-4 md:py-2 bg-gradient-to-r from-[#3a7bfc] to-[#165ed3] text-white rounded-lg hover:bg-blue-700"
+              className="px-4 py-2 bg-gradient-to-r from-[#3a7bfc] to-[#165ed3] text-white rounded-lg hover:bg-blue-700"
             >
               Back to Home
             </Link>
