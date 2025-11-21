@@ -49,7 +49,7 @@ const About = () => {
   ];
 
   return (
-    <div className="min-w-[320px] bg-sky-700 pt-40">
+    <div className="min-w-[320px] bg-white pt-40">
       {/* Container */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 
